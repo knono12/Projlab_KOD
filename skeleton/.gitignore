@@ -1,0 +1,67 @@
+# Compiled class files
+*.class
+
+# Log files
+*.log
+logs/
+
+# Build directories
+target/
+build/
+out/
+
+# IDE files
+*.iml
+*.ipr
+*.iws
+.idea/
+.vscode/
+
+# Eclipse
+.settings/
+*.classpath
+
+# IntelliJ
+/.idea/
+/*.iml
+/out/
+
+# NetBeans
+/nbproject/private/
+/build/
+/nbbuild/
+/dist/
+/nbdist/
+.nb-gradle/
+
+# Maven
+/.mvn/
+!/.mvn/wrapper/maven-wrapper.jar
+/dependency-reduced-pom.xml
+/buildNumber.properties
+/target/
+/release.properties
+
+# Gradle
+.gradle/
+/build/
+!gradle/wrapper/gradle-wrapper.jar
+!gradle/wrapper/gradle-wrapper.properties
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temp and editor swap
+*.tmp
+*.swp
+*.swo
+
+# Secrets and keys
+*.key
+*.pem
+*.p12
+*.jks
+
+# Run-time generated
+*.pid
