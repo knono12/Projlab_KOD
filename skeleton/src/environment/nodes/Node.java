@@ -36,7 +36,7 @@ public class Node {
      * * @param v A csomópontba belépő jármű.
      */
     public void enterNode(Vehicle v){
-        SkeletonManager.call(this.name + ".enterNode(" + v.getName() + ")");
+        SkeletonManager.call(this.name + ".enterNode(" + v.getSName() + ")");
         waitingVehicles.add(v);
         v.interactWithStructure(structure);
         SkeletonManager.ret("void");
@@ -48,19 +48,19 @@ public class Node {
      * * @param v A csomópontot elhagyó jármű.
      */
     public void leaveNode(Vehicle v) {
-        SkeletonManager.call(this.name + ".leaveNode(" + v.getName() + ")");
+        SkeletonManager.call(this.name + ".leaveNode(" + v.getSName() + ")");
         waitingVehicles.remove(v);
         v.departFromStructure(structure);
         SkeletonManager.ret("void");
     }
-
+    
     /**
      * Hozzáad egy utat a csomóponthoz.
      * Ezzel a metódussal építhető fel az úthálózat (gráf) az inicializálásakor.
      * * @param r A csomóponthoz csatlakoztatni kívánt út.
      */
     public void addRoad(Road r){
-        SkeletonManager.call(this.name + ".addRoad(" + r.getName() + ")");
+        SkeletonManager.call(this.name + ".addRoad(" + r.getSName() + ")");
         connectedRoads.add(r);
         SkeletonManager.ret("void");
     }
@@ -70,7 +70,7 @@ public class Node {
      * * @param s A csomópontra helyezendő épület (BusStop / SnowplowStation).
      */
     public void addStructure(Structure s) {
-        SkeletonManager.call(this.name + ".addStructure(" + s.getName() + ")");
+        SkeletonManager.call(this.name + ".addStructure(" + s.getSName() + ")");
         structure = s;
         SkeletonManager.ret("void");
     }

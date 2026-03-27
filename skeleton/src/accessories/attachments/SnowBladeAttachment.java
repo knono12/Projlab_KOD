@@ -7,29 +7,31 @@ import skeleton.SkeletonManager;
 
 /**
  * A hányófejet reprezentáló osztály.
- * Ez a fej erősebb a sima söprűnél: 2 sávval jobbra tolja a havat, de ez is csak Light/HeavySnowyState, BrokenIceState-n tud takarítani.
+ * Ez a fej erősebb a sima söprűnél: 2 sávval jobbra tolja a havat, de ez is
+ * csak Light/HeavySnowyState, BrokenIceState-n tud takarítani.
  */
-public class SnowBladeAttachment extends Attachment{
-    protected int price;
+public class SnowBladeAttachment extends Attachment {
 
     /**
      * Konstruktor a hányófej létrehozásához.
-     * @param name A fej neve.
+     * 
+     * @param sName A fej neve.
      * @param price A fej ára.
      */
-    public SnowBladeAttachment(String name, int price){
-        super(name);
-        this.price = price;
+    public SnowBladeAttachment(String sName, int price) {
+        super(sName);
+        setPrice(price);
     }
 
     /**
      * Megkísérli letolni a havat a sávon (2 sávnyi eltolással).
+     * 
      * @param l A tisztítandó sáv.
      * @return Igaz, ha a tolni lehetséges és sikeres volt.
      */
     @Override
-    public boolean clean(Lane l){
-        SkeletonManager.call(name + ".clean(" + l.getName() + ")");
+    public boolean clean(Lane l) {
+        SkeletonManager.call(getSName() + ".clean(" + l.getName() + ")");
         boolean success = l.sweep(2);
         SkeletonManager.ret(String.valueOf(success));
         return success;
@@ -37,15 +39,17 @@ public class SnowBladeAttachment extends Attachment{
 
     /**
      * A takarító megvásárolja a hányófejet.
+     * 
      * @param c A vásárló takarító.
      */
     @Override
     public void boughtByCleaner(Cleaner c) {
-        SkeletonManager.call(name + ".boughtByCleaner(" + c.getName() + ")");
+        SkeletonManager.call(getSName() + ".boughtByCleaner(" + c.getSName() + ")");
         c.addToInventory(this);
         SkeletonManager.ret("void");
     }
 
     @Override
-    public void boughtByBusDriver(BusDriver b) {}
+    public void boughtByBusDriver(BusDriver b) {
+    }
 }

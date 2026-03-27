@@ -1,8 +1,4 @@
-<<<<<<<< HEAD:skeleton/src/application/Skeleton.java
-package application;
-========
 package skeleton;
->>>>>>>> d731c92b1f65a5b1aff70f833efd2fe2e5e3be86:skeleton/src/skeleton/SkeletonManager.java
 
 import java.util.Scanner;
 
@@ -17,7 +13,7 @@ public class SkeletonManager {
         System.out.println("-> " + msg);
         depth++;
     }
-
+    
     public static void ret(String msg) {
         depth--;
         for (int i = 0; i < depth; i++)

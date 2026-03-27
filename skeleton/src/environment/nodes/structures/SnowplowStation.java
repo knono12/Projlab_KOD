@@ -1,7 +1,7 @@
 package environment.nodes.structures;
 
 import environment.nodes.Node;
-import static application.Skeleton.*;
+import skeleton.SkeletonManager;
 import vehicles.*;
 
 public class SnowplowStation extends Structure {
@@ -14,34 +14,54 @@ public class SnowplowStation extends Structure {
         this.node = node;
     }
 
-    // Átgondoltam és szerintem nem kell eneternode függvény, mert csak meghívja az acceptValamit aztán beletesszük az épületbe (szerintem)
+    // Átgondoltam és szerintem nem kell eneternode függvény, mert csak meghívja az
+    // acceptValamit aztán beletesszük az épületbe (szerintem)
     // @Override
     // public void enterStructure(Vehicle vehicle) {
-    //     call("SnowplowStation.enterStructure(" + vehicle + ")");
+    // call("SnowplowStation.enterStructure(" + vehicle + ")");
 
-    //     ret("");
+    // ret("");
     // }
-    
+
     // Ugyanez
     // @Override
     // public void leaveStructure(Vehicle vehicle) {
-    //     call("SnowplowStation.leaveStructure(" + vehicle + ")");
+    // call("SnowplowStation.leaveStructure(" + vehicle + ")");
 
-    //     ret("");
+    // ret("");
     // }
-    
+
+    /**
+     * Method to accept a snowplow, the station can accept a snowplow when it
+     * arrives at the station.
+     * 
+     * @param snowplow The snowplow to accept at the station.
+     */
     @Override
     public void acceptSnowplow(Snowplow snowplow) {
-        call("SnowplowStation.acceptSnowplow(" + snowplow + ")");
+        SkeletonManager.call("SnowplowStation.acceptSnowplow(" + snowplow + ")");
 
-        ret("");
+        boolean arrived = SkeletonManager.ask("Does the snnowplow want to enter the station?");
+        if (arrived) {
+            snowplow.onStation();
+        }
+
+        SkeletonManager.ret("");
     }
 
+    /**
+     * Method to remove a snowplow from the station, the station can remove a
+     * snowplow when it departs from the station.
+     * 
+     * @param snowplow The snowplow to remove from the station.
+     */
     @Override
     public void removeSnowplow(Snowplow snowplow) {
-        call("SnowplowStation.removeSnowplow(" + snowplow + ")");
+        SkeletonManager.call("SnowplowStation.removeSnowplow(" + snowplow + ")");
 
-        ret("");
+        snowplow.departFromStructure(this);
+
+        SkeletonManager.ret("");
     }
 
 }

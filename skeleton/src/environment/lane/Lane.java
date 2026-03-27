@@ -34,7 +34,7 @@ public class Lane {
      */
     public Lane(Node from, Node to, String name){
         snowThickness = 0;
-        laneState = new ClearState();
+        laneState = new ClearState(this, "clearState");
         vehicles = new ArrayList<>();
         fromNode = from;
         toNode = to;
