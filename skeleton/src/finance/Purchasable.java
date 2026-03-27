@@ -6,19 +6,20 @@ import players.Cleaner;
 public interface Purchasable {
     // no instance variable
 
-    void boughtByCleaner(Cleaner cleaner);
+    public void boughtByCleaner(Cleaner cleaner);
 
-    void boughtByBusDriver(BusDriver busDriver);
+    public void boughtByBusDriver(BusDriver busDriver);
 
     // forcing the implementer class to have these methods, so that it implements
     // the Price instance variable
-    int getPrice();
+    public int getPrice();
 
-    int setPrice(int price);
+    public int setPrice(int price);
     
     // only for skeleton
-    String getSName();
+    public String getSName();
 
-    String setSName(String sName);
+    public String setSName(String sName);
+
 
 }
