@@ -6,37 +6,37 @@ import players.Cleaner;
 import skeleton.SkeletonManager;
 
 /**
- * A hányófejet reprezentáló osztály.
- * Ez a fej erősebb a sima söprűnél: 2 sávval jobbra tolja a havat, de ez is csak Light/HeavySnowyState, BrokenIceState-n tud takarítani.
+ * A jégtörő fejet reprezentáló osztály.
+ * Képes a jeges utak (IcyState) feltörésére (BrokenIceState állapotba hozására), de havon vagy már tiszta úton hatástalan.
  */
-public class SnowBladeAttachment extends Attachment{
+public class IceBrakerAttachment extends Attachment{
     protected int price;
 
     /**
-     * Konstruktor a hányófej létrehozásához.
+     * Konstruktor a jégtörő fej létrehozásához.
      * @param name A fej neve.
      * @param price A fej ára.
      */
-    public SnowBladeAttachment(String name, int price){
+    public IceBrakerAttachment(String name, int price){
         super(name);
         this.price = price;
     }
 
     /**
-     * Megkísérli letolni a havat a sávon (2 sávnyi eltolással).
+     * Megkísérli feltörni a jeget az adott sávon.
      * @param l A tisztítandó sáv.
-     * @return Igaz, ha a tolni lehetséges és sikeres volt.
+     * @return Igaz, ha az út jeges volt és a jégtörés sikeresen megtörtént.
      */
     @Override
     public boolean clean(Lane l){
         SkeletonManager.call(name + ".clean(" + l.getName() + ")");
-        boolean success = l.sweep(2);
+        boolean success = l.brakeIce();
         SkeletonManager.ret(String.valueOf(success));
         return success;
     }
 
     /**
-     * A takarító megvásárolja a hányófejet.
+     * A takarító megvásárolja a jégtörő fejet.
      * @param c A vásárló takarító.
      */
     @Override

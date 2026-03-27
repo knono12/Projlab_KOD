@@ -1,5 +1,5 @@
 package vehicles;
 
-public class Vehicle {
-    
+public abstract class Vehicle {
+   
 }

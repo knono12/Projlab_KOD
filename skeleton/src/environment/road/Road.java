@@ -1,5 +1,5 @@
 package environment.road;
 
-public class Road {
+public abstract class Road {
     
 }

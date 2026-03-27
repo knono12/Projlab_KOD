@@ -1,6 +1,8 @@
+package skeleton;
+
 import java.util.Scanner;
 
-public class Skeleton {
+public class SkeletonManager {
 
     private static int depth = 0;
     private static Scanner scanner = new Scanner(System.in);
