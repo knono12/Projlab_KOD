@@ -3,70 +3,130 @@ package environment.lane.lanestates;
 import environment.lane.Lane;
 import skeleton.SkeletonManager;
 import vehicles.Car;
+import vehicles.Snowplow;
 import vehicles.Vehicle;
 
 /**
- * A baleset sávot reprezentáló állapot.
- * <p>
- * Ebben az állapotban az útszakasz a mindenki számára 
- * járhatatlanná válik, így blokkolja az autók, buszok haladását, viszont a hókotró ráhajthat. 
- * A hóesés nem változtat a sáv állapotán, a baleset eltakarítása után visszatér jeges állapotba.
- * </p>
+ * A balesetes sávot reprezentáló állapot.
+ * Ebben az állapotban az útszakasz mindenki számára járhatatlanná válik,
+ * blokkolja az összes járműv haladását.
  */
 public class AccidentState extends LaneState {
     int accidentInterval;
 
     /**
-     * Konstruktor, amely összekapcsolja az állapotot a sávval.
-     * @param l A sáv, amely ebben az állapotban van.
+     * Konstruktor a balesetes állapot létrehozásához.
+     * 
+     * @param l A sáv referenciája.
+     * @param n Az állapot neve.
      */
-    public AccidentState(Lane l) {
-        super(l);
-    }
-
-    /**
-     * Kezeli az autó interakcióját a baleset sávval.
-     * <p>
-     * Mivel a sáv járhatatlan, az autó nem tud áthaladni rajta. 
-     * A metódus meghívja az autó {@code recalculateRoute()} függvényét.
-     * Sikeres újratervezés esetén az autó elindul az új irányba, sikertelenség esetén pedig megáll.
-     * </p>
-     * @param c Az autó, amely megpróbál a sávra hajtani.
-     */
-    @Override
-    public void handleVehicle(Car c) {
-        SkeletonManager.call("AccidentState.handleVehicle(Car)");
-
-        boolean foundNewPath = c.recalculateRoute();
-        if(foundNewPath){
-            c.start();
-        }
-        else {
-            c.stop();
-        }
-
-        SkeletonManager.ret("void");
+    public AccidentState(Lane l, String n) {
+        super(l, n);
     }
 
     /**
      * Az időjárási hatások kezelése baleset állapotban.
-     * <p>
+     * 
      * Ebben az állapotban a sáv havazás hatására is baleset állapotban marad.
      * Emellett mivel a havazás az idő múlását is jelzi, itt fogja számlálni, hogy mennyi idő múlva járható a sáv.
-     * </p>
+     * Ha vége a balesetnek a balesetet szenvedő járműveket elvontatják/újraindulnak és a sáv állapota {@code IcyState} lesz.
      */
     @Override
     public void snowLogic() {
-        SkeletonManager.call("AccidentState.snowLogic()");
+        SkeletonManager.call(sName + ".snowLogic()");
 
         boolean accidentOver = SkeletonManager.ask("Vége a balesetnek? ");
         if(accidentOver){
             for(Vehicle v: lane.getVehicles()){
                 v.accidentOverAction();
             }
-            lane.changeState(new IcyState(lane));
+            lane.changeState(new IcyState(lane, "icyState"));
         }
 
         SkeletonManager.ret("void");
     }
+
+    /**
+     * Megakadályozza az autó rálépését a balesetes sávra.
+     * Mivel a sáv blokkolva van, az autó újratervez, ha ez sikeres következő ütemben elindul
+     * az új útvonalon, ha nem, akkor lehúzódik.
+     * * @param c A belépni próbáló autó.
+     * 
+     * @return Mindig false.
+     */
+    @Override
+    public boolean handleVehicle(Car c) {
+        SkeletonManager.call(sName +".handleVehicle(" + c.getSName() + ")");
+
+        boolean foundNewPath = c.recalculateRoute();
+        if(!foundNewPath){
+            c.stop();
+        }
+
+        SkeletonManager.ret("false");
+        return false;
+    }
+
+    /**
+     * Megakadályozza a hókotró rálépését a balesetes sávra.
+     * Mivel a sáv blokkolva van, a jármű a csomópontban marad.
+     * * @param sp A belépni próbáló hókotró.
+     * 
+     * @return Mindig false, a lépés és a takarítás is meghiúsul.
+     */
+    @Override
+    public boolean handleVehicle(Snowplow sp) {
+        SkeletonManager.call(sName + ".handleVehicle(" + sp.getSName() + ")");
+        SkeletonManager.ret("false");
+        return false;
+    }
+
+    /**
+     * Egy balesetes sávot nem lehet normál módon söpörni.
+     * 
+     * @return Mindig false.
+     */
+    @Override
+    public boolean sweep(int laneCount) {
+        SkeletonManager.call(sName + ".sweep(" + laneCount + ")");
+        SkeletonManager.ret("false");
+        return false;
+    }
+
+    /**
+     * Egy balesetes sávon a jégtörés nem végrehajtható.
+     * 
+     * @return Mindig false.
+     */
+    @Override
+    public boolean brakeIce() {
+        SkeletonManager.call(sName + ".brakeIce()");
+        SkeletonManager.ret("false");
+        return false;
+    }
+
+    /**
+     * Egy balesetes sávon nem lehet sót szorni.
+     * 
+     * @return Mindig false.
+     */
+    @Override
+    public boolean salt() {
+        SkeletonManager.call(sName + ".salt()");
+        SkeletonManager.ret("false");
+        return false;
+    }
+
+    /**
+     * Egy balesetes sávon nem lehet sárkányfejjel sem takarítani.
+     * 
+     * @return Mindig false.
+     */
+    @Override
+    public boolean melt() {
+        SkeletonManager.call(sName + ".melt()");
+        SkeletonManager.ret("false");
+        return false;
+    }
+
 }
