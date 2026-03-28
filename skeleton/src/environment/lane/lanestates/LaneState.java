@@ -2,6 +2,7 @@ package environment.lane.lanestates;
 
 import environment.lane.Lane;
 import skeleton.SkeletonManager;
+import vehicles.Bus;
 import vehicles.Snowplow;
 
 /**
@@ -38,6 +39,25 @@ public abstract class LaneState {
 
         SkeletonManager.ret(String.valueOf(success));
         return success;
+    }
+
+    /**
+     * Kezeli egy busz belépését és áthaladását a sávon.
+     * Alapértelmezett viselkedés: a busz elhagyja a csomópontot, belép a sávba,
+     * majd a sáv állapota dönt arról, hogy az áthaladás sikeres volt-e.
+     * Konkrét állapotok (pl. {@code AccidentState}) felülírhatják ezt a viselkedést,
+     * hogy balesetkor megakadályozzák az áthaladást, vagy jeges úton csúszást okozzanak.
+     * @param b A sávra lépő busz.
+     * @return Igaz, ha a busz sikeresen áthaladt a sávon.
+     */
+    public boolean handleVehicle(Bus b) {
+        SkeletonManager.call(lane.getName() + ".handleVehicle(" + b.getName() + ")");
+
+        lane.getFromNode().leaveNode(b);
+        lane.enterLane(b);
+
+        SkeletonManager.ret("true");
+        return true;
     }
 
     /**
