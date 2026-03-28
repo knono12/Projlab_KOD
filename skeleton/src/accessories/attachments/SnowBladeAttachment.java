@@ -31,7 +31,7 @@ public class SnowBladeAttachment extends Attachment {
      */
     @Override
     public boolean clean(Lane l) {
-        SkeletonManager.call(getSName() + ".clean(" + l.getName() + ")");
+        SkeletonManager.call(getSName() + ".clean(" + l.getSName() + ")");
         boolean success = l.sweep(2);
         SkeletonManager.ret(String.valueOf(success));
         return success;

@@ -2,6 +2,7 @@ package environment.lane.lanestates;
 
 import environment.lane.Lane;
 import skeleton.SkeletonManager;
+import vehicles.Car;
 
 /**
  * A jeges sávot reprezentáló állapot.
@@ -22,6 +23,43 @@ public class IcyState extends LaneState {
     }
 
     /**
+     * Az időjárási hatások kezelése jeges állapotban.
+     * Ebben az állapotban a sáv havazás hatására is jeges állapotban marad.
+     */
+    @Override
+    public void snowLogic() {
+        SkeletonManager.call("IcyState.snowLogic()");
+
+        // Nem csinál semmit, mert a jeges sávon nem történik hófelhalmozódás.
+
+        SkeletonManager.ret("void");
+    }
+
+    /**
+     * Mivel a sáv jeges, az autó megcsúszik és elindul a baleset kiértékelés.
+     * Ha nem történik baleset, akkor az autó végighajt a sávon.
+     * Ha történik baleset, akkor az autó egy idő után elvontatásra kerül.
+     * 
+     * * @param c A belépni próbáló autó.
+     * 
+     * @return true, ha nincs baleset, false, ha történik.
+     */
+    @Override
+    public boolean handleVehicle(Car c) {
+        SkeletonManager.call(sName + ".handleVehicle(" + c.getSName() + ")");
+
+        lane.getFromNode().leaveNode(c);
+        lane.enterLane(c);
+
+        c.slip();
+        
+        boolean success = !c.evaluateCollisions();        
+
+        SkeletonManager.ret(String.valueOf(success));
+        return success;
+    }
+    
+    /**
      * A jeges utat nem lehet söprőfejjel feltakarítani.
      * 
      * @return Mindig false, a söprés hatástalan.
@@ -34,3 +72,5 @@ public class IcyState extends LaneState {
     }
 
 }
+
+

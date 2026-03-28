@@ -2,6 +2,7 @@ package environment.lane.lanestates;
 
 import environment.lane.Lane;
 import skeleton.SkeletonManager;
+import vehicles.Car;
 
 /**
  * A feltört jeges sávot reprezentáló állapot.
@@ -20,6 +21,40 @@ public class BrokenIceState extends LaneState {
     }
 
     /**
+     * Az időjárási hatások kezelése feltört jeges állapotban.
+     * Ebben az állapotban a sáv havazás hatására is feltört jeges állapotban marad.
+     */
+    @Override
+    public void snowLogic() {
+        SkeletonManager.call("BrokenIceState.snowLogic()");
+
+        // Nem csinál semmit, mert a feltört jeges sávon nem történik további hófelhalmozódás.
+
+        SkeletonManager.ret("void");
+    }
+
+    /**
+     * Megakadályozza az autó rálépését a feltört jeges sávra.
+     * Mivel a sáv blokkolva van, az autó újratervez, ha ez sikeres következő ütemben elindul
+     * az új útvonalon, ha nem, akkor lehúzódik.
+     * * @param c A belépni próbáló autó.
+     * 
+     * @return Mindig false.
+     */
+    @Override
+    public boolean handleVehicle(Car c) {
+        SkeletonManager.call(sName +".handleVehicle(" + c.getSName() + ")");
+
+        boolean foundNewPath = c.recalculateRoute();
+        if(!foundNewPath){
+            c.stop();
+        }
+
+        SkeletonManager.ret("false");
+        return false;
+    }
+
+    /**
      * A már feltört jeget nem lehet újra feltörni.
      * 
      * @return Mindig false, a jégtörés hatástalan.
@@ -32,7 +67,7 @@ public class BrokenIceState extends LaneState {
     }
 
     @Override
-    public boolean sweep() {
+    public boolean sweep(int laneCount) {
         SkeletonManager.call(sName + ".sweep()");
         SkeletonManager.ret("false");
         return false;

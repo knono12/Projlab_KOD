@@ -2,6 +2,7 @@ package environment.lane.lanestates;
 
 import environment.lane.Lane;
 import skeleton.SkeletonManager;
+import vehicles.Car;
 
 /**
  * A sózott sávot reprezentáló állapot.
@@ -18,6 +19,40 @@ public class SaltedState extends LaneState {
      */
     public SaltedState(Lane l, String n) {
         super(l, n);
+    }
+
+    /**
+     * Az időjárási hatások kezelése felsózott állapotban.
+     * Ebben az állapotban a sáv havazás hatására is felsózott állapotban marad.
+     */
+    @Override
+    public void snowLogic() {
+        SkeletonManager.call(sName + ".snowLogic()");
+
+        boolean isExpired = SkeletonManager.ask("Lejárt már a só? ");
+        if(isExpired){
+            lane.changeState(new ClearState(lane, "clearState"));
+        }
+
+        SkeletonManager.ret("void");
+    }
+
+    /**
+     * Az autó akadály nélkül fel tud hajtani a sávra.
+     * 
+     * * @param c A belépni próbáló autó.
+     * 
+     * @return Mindig true.
+     */
+    @Override
+    public boolean handleVehicle(Car c) {
+        SkeletonManager.call(sName + ".handleVehicle(" + c.getSName() + ")");
+
+        lane.getFromNode().leaveNode(c);
+        lane.enterLane(c);
+
+        SkeletonManager.ret("true");
+        return true;
     }
 
     /**

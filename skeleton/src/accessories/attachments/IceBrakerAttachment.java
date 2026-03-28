@@ -31,7 +31,7 @@ public class IceBrakerAttachment extends Attachment {
      */
     @Override
     public boolean clean(Lane l) {
-        SkeletonManager.call(getSName() + ".clean(" + l.getName() + ")");
+        SkeletonManager.call(getSName() + ".clean(" + l.getSName() + ")");
         boolean success = l.brakeIce();
         SkeletonManager.ret(String.valueOf(success));
         return success;

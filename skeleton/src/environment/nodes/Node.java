@@ -17,7 +17,7 @@ public class Node {
     protected List<Road> connectedRoads;
     protected Structure structure;
     protected List<Vehicle> waitingVehicles;
-    protected String name;
+    protected String sName;
 
     /**
      * A Node osztály konstruktora.
@@ -27,7 +27,7 @@ public class Node {
     public Node(String name){
         connectedRoads = new ArrayList<>();
         waitingVehicles = new ArrayList<>();
-        this.name = name;
+        this.sName = name;
     }
 
     /**
@@ -36,8 +36,8 @@ public class Node {
      * * @param v A csomópontba belépő jármű.
      */
     public void enterNode(Vehicle v){
-        SkeletonManager.call(this.name + ".enterNode(" + v.getSName() + ")");
-        waitingVehicles.add(v);
+        SkeletonManager.call(this.sName + ".enterNode(" + v.getSName() + ")");
+        //waitingVehicles.add(v);
         v.interactWithStructure(structure);
         SkeletonManager.ret("void");
     }
@@ -48,8 +48,8 @@ public class Node {
      * * @param v A csomópontot elhagyó jármű.
      */
     public void leaveNode(Vehicle v) {
-        SkeletonManager.call(this.name + ".leaveNode(" + v.getSName() + ")");
-        waitingVehicles.remove(v);
+        SkeletonManager.call(this.sName + ".leaveNode(" + v.getSName() + ")");
+        //waitingVehicles.remove(v);
         v.departFromStructure(structure);
         SkeletonManager.ret("void");
     }
@@ -60,7 +60,7 @@ public class Node {
      * * @param r A csomóponthoz csatlakoztatni kívánt út.
      */
     public void addRoad(Road r){
-        SkeletonManager.call(this.name + ".addRoad(" + r.getSName() + ")");
+        SkeletonManager.call(this.sName + ".addRoad(" + r.getSName() + ")");
         connectedRoads.add(r);
         SkeletonManager.ret("void");
     }
@@ -70,7 +70,7 @@ public class Node {
      * * @param s A csomópontra helyezendő épület (BusStop / SnowplowStation).
      */
     public void addStructure(Structure s) {
-        SkeletonManager.call(this.name + ".addStructure(" + s.getSName() + ")");
+        SkeletonManager.call(this.sName + ".addStructure(" + s.getSName() + ")");
         structure = s;
         SkeletonManager.ret("void");
     }
@@ -87,8 +87,16 @@ public class Node {
      * Visszaadja a csomópont nevét.
      * * @return A csomópont azonosító neve.
      */
-    public String getname(){
-        return name;
+    public String getSName(){
+        return sName;
+    }
+
+    /**
+     * Visszaadja a lehúzódott autók listáját.
+     * * @return A csomóponthoz tartozó lehúzódott autók listája.
+     */
+    public List<Vehicle> getWaitingVehicles(){
+        return waitingVehicles;
     }
 
 }

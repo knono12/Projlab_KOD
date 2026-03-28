@@ -97,7 +97,7 @@ public class Snowplow extends Vehicle implements Purchasable {
      */
     @Override
     public void departFromStructure(Structure s) {
-        SkeletonManager.call(getSName() + ".departFromStructure(" + s.getName() + ")");
+        SkeletonManager.call(getSName() + ".departFromStructure(" + s.getSName() + ")");
         s.removeSnowplow(this);
         SkeletonManager.ret("void");
     }
@@ -121,7 +121,7 @@ public class Snowplow extends Vehicle implements Purchasable {
 
         if (isSuccessClean) {
             this.claner.receiveMoney(1);
-            toNode.enterNode(this);
+            currentLane.getToNode().enterNode(this);
         }
 
         SkeletonManager.ret("void");
@@ -132,7 +132,8 @@ public class Snowplow extends Vehicle implements Purchasable {
     }
 
     @Override
-    public void evaluateCollisions() {
+    public boolean evaluateCollisions() {
+        return false;
     }
 
     @Override
@@ -144,7 +145,7 @@ public class Snowplow extends Vehicle implements Purchasable {
     }
 
     @Override
-    public void accidentOver() {
+    public void accidentOverAction() {
     }
 
     // -------------------------------------------------------------------------------------
@@ -155,7 +156,7 @@ public class Snowplow extends Vehicle implements Purchasable {
      * @param newAttachment Az új felszerelendő fej.
      */
     public void changeAttachment(Attachment newAttachment) {
-        SkeletonManager.call(getSName() + ".changeAttachment(" + newAttachment.getName() + ")");
+        SkeletonManager.call(getSName() + ".changeAttachment(" + newAttachment.getSName() + ")");
         this.currentAttachment = newAttachment;
         SkeletonManager.ret("void");
     }

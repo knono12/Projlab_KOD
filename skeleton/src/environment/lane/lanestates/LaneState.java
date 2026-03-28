@@ -3,6 +3,7 @@ package environment.lane.lanestates;
 import environment.lane.Lane;
 import skeleton.SkeletonManager;
 import vehicles.Bus;
+import vehicles.Car;
 import vehicles.Snowplow;
 
 /**
@@ -28,6 +29,22 @@ public abstract class LaneState {
     }
 
     /**
+     * Absztrakt metódus a havazás kezelésére.
+     * 
+     * A leszármazottak ebben a metódusban döntenek arról, hogy a havazás 
+     * hatására történik-e állapotváltás, vagy növekszik-e a hóvastagság.
+     */
+    public abstract void snowLogic();
+    
+    /**
+     * Absztrakt metódus az autó sávval való interkacióinak (pl. belépés, baleset) kezelésére.
+     * * @param c A sávra lépő autó.
+     * 
+     * @return Igaz, ha a sikeresen végig tudott hajtani az autó a sávon.
+     */
+    public abstract boolean handleVehicle(Car c);
+
+    /**
      * Kezeli a hókotró belépését és interakcióját a sávval.
      * Alapértelmezetten kiveszi a hókotrót a csomópontból, beteszi a sávba, majd
      * meghívja a hókotró aktuális fejének takarító metódusát.
@@ -36,7 +53,7 @@ public abstract class LaneState {
      * @return Igaz, ha a művelet és a takarítás sikeres volt.
      */
     public boolean handleVehicle(Snowplow sp) {
-        SkeletonManager.call(lane.getName() + ".handleVehicle(" + sp.getSName() + ")");
+        SkeletonManager.call(lane.getSName() + ".handleVehicle(" + sp.getSName() + ")");
 
         lane.getFromNode().leaveNode(sp);
         lane.enterLane(sp);
@@ -56,7 +73,7 @@ public abstract class LaneState {
      * @return Igaz, ha a busz sikeresen áthaladt a sávon.
      */
     public boolean handleVehicle(Bus b) {
-        SkeletonManager.call(lane.getName() + ".handleVehicle(" + b.getName() + ")");
+        SkeletonManager.call(lane.getSName() + ".handleVehicle(" + b.getSName() + ")");
 
         lane.getFromNode().leaveNode(b);
         lane.enterLane(b);

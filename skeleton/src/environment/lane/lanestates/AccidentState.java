@@ -2,13 +2,14 @@ package environment.lane.lanestates;
 
 import environment.lane.Lane;
 import skeleton.SkeletonManager;
+import vehicles.Car;
 import vehicles.Snowplow;
+import vehicles.Vehicle;
 
 /**
  * A balesetes sávot reprezentáló állapot.
  * Ebben az állapotban az útszakasz mindenki számára járhatatlanná válik,
  * blokkolja az összes járműv haladását.
- * </p>
  */
 public class AccidentState extends LaneState {
     int accidentInterval;
@@ -21,6 +22,49 @@ public class AccidentState extends LaneState {
      */
     public AccidentState(Lane l, String n) {
         super(l, n);
+    }
+
+    /**
+     * Az időjárási hatások kezelése baleset állapotban.
+     * 
+     * Ebben az állapotban a sáv havazás hatására is baleset állapotban marad.
+     * Emellett mivel a havazás az idő múlását is jelzi, itt fogja számlálni, hogy mennyi idő múlva járható a sáv.
+     * Ha vége a balesetnek a balesetet szenvedő járműveket elvontatják/újraindulnak és a sáv állapota {@code IcyState} lesz.
+     */
+    @Override
+    public void snowLogic() {
+        SkeletonManager.call(sName + ".snowLogic()");
+
+        boolean accidentOver = SkeletonManager.ask("Vége a balesetnek? ");
+        if(accidentOver){
+            for(Vehicle v: lane.getVehicles()){
+                v.accidentOverAction();
+            }
+            lane.changeState(new IcyState(lane, "icyState"));
+        }
+
+        SkeletonManager.ret("void");
+    }
+
+    /**
+     * Megakadályozza az autó rálépését a balesetes sávra.
+     * Mivel a sáv blokkolva van, az autó újratervez, ha ez sikeres következő ütemben elindul
+     * az új útvonalon, ha nem, akkor lehúzódik.
+     * * @param c A belépni próbáló autó.
+     * 
+     * @return Mindig false.
+     */
+    @Override
+    public boolean handleVehicle(Car c) {
+        SkeletonManager.call(sName +".handleVehicle(" + c.getSName() + ")");
+
+        boolean foundNewPath = c.recalculateRoute();
+        if(!foundNewPath){
+            c.stop();
+        }
+
+        SkeletonManager.ret("false");
+        return false;
     }
 
     /**
@@ -84,4 +128,5 @@ public class AccidentState extends LaneState {
         SkeletonManager.ret("false");
         return false;
     }
+
 }
