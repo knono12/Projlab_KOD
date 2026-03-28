@@ -8,40 +8,44 @@ import skeleton.SkeletonManager;
 
 /**
  * A sószóró fejet reprezentáló osztály.
- * Takarítás közben sót ({@link Salt}) fogyaszt. Ha a fogyasztás sikeres, besózza az utat, így az (SaltedState) állapotba kerül, és egy ideig védett lesz a hótól/jégtől.
+ * Takarítás közben sót ({@link Salt}) fogyaszt. Ha a fogyasztás sikeres,
+ * besózza az utat, így az (SaltedState) állapotba kerül, és egy ideig védett
+ * lesz a hótól/jégtől.
  */
-public class GritterAttachment extends Attachment{
-    int price;
+public class GritterAttachment extends Attachment {
     Salt salt;
 
     /**
      * Konstruktor a sószóró fej létrehozásához.
-     * @param name A fej neve.
+     * 
+     * @param sName A fej neve.
      * @param price A fej ára.
      */
-    public GritterAttachment(String name, int price){
-        super(name);
-        this.price = price;
+    public GritterAttachment(String sName, int price) {
+        super(sName);
+        setPrice(price);
     }
 
     /**
      * Betölti a sót a sószóró fejbe.
+     * 
      * @param salt A betöltendő só objektum.
      */
-    public void setSalt(Salt salt){
+    public void setSalt(Salt salt) {
         this.salt = salt;
     }
 
     /**
      * Megkísérel sót fogyasztani, és ha sikerül, besózza az utat.
+     * 
      * @param l A tisztítandó (sózandó) sáv.
      * @return Igaz, ha volt elég só és a sáv sikeresen be lett sózva.
      */
     @Override
-    public boolean clean(Lane l){
-        SkeletonManager.call(name+ ".clean(" + l.getName() + ")");
+    public boolean clean(Lane l) {
+        SkeletonManager.call(getSName() + ".clean(" + l.getName() + ")");
         boolean success = false;
-        if (salt.consume() && salt != null) {
+        if (salt != null && salt.consume()) {
             success = l.salt();
         }
         SkeletonManager.ret(String.valueOf(success));
@@ -50,15 +54,17 @@ public class GritterAttachment extends Attachment{
 
     /**
      * A takarító megvásárolja a sószóró fejet.
+     * 
      * @param c A vásárló takarító.
      */
     @Override
     public void boughtByCleaner(Cleaner c) {
-        SkeletonManager.call(name + ".boughtByCleaner(" + c.getName() + ")");
+        SkeletonManager.call(getSName() + ".boughtByCleaner(" + c.getSName() + ")");
         c.addToInventory(this);
         SkeletonManager.ret("void");
     }
-
+    
     @Override
-    public void boughtByBusDriver(BusDriver b) {}
+    public void boughtByBusDriver(BusDriver b) {
+    }
 }

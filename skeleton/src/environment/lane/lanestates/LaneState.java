@@ -7,31 +7,36 @@ import vehicles.Snowplow;
 
 /**
  * A sávok állapotát megvalósító absztrakt ősosztály.
- * Definiálja a takarítási műveletek és a járművekkel való interakciók alapértelmezett viselkedését. 
- * A leszármazott konkrét állapotok (pl. IcyState, ClearState) felülírják ezeket a metódusokat a saját szabályaik szerint.
+ * Definiálja a takarítási műveletek és a járművekkel való interakciók
+ * alapértelmezett viselkedését.
+ * A leszármazott konkrét állapotok (pl. IcyState, ClearState) felülírják ezeket
+ * a metódusokat a saját szabályaik szerint.
  */
 public abstract class LaneState {
     protected Lane lane;
-    protected String name;
+    protected String sName;
 
     /**
      * Konstruktor, amely összekapcsolja az állapotot a hozzá tartozó sávval.
      * * @param l A sáv, amely ezt az állapotot tárolja.
-     * @param name Az állapot azonosító neve.
+     * 
+     * @param sName Az állapot azonosító neve.
      */
-    public LaneState(Lane l, String name){
+    protected LaneState(Lane l, String sName) {
         lane = l;
-        this.name = name;
+        this.sName = sName;
     }
 
     /**
      * Kezeli a hókotró belépését és interakcióját a sávval.
-     * Alapértelmezetten kiveszi a hókotrót a csomópontból, beteszi a sávba, majd meghívja a hókotró aktuális fejének takarító metódusát.
+     * Alapértelmezetten kiveszi a hókotrót a csomópontból, beteszi a sávba, majd
+     * meghívja a hókotró aktuális fejének takarító metódusát.
      * * @param sp A sávra lépő hókotró.
+     * 
      * @return Igaz, ha a művelet és a takarítás sikeres volt.
      */
-    public boolean handleVehicle(Snowplow sp){
-        SkeletonManager.call(lane.getName() + ".handleVehicle(" + sp.getName() + ")");
+    public boolean handleVehicle(Snowplow sp) {
+        SkeletonManager.call(lane.getName() + ".handleVehicle(" + sp.getSName() + ")");
 
         lane.getFromNode().leaveNode(sp);
         lane.enterLane(sp);
@@ -62,25 +67,27 @@ public abstract class LaneState {
 
     /**
      * Söprés kezdeményezése az állapoton.
+     * 
      * @param laneCount Sávok száma a hó jobbra tolásához.
      * @return Alapértelmezetten igaz (de a specifikus állapotok felülírják).
      */
-    public boolean sweep(int laneCount){
-        SkeletonManager.call(name + ".sweep(" + laneCount + ")");
+    public boolean sweep(int laneCount) {
+        SkeletonManager.call(sName + ".sweep(" + laneCount + ")");
 
         lane.pushSnowRight(laneCount);
         lane.changeState(new ClearState(lane, "clearState"));
-        
+
         SkeletonManager.ret("true");
         return true;
     }
 
     /**
      * Jégtörés kezdeményezése az állapoton.
+     * 
      * @return Alapértelmezetten igaz.
      */
-    public boolean brakeIce(){
-        SkeletonManager.call(name + ".brakeIce()");
+    public boolean brakeIce() {
+        SkeletonManager.call(sName + ".brakeIce()");
 
         lane.changeState(new BrokenIceState(lane, "brokenIceState"));
 
@@ -90,12 +97,13 @@ public abstract class LaneState {
 
     /**
      * Sózás kezdeményezése az állapoton.
+     * 
      * @return Alapértelmezetten igaz.
      */
-    public boolean salt(){
-        SkeletonManager.call(name + ".salt()");
+    public boolean salt() {
+        SkeletonManager.call(sName + ".salt()");
 
-        ////Kérdés feltevés
+        // Kérdés feltevés
         lane.changeState(new SaltedState(lane, "saltedState"));
 
         SkeletonManager.ret("true");
@@ -104,10 +112,11 @@ public abstract class LaneState {
 
     /**
      * Olvasztás kezdeményezése az állapoton.
+     * 
      * @return Alapértelmezetten igaz.
      */
-    public boolean melt(){
-        SkeletonManager.call(name + ".melt()");
+    public boolean melt() {
+        SkeletonManager.call(sName + ".melt()");
 
         lane.changeState(new ClearState(lane, "clearState"));
 
@@ -119,8 +128,8 @@ public abstract class LaneState {
      * Visszaadja a sáv állapot nevét.
      * * @return A sáv állapotot azonosító név.
      */
-    public String getName(){
-        return name;
+    public String getSName(){
+        return sName;
     }
 
 }

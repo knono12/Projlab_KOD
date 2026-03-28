@@ -2,7 +2,6 @@ package environment.lane.lanestates;
 
 import environment.lane.Lane;
 import skeleton.SkeletonManager;
-import vehicles.Car;
 
 /**
  * A tiszta sávot reprezentáló állapot.
@@ -15,7 +14,7 @@ public class ClearState extends LaneState {
      * @param l A sáv referenciája.
      * @param n Az állapot neve.
      */
-    ClearState(Lane l, String n) {
+    public ClearState(Lane l, String n) {
         super(l, n);
     }
 
@@ -25,7 +24,7 @@ public class ClearState extends LaneState {
      */
     @Override
     public boolean sweep(int laneCount){
-        SkeletonManager.call(name + ".sweep(" + laneCount + ")");        
+        SkeletonManager.call(sName + ".sweep(" + laneCount + ")");        
         SkeletonManager.ret("false");
         return false;
     }
@@ -36,7 +35,7 @@ public class ClearState extends LaneState {
      */
     @Override
     public boolean brakeIce(){
-        SkeletonManager.call(name + ".brakeIce()");
+        SkeletonManager.call(sName + ".brakeIce()");
         SkeletonManager.ret("false");
         return false;
     }
@@ -50,7 +49,7 @@ public class ClearState extends LaneState {
      */
     @Override
     public boolean melt(){
-        SkeletonManager.call(name + ".melt()");
+        SkeletonManager.call(sName + ".melt()");
         SkeletonManager.ret("false");
         return false;
     }

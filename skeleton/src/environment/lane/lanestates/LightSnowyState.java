@@ -11,6 +11,7 @@ public class LightSnowyState extends LaneState {
     /**
      * Konstruktor, amely összekapcsolja az állapotot a sávval.
      * * @param l A sáv referenciája.
+     * 
      * @param n Az állapot neve.
      */
     public LightSnowyState(Lane l, String n) {
@@ -22,8 +23,8 @@ public class LightSnowyState extends LaneState {
      * * @return Mindig false.
      */
     @Override
-    public boolean brakeIce(){
-        SkeletonManager.call(name + ".brakeIce()");
+    public boolean brakeIce() {
+        SkeletonManager.call(sName + ".brakeIce()");
         SkeletonManager.ret("false");
         return false;
     }
