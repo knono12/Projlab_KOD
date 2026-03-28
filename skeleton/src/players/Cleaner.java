@@ -1,4 +1,5 @@
 package players;
+import java.util.ArrayList;
 import java.util.List;
 
 import skeleton.SkeletonManager;
@@ -19,6 +20,8 @@ public class Cleaner extends Player {
      */
     public Cleaner(String sName, String name, Wallet wallet) {
         super(sName, name, wallet);
+        this.inventory = new ArrayList<>();
+        this.snowplows = new ArrayList<>();
     }
     
     /**
@@ -70,7 +73,7 @@ public class Cleaner extends Player {
      * @param snowplow The snowplow to add to the list of snowplows.
      */
     public void addSnowplow(Snowplow snowplow) {
-        SkeletonManager.call("Cleaner.addSnowplow(" + snowplow + ")");
+        SkeletonManager.call("Cleaner.addSnowplow(" + snowplow.getSName() + ")");
         
         snowplows.add(snowplow);
         

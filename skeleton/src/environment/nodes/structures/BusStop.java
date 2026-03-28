@@ -36,11 +36,11 @@ public class BusStop extends Structure {
     public void setAllBusStops(List<BusStop> stops) {
         this.allBusStops = stops;
     }
-
+/*
     /**
      * Egy jármű belép a megállóba. Ha busz, meghívja az {@link #acceptBus(Bus)} metódust.
      * @param v A belépő jármű.
-     */
+     
     @Override
     public void enterStructure(Vehicle v) {
         SkeletonManager.call(name + ".enterStructure(" + v.getName() + ")");
@@ -53,7 +53,7 @@ public class BusStop extends Structure {
     /**
      * Egy jármű elhagyja a megállót. Ha busz, meghívja a {@link #removeBus(Bus)} metódust.
      * @param v A kilépő jármű.
-     */
+     
     @Override
     public void leaveStructure(Vehicle v) {
         SkeletonManager.call(name + ".leaveStructure(" + v.getName() + ")");
@@ -62,14 +62,14 @@ public class BusStop extends Structure {
         }
         SkeletonManager.ret("void");
     }
-
+*/
     /**
      * Autót fogad – buszmegállóban nincs teendő autóval.
      * @param c A fogadott autó.
      */
     @Override
     public void acceptCar(Car c) {
-        SkeletonManager.call(name + ".acceptCar(" + c.getName() + ")");
+        SkeletonManager.call(name + ".acceptCar(" + c.getSName() + ")");
         SkeletonManager.ret("void");
     }
 
@@ -79,7 +79,7 @@ public class BusStop extends Structure {
      */
     @Override
     public void acceptBus(Bus b) {
-        SkeletonManager.call(name + ".acceptBus(" + b.getName() + ")");
+        SkeletonManager.call(name + ".acceptBus(" + b.getSName() + ")");
         if (!waitingBuses.contains(b)) {
             waitingBuses.add(b);
             b.arriveAtTerminal(this);
@@ -93,7 +93,7 @@ public class BusStop extends Structure {
      */
     @Override
     public void acceptSnowplow(Snowplow s) {
-        SkeletonManager.call(name + ".acceptSnowplow(" + s.getName() + ")");
+        SkeletonManager.call(name + ".acceptSnowplow(" + s.getSName() + ")");
         SkeletonManager.ret("void");
     }
 
@@ -103,7 +103,7 @@ public class BusStop extends Structure {
      */
     @Override
     public void removeCar(Car c) {
-        SkeletonManager.call(name + ".removeCar(" + c.getName() + ")");
+        SkeletonManager.call(name + ".removeCar(" + c.getSName() + ")");
         SkeletonManager.ret("void");
     }
 
@@ -113,7 +113,7 @@ public class BusStop extends Structure {
      */
     @Override
     public void removeBus(Bus b) {
-        SkeletonManager.call(name + ".removeBus(" + b.getName() + ")");
+        SkeletonManager.call(name + ".removeBus(" + b.getSName() + ")");
         waitingBuses.remove(b);
         parkedBuses.remove(b);
         SkeletonManager.ret("void");
@@ -125,7 +125,7 @@ public class BusStop extends Structure {
      */
     @Override
     public void removeSnowplow(Snowplow s) {
-        SkeletonManager.call(name + ".removeSnowplow(" + s.getName() + ")");
+        SkeletonManager.call(name + ".removeSnowplow(" + s.getSName() + ")");
         SkeletonManager.ret("void");
     }
 
@@ -134,7 +134,7 @@ public class BusStop extends Structure {
      * @param b A parkolásra kerülő busz.
      */
     public void parkBus(Bus b) {
-        SkeletonManager.call(name + ".parkBus(" + b.getName() + ")");
+        SkeletonManager.call(name + ".parkBus(" + b.getSName() + ")");
         waitingBuses.remove(b);
         parkedBuses.add(b);
         SkeletonManager.ret("void");

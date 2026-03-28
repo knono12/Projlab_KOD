@@ -10,6 +10,7 @@ public class SnowplowStation extends Structure {
     Node node;
 
     public SnowplowStation(String sName, Node node) {
+        super(sName);
         this.sName = sName;
         this.node = node;
     }
@@ -30,6 +31,18 @@ public class SnowplowStation extends Structure {
 
     // ret("");
     // }
+
+    @Override
+    public void acceptCar(Car c) {}
+
+    @Override
+    public void acceptBus(Bus b) {}
+
+    @Override
+    public void removeCar(Car c) {}
+
+    @Override
+    public void removeBus(Bus b) {}
 
     /**
      * Method to accept a snowplow, the station can accept a snowplow when it

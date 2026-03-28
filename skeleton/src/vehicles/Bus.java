@@ -3,6 +3,7 @@ package vehicles;
 import java.util.List;
 
 import environment.lane.Lane;
+import environment.nodes.Node;
 import environment.nodes.structures.BusStop;
 import environment.nodes.structures.Structure;
 import environment.road.Road;
@@ -30,8 +31,6 @@ public class Bus extends Vehicle implements Purchasable {
     private int successfulRounds;
     /** Igaz, ha a busz éppen mozgásban van. */
     private boolean isMoving;
-    /** Igaz, ha a busz sérült állapotban van. */
-    boolean damaged;
     /** A busz ára (Purchasable interfész miatt). */
     int price;
 
@@ -45,7 +44,20 @@ public class Bus extends Vehicle implements Purchasable {
         this.driver = driver;
         this.successfulRounds = 0;
         this.isMoving = false;
-        this.damaged = false;
+    }
+
+    /**
+     * Skeleton-teszteléshez használt konstruktor: kezdőcsomóponttal.
+     * @param name A busz neve.
+     * @param driver A busz sofőrje.
+     * @param startNode A kezdőcsomópont.
+     */
+    public Bus(String name, BusDriver driver, Node startNode) {
+        super(name);
+        this.driver = driver;
+        this.successfulRounds = 0;
+        this.isMoving = false;
+        this.currentNode = startNode;
     }
 
     /**
@@ -147,6 +159,7 @@ public class Bus extends Vehicle implements Purchasable {
      * Sérült busz nem tud részt venni ütközésben.
      * @return Igaz, ha a busz nem sérült.
      */
+    @Override
     public boolean canCollide() {
         SkeletonManager.call(sName + ".canCollide()");
         boolean result = !damaged;
@@ -159,6 +172,7 @@ public class Bus extends Vehicle implements Purchasable {
      * Az épület {@code acceptBus()} metódusán keresztül fogadja a buszt.
      * @param s Az épület vagy megálló, amellyel a busz interakcióba lép.
      */
+    @Override
     public void interactWithStructure(Structure s) {
         SkeletonManager.call(sName + ".interactWithStructure(" + s.getName() + ")");
         s.acceptBus(this);
@@ -169,6 +183,7 @@ public class Bus extends Vehicle implements Purchasable {
      * Elhagyja az aktuális épületet vagy megállót.
      * @param s Az elhagyandó épület vagy megálló.
      */
+    @Override
     public void departFromStructure(Structure s) {
         SkeletonManager.call(sName + ".departFromStructure(" + s.getName() + ")");
         s.removeBus(this);
@@ -176,30 +191,10 @@ public class Bus extends Vehicle implements Purchasable {
     }
 
     /**
-     * Kiválasztja a következő utat.
-     * @return A kiválasztott út.
-     */
-    public Road chooseNextRoad() {
-        SkeletonManager.call(sName + ".chooseNextRoad()");
-        SkeletonManager.ret("null");
-        return null;
-    }
-
-    /**
-     * Kiválasztja a következő sávot a kapott listából.
-     * @param lanes Az elérhető sávok listája.
-     * @return A kiválasztott sáv.
-     */
-    public Lane chooseNextLane(List<Lane> lanes) {
-        SkeletonManager.call(sName + ".chooseNextLane(lanes)");
-        SkeletonManager.ret("null");
-        return null;
-    }
-
-    /**
      * Mozgatja a buszt. Sérült busz nem tud mozogni.
      * Ha még nem indult el, meghívja a {@link #start()} metódust.
      */
+    @Override
     public void move() {
         SkeletonManager.call(sName + ".move()");
 
@@ -212,12 +207,32 @@ public class Bus extends Vehicle implements Purchasable {
             start();
         }
 
+        Road nextRoad = chooseNextRoad();
+        if (nextRoad == null) {
+            SkeletonManager.ret("void");
+            return;
+        }
+
+        List<Lane> freeLanes = nextRoad.getFreeLanes(currentNode);
+        Lane nextLane = chooseNextLane(freeLanes);
+
+        boolean isSuccess = false;
+        if (nextLane != null) {
+            currentLane = nextLane;
+            isSuccess = nextLane.handleVehicle(this);
+        }
+
+        if (isSuccess) {
+            currentLane.getToNode().enterNode(this);
+        }
+
         SkeletonManager.ret("void");
     }
 
     /**
      * Megállítja a buszt, az {@code isMoving} jelzőt hamisra állítja.
      */
+    @Override
     public void stop() {
         SkeletonManager.call(sName + ".stop()");
         isMoving = false;
@@ -227,6 +242,7 @@ public class Bus extends Vehicle implements Purchasable {
     /**
      * Elindítja a buszt, ha nincs sérült állapotban.
      */
+    @Override
     public void start() {
         SkeletonManager.call(sName + ".start()");
 
@@ -239,22 +255,26 @@ public class Bus extends Vehicle implements Purchasable {
     }
 
     /** Csúszás kezelése – skeletonban nem implementált. */
+    @Override
     public void slip() {}
 
     /**
      * Ütközések kiértékelése csúszás után.
      * @return Mindig false (skeleton).
      */
+    @Override
     public boolean evaluateCollisions() {
         return false;
     }
 
     /** Baleset végének utóhatásai – skeletonban nem implementált. */
+    @Override
     public void accidentOverAction() {}
 
     /**
      * A busz elszenved egy ütközést: sérült állapotba kerül és megáll.
      */
+    @Override
     public void sufferCollision() {
         SkeletonManager.call(sName + ".sufferCollision()");
         damaged = true;

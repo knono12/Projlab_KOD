@@ -9,6 +9,7 @@ import environment.lane.lanestates.LaneState;
 import environment.nodes.Node;
 import environment.road.Road;
 import skeleton.SkeletonManager;
+import vehicles.Bus;
 import vehicles.Car;
 import vehicles.Snowplow;
 import vehicles.Vehicle;
@@ -81,6 +82,19 @@ public class Lane {
 
         boolean success = laneState.handleVehicle(snowplow);
 
+        SkeletonManager.ret(String.valueOf(success));
+        return success;
+    }
+
+    /**
+     * Kezeli a busz belépését a sávra.
+     * A tényleges logikát a sáv aktuális állapota határozza meg.
+     * @param b A sávra lépő busz.
+     * @return Igaz, ha a busz sikeresen áthaladt a sávon.
+     */
+    public boolean handleVehicle(Bus b) {
+        SkeletonManager.call(sName + ".handleVehicle(" + b.getSName() + ")");
+        boolean success = laneState.handleVehicle(b);
         SkeletonManager.ret(String.valueOf(success));
         return success;
     }
@@ -215,7 +229,15 @@ public class Lane {
         return vehicles;
     }
 
-    /** 
+    /**
+     * Beállítja a sávhoz tartozó utat (Road.addLane()-ből hívódik).
+     * @param r Az út, amelyhez ez a sáv tartozik.
+     */
+    public void setRoad(Road r) {
+        this.road = r;
+    }
+
+    /**
      * Visszaadja a sáv nevét.
      * * @return A sávot azonosító név.
      */

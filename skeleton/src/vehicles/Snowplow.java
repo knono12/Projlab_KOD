@@ -111,11 +111,17 @@ public class Snowplow extends Vehicle implements Purchasable {
         SkeletonManager.call(getSName() + ".move()");
 
         Road road = chooseNextRoad();
+        if (road == null) {
+            SkeletonManager.ret("void");
+            return;
+        }
+
         List<Lane> freeLanes = road.getFreeLanes(this.currentNode);
         Lane nextLane = chooseNextLane(freeLanes);
 
         boolean isSuccessClean = false;
         if (nextLane != null) {
+            currentLane = nextLane;
             isSuccessClean = nextLane.handleVehicle(this);
         }
 
@@ -180,7 +186,7 @@ public class Snowplow extends Vehicle implements Purchasable {
         SkeletonManager.call(getSName() + ".onStation()");
         boolean shop = SkeletonManager.ask("Szeretne-e vásárolni hókotrófejet? ");
         if (shop)
-            claner.purchase(new SnowBladeAttachment("snowBladeAttachment", 10));
+            claner.purchaseItem(new SnowBladeAttachment("snowBladeAttachment", 10));
         SkeletonManager.ret("void");
     }
 

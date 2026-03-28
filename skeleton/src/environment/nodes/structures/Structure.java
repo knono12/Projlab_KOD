@@ -27,6 +27,14 @@ public abstract class Structure {
         return name;
     }
 
+    /**
+     * Visszaadja az épület skeleton-azonosító nevét.
+     * @return Az épület skeleton neve.
+     */
+    public String getSName() {
+        return name;
+    }
+
     //public abstract void enterStructure(Vehicle v);
     //public abstract void leaveStructure(Vehicle v);
 

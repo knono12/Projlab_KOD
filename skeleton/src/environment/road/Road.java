@@ -43,6 +43,7 @@ public abstract class Road {
     public void addLane(Lane l) {
         SkeletonManager.call(sName + ".addLane(" + l.getSName() + ")");
         lanes.add(l);
+        l.setRoad(this);
         SkeletonManager.ret("void");
     }
 

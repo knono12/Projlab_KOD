@@ -31,8 +31,37 @@ public class Car extends Vehicle {
         super(n);
         isWating = false;
         currentLane = null;
-        currentNode = home.getNode();
-        destination = job.getNode();
+        currentNode = (home != null) ? home.getNode() : null;
+        destination = (job != null) ? job.getNode() : null;
+        route = new ArrayList<>();
+    }
+
+    /**
+     * Skeleton-teszteléshez használt konstruktor: megadja a kezdőcsomópontot közvetlenül.
+     * @param n Az autó neve.
+     * @param startNode A kiindulási csomópont.
+     */
+    public Car(String n, Node startNode) {
+        super(n);
+        isWating = false;
+        currentLane = null;
+        currentNode = startNode;
+        destination = null;
+        route = new ArrayList<>();
+    }
+
+    /**
+     * Skeleton-teszteléshez használt konstruktor: megadja a kezdő- és célcsomópontot.
+     * @param n Az autó neve.
+     * @param startNode A kiindulási csomópont.
+     * @param destNode A célcsomópont.
+     */
+    public Car(String n, Node startNode, Node destNode) {
+        super(n);
+        isWating = false;
+        currentLane = null;
+        currentNode = startNode;
+        destination = destNode;
         route = new ArrayList<>();
     }
 
@@ -50,6 +79,7 @@ public class Car extends Vehicle {
 
         boolean isSuccess = false;
         if (nextLane != null) {
+            currentLane = nextLane;
             isSuccess = nextLane.handleVehicle(this);
         }
 

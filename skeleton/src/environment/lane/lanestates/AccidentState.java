@@ -1,5 +1,7 @@
 package environment.lane.lanestates;
 
+import java.util.ArrayList;
+
 import environment.lane.Lane;
 import skeleton.SkeletonManager;
 import vehicles.Car;
@@ -37,7 +39,7 @@ public class AccidentState extends LaneState {
 
         boolean accidentOver = SkeletonManager.ask("Vége a balesetnek? ");
         if(accidentOver){
-            for(Vehicle v: lane.getVehicles()){
+            for(Vehicle v: new ArrayList<>(lane.getVehicles())){
                 v.accidentOverAction();
             }
             lane.changeState(new IcyState(lane, "icyState"));

@@ -148,5 +148,21 @@ public abstract class Vehicle {
         this.sName = name;
         return this.sName;
     }
+
+    /**
+     * Beállítja a jármű aktuális csomópontját (skeleton-teszteléshez).
+     * @param n Az új csomópont.
+     */
+    public void setCurrentNode(Node n) {
+        this.currentNode = n;
+    }
+
+    /**
+     * Beállítja a jármű aktuális sávját (skeleton-teszteléshez).
+     * @param l Az új sáv.
+     */
+    public void setCurrentLane(Lane l) {
+        this.currentLane = l;
+    }
 }
 
