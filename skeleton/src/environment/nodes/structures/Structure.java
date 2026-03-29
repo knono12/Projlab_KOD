@@ -35,9 +35,6 @@ public abstract class Structure {
         return name;
     }
 
-    //public abstract void enterStructure(Vehicle v);
-    //public abstract void leaveStructure(Vehicle v);
-
     /** @param c A fogadandó autó. */
     public abstract void acceptCar(Car c);
     /** @param b A fogadandó busz. */

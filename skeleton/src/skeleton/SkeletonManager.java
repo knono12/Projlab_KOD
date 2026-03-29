@@ -179,7 +179,11 @@ public class SkeletonManager {
     // Segédmetódus: alap pályainfrastruktúra felépítése
     // =========================================================================
 
-    /** Létrehoz és összeköt: n1 → st → n2, a sávot (l) clear állapottal. */
+    /**
+     * Létrehoz és összeköt egy alap útszakaszt tesztelési célra.
+     * <p>Felépítés: n1 → st (Street) → n2, egyetlen {@code l} sávval (ClearState).</p>
+     * @return Object[] tömb: [0]=n1 (Node), [1]=n2 (Node), [2]=st (Street), [3]=l (Lane)
+     */
     private static Object[] buildBasicRoad() {
         Node n1 = new Node("n1");
         Node n2 = new Node("n2");
@@ -192,13 +196,20 @@ public class SkeletonManager {
         return new Object[]{n1, n2, st, l};
     }
 
-    /** Létrehoz egy Cleaner-t 500 egyenlegű pénztárcával. */
+    /**
+     * Létrehoz egy alapértelmezett Cleaner példányt 500 egyenlegű pénztárcával.
+     * @return Az elkészített Cleaner objektum.
+     */
     private static Cleaner buildCleaner() {
         Wallet w = new Wallet("wallet", 500);
         return new Cleaner("cl", "Kovács János", w);
     }
 
-    /** Létrehoz egy Snowplow-t a megadott Cleaner-rel. */
+    /**
+     * Létrehoz egy Snowplow-t, amelyet a megadott Cleaner vásárol meg.
+     * @param cleaner A hókotrót megvásárló takarító.
+     * @return A Cleaner tulajdonában lévő Snowplow objektum.
+     */
     private static Snowplow buildSnowplow(Cleaner cleaner) {
         Snowplow sp = new Snowplow(100, "sp");
         sp.boughtByCleaner(cleaner);
@@ -684,6 +695,13 @@ public class SkeletonManager {
         sp.move();   // belép a sávra, de IcyState.sweep → false → nincs fizetség
     }
 
+    // =========================================================================
+    // TC26  Új kotrófej vásárlása, cserélése és takarítás
+    // =========================================================================
+    /**
+     * Takarító az állomáson hókotrófejet vásárol és felszereli a hókotrójára,
+     * majd a hókotró elindul takarítani. Ha a sáv jeges, a söprés sikertelen.
+     */
     private static void testAttachmentPurchaseAndChangeAndClean() {
         Object[] road = buildBasicRoad();
         Node n1 = (Node) road[0];

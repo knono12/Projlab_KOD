@@ -105,10 +105,6 @@ public class Snowplow extends Vehicle implements Purchasable {
         SkeletonManager.ret("void");
     }
 
-    // Később kelleni fog külön imlplementálni
-    // chooseNextRoad()
-    // choosenextLane()
-
     @Override
     public void move() {
         SkeletonManager.call(getSName() + ".move()");
