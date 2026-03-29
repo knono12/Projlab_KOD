@@ -183,7 +183,7 @@ public class Car extends Vehicle {
         currentNode = currentLane.getFromNode();
         currentLane = null;
         isWating = true;
-        currentNode.getWaitingVehicles().add(this);
+        currentNode.enterNode(this);
         SkeletonManager.ret("void");
     }
 

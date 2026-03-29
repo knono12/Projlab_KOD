@@ -37,7 +37,8 @@ public class Node {
      */
     public void enterNode(Vehicle v){
         SkeletonManager.call(this.sName + ".enterNode(" + v.getSName() + ")");
-        //waitingVehicles.add(v);
+        v.getCurrentLane().removeVehicle(v);
+        waitingVehicles.add(v);
         if (structure != null) {
             v.interactWithStructure(structure);
         }
@@ -51,7 +52,7 @@ public class Node {
      */
     public void leaveNode(Vehicle v) {
         SkeletonManager.call(this.sName + ".leaveNode(" + v.getSName() + ")");
-        //waitingVehicles.remove(v);
+        waitingVehicles.remove(v);
         if (structure != null) {
             v.departFromStructure(structure);
         }

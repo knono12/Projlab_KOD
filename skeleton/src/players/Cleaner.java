@@ -32,11 +32,9 @@ public class Cleaner extends Player {
     public void receiveMoney(int amount) {
         SkeletonManager.call("Cleaner.receiveMoney(" + amount + ")");
 
-        Boolean answer = SkeletonManager.ask("Did the snowplow clean a road?");
 
-        if (answer) {
-            wallet.addMoney(amount);
-        }
+        wallet.addMoney(amount);
+
 
         SkeletonManager.ret("");
     }

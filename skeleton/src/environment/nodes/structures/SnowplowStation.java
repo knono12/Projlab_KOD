@@ -52,7 +52,7 @@ public class SnowplowStation extends Structure {
      */
     @Override
     public void acceptSnowplow(Snowplow snowplow) {
-        SkeletonManager.call("SnowplowStation.acceptSnowplow(" + snowplow + ")");
+        SkeletonManager.call("SnowplowStation.acceptSnowplow(" + snowplow.getSName() + ")");
 
         boolean arrived = SkeletonManager.ask("Does the snnowplow want to enter the station?");
         if (arrived) {
@@ -70,7 +70,7 @@ public class SnowplowStation extends Structure {
      */
     @Override
     public void removeSnowplow(Snowplow snowplow) {
-        SkeletonManager.call("SnowplowStation.removeSnowplow(" + snowplow + ")");
+        SkeletonManager.call("SnowplowStation.removeSnowplow(" + snowplow.getSName() + ")");
 
         snowplow.departFromStructure(this);
 

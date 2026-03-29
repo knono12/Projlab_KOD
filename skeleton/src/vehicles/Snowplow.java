@@ -4,7 +4,9 @@ import java.util.List;
 
 import accessories.attachments.Attachment;
 import accessories.attachments.GritterAttachment;
+import accessories.attachments.IceBrakerAttachment;
 import accessories.attachments.SnowBladeAttachment;
+import accessories.attachments.SweeperAttachment;
 import environment.lane.Lane;
 import environment.nodes.structures.Structure;
 import environment.road.Road;
@@ -35,6 +37,7 @@ public class Snowplow extends Vehicle implements Purchasable {
     public Snowplow(int price, String sName) {
         super(sName);
         this.price = price;
+        currentAttachment = new SweeperAttachment("sweeperAttachment", 5);
     }
 
     @Override
@@ -186,7 +189,15 @@ public class Snowplow extends Vehicle implements Purchasable {
         SkeletonManager.call(getSName() + ".onStation()");
         boolean shop = SkeletonManager.ask("Szeretne-e vásárolni hókotrófejet? ");
         if (shop)
-            claner.purchaseItem(new SnowBladeAttachment("snowBladeAttachment", 10));
+            claner.purchaseItem(new IceBrakerAttachment("iceBrakerAttachment", 10));
+        boolean change = SkeletonManager.ask("Szeretne-e cserélni hókotrófejet? ");
+        if (change){
+            boolean inInventory = SkeletonManager.ask("Benne van inventory-ban? ");
+            if (inInventory)
+                changeAttachment(new IceBrakerAttachment("iceBrakerAttachment", 10));
+        }
+            
+
         SkeletonManager.ret("void");
     }
 

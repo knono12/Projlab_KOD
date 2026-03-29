@@ -75,7 +75,7 @@ public abstract class Vehicle {
      */
     public Lane chooseNextLane(List<Lane> lanes) {
         SkeletonManager.call(sName + ".chooseNextLane(freeLanes)");
-        boolean foundNextLane = SkeletonManager.ask("Talált járható sávot?");
+        boolean foundNextLane = SkeletonManager.ask("Talált jó irányú sávot?");
 
         if (foundNextLane) {
             SkeletonManager.ret(lanes.get(0).getSName());
@@ -163,6 +163,10 @@ public abstract class Vehicle {
      */
     public void setCurrentLane(Lane l) {
         this.currentLane = l;
+    }
+
+    public Lane getCurrentLane(){
+        return currentLane;
     }
 }
 

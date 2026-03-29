@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import accessories.attachments.Attachment;
 import accessories.attachments.FlamethrowerAttachment;
 import accessories.attachments.GritterAttachment;
 import accessories.attachments.IceBrakerAttachment;
@@ -88,13 +89,14 @@ public class SkeletonManager {
      */
     public static void run() {
         System.out.println("=== Skeleton Tesztelő ===");
+        System.out.println(" 0. Kilépés");
         System.out.println(" 1. Játék inicializálása");
         System.out.println(" 2. Autó haladása tiszta sávon");
         System.out.println(" 3. Busz megérkezik végállomására");
         System.out.println(" 4. Autó elakad");
         System.out.println(" 5. Busz javítása");
         System.out.println(" 6. Biokerozin vásárlása");
-        System.out.println(" 7. Hókotró vásárlása");
+        System.out.println(" 7. Hókotrófej vásárlása");
         System.out.println(" 8. Busz vásárlása");
         System.out.println(" 9. Autó elindul csomópontból");
         System.out.println("10. Havazás az alagútban");
@@ -113,19 +115,27 @@ public class SkeletonManager {
         System.out.println("23. Roncsautók elszállítása");
         System.out.println("24. Hókotró elakadása balesetes úton");
         System.out.println("25. Sikertelen takarítás");
-        System.out.print("Válasszon tesztesetet (1-25): ");
+        System.out.println("26. Új kotrófej vásárlása és cserélése");
 
-        String input = scanner.nextLine().trim();
-        int choice;
-        try {
-            choice = Integer.parseInt(input);
-        } catch (NumberFormatException e) {
-            System.out.println("Érvénytelen bemenet.");
-            return;
+        boolean exit = false;
+        while(!exit){
+            System.out.print("\nVálasszon tesztesetet (1-25): ");
+            String input = scanner.nextLine().trim();
+            int choice;
+            try {
+                choice = Integer.parseInt(input);
+            } catch (NumberFormatException e) {
+                System.out.println("Érvénytelen bemenet.");
+                return;
+            }
+            if(choice == 0){
+                exit = true;
+                break;
+            }
+
+            System.out.println();
+            skeletonLogic(choice);
         }
-
-        System.out.println();
-        skeletonLogic(choice);
     }
 
     /**
@@ -133,6 +143,7 @@ public class SkeletonManager {
      * @param testCase A teszteset sorszáma.
      */
     public static void skeletonLogic(int testCase) {
+        
         switch (testCase) {
             case 1:  testGameInit();           break;
             case 2:  testCarOnClearLane();     break;
@@ -140,7 +151,7 @@ public class SkeletonManager {
             case 4:  testCarGetStuck();        break;
             case 5:  testBusRepair();          break;
             case 6:  testBiokerosene();        break;
-            case 7:  testSnowplowPurchase();   break;
+            case 7:  testAttachemntPurchase();   break;
             case 8:  testBusPurchase();        break;
             case 9:  testCarRestart();         break;
             case 10: testSnowInTunnel();       break;
@@ -159,6 +170,7 @@ public class SkeletonManager {
             case 23: testWreckRemoval();       break;
             case 24: testSnowplowOnAccident(); break;
             case 25: testFailedCleaning();     break;
+            case 26: testAttachmentPurchaseAndChangeAndClean(); break;
             default: System.out.println("Ismeretlen teszteset: " + testCase); break;
         }
     }
@@ -309,18 +321,19 @@ public class SkeletonManager {
     }
 
     // =========================================================================
-    // TC7  Hókotró vásárlása
+    // TC7  Hókotrófej vásárlása
     // =========================================================================
     /**
-     * Takarító hókotrót vesz. Ha van elég pénze, sikeres a vásárlás.
+     * Takarító hókotrófejet vesz. Ha van elég pénze, sikeres a vásárlás.
      */
-    private static void testSnowplowPurchase() {
+    private static void testAttachemntPurchase() {
         Cleaner cleaner = buildCleaner();
-        Snowplow sp = new Snowplow(200, "sp");
+        //Snowplow sp = new Snowplow(200, "sp");
+        Attachment att = new IceBrakerAttachment("IceBrajkerAttachemnt", 20);
 
         boolean hasFunds = ask("Van-e elég pénze a takarítónak?");
         if (hasFunds) {
-            cleaner.purchaseItem(sp);
+            cleaner.purchaseItem(att);
         }
     }
 
@@ -669,5 +682,24 @@ public class SkeletonManager {
         sp.setCurrentNode(n1);
 
         sp.move();   // belép a sávra, de IcyState.sweep → false → nincs fizetség
+    }
+
+    private static void testAttachmentPurchaseAndChangeAndClean() {
+        Object[] road = buildBasicRoad();
+        Node n1 = (Node) road[0];
+        Lane l  = (Lane) road[3];
+
+        SnowplowStation station = new SnowplowStation("station", n1);
+        Cleaner cleaner = buildCleaner();
+        Snowplow sp = buildSnowplow(cleaner);
+
+        station.acceptSnowplow(sp);
+        
+        l.changeState(new IcyState(l, "icyState"));
+
+        //sp.changeAttachment(new IceBrakerAttachment("jegoro", 25));
+        sp.setCurrentNode(n1);
+
+        sp.move();
     }
 }
