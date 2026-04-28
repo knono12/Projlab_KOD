@@ -86,7 +86,7 @@ public class Snowplow extends Vehicle implements Purchasable {
      */
     @Override
     public void interactWithStructure(Structure s) {
-        SkeletonManager.call(getSName() + ".interactWithStructure(" + s.getName() + ")");
+        SkeletonManager.call(getSName() + ".interactWithStructure(" + s.getsName() + ")");
 
         s.acceptSnowplow(this);
 
@@ -187,12 +187,11 @@ public class Snowplow extends Vehicle implements Purchasable {
         if (shop)
             claner.purchaseItem(new IceBrakerAttachment("iceBrakerAttachment", 10));
         boolean change = SkeletonManager.ask("Szeretne-e cserélni hókotrófejet? ");
-        if (change){
+        if (change) {
             boolean inInventory = SkeletonManager.ask("Benne van inventory-ban? ");
             if (inInventory)
                 changeAttachment(new IceBrakerAttachment("iceBrakerAttachment", 10));
         }
-            
 
         SkeletonManager.ret("void");
     }
@@ -209,12 +208,7 @@ public class Snowplow extends Vehicle implements Purchasable {
      */
     @Override
     public void boughtByCleaner(Cleaner c) {
-        SkeletonManager.call(sName + ".boughtByCleaner(" + c.getSName() + ")");
-
-        this.claner = c;
         c.addSnowplow(this);
-
-        SkeletonManager.ret("void");
     }
 
     /**
@@ -224,6 +218,7 @@ public class Snowplow extends Vehicle implements Purchasable {
      */
     @Override
     public void boughtByBusDriver(BusDriver b) {
+        // Buszsofőr nem vásárol hókotrót, így ez a metódus üres marad.
     }
 
 }

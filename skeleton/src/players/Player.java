@@ -1,59 +1,100 @@
 package players;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import finance.Purchasable;
 import finance.Wallet;
 
+/**
+ * Az abstract Player osztály, amely a játékosok közös tulajdonságait és viselkedését definiálja.
+ */
 public abstract class Player {
-    String sName;
+    protected String sName;
+    
+    protected List<Purchasable> inventory;
 
-    String name;
-    Wallet wallet;
-
+    protected String name;
+    protected Wallet wallet;
+    
     /**
-     * The constructor of the player class
-     * 
-     * @param sName  The name of the player in the skeleton, used for logging and
-     *               testing purposes.
-     * @param name   The name of the player.
-     * @param wallet The wallet of the player.
-     */
-    protected Player(String sName, String name, Wallet wallet) {
+     * A Player osztály konstruktora, amely csak a skeletonbeli nevet és a játékos nevét állítja be.
+    * 
+    * @param sName A játékos neve a skeletonban, amelyet naplózás és tesztelés céljából használnak.
+    * @param name  A játékos neve.
+    */
+    protected Player(String sName, String name) {
         this.sName = sName;
         this.name = name;
-        this.wallet = wallet;
+        this.wallet = new Wallet();
+        this.inventory = new ArrayList<>();
     }
 
     /**
-     * Method to receive money, the implementation depends on the player type.
+     * A Player osztály konstruktora, amely a skeletonbeli nevet, a játékos nevét és az készletét is beállítja.
      * 
-     * @param amount The amount of money to receive.
+     * @param sName  A játékos neve a skeletonban, amelyet naplózás és
+     *               tesztelés céljából használnak.
+     * @param name   A játékos neve.
+     * @param inventory A játékos készlete, amely a megvásárolt elemeket tartalmazza.
      */
-    public abstract void receiveMoney(int amount);
-
+    protected Player(String sName, String name, List<Purchasable> inventory) {
+        this.sName = sName;
+        this.name = name;
+        this.wallet = new Wallet();
+        this.inventory = inventory;
+    }
+    
     /**
-     * Method to purchase an item, the implementation depends on the player type.
+    * Hozzáad egy elemet a takarító készletéhez (inventory).
+    * 
+    * @param item Az elem, amelyet hozzá szeretne adni a készlethez.
+    */
+    public void addToInventory(Purchasable item) {
+        inventory.add(item);
+    }
+    
+    /**
+     * Metódus a pénz fogadására, amelynek implementációja a konkrét játékos típusától függ.
      * 
-     * @param item The item to purchase.
+     * @param amount A jóváírt pénz összege.
+     */
+    public void receiveMoney(int amount){
+        wallet.addMoney(amount);
+    }
+    
+    /**
+     * Absztrakt metódus egy elem vásárlására, amelynek implementációja a konkrét játékos típusától függ.
+     * 
+     * @param item Az elem, amelyet vásárolni szeretne.
      */
     public abstract void purchaseItem(Purchasable item);
-
+    
     /**
-     * Method to get the name of the player in the skeleton.
+     * Metódus a játékos egyedi nevének lekérésére.
      * 
-     * @return The name of the player in the skeleton.
+     * @return A játékos egyedi neve.
      */
     public String getSName() {
         return sName;
     }
 
     /**
-     * Method to set the name of the player in the skeleton.
+     * Metódus a játékos egyedi nevének beállítására.
      * 
-     * @param sName The new name of the player in the skeleton.
-     * @return The new name of the player in the skeleton.
+     * @param sName Az új egyedi név.
+     * @return Az új egyedi név.
      */
     public String setSName(String sName) {
         this.sName = sName;
         return this.sName;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

@@ -1,50 +1,81 @@
 package environment.nodes.structures;
+
 import vehicles.*;
 
 /**
  * Az épületeket és állomásokat reprezentáló absztrakt ősosztály.
  * Minden csomóponthoz ({@link environment.nodes.Node}) tartozhat egy Structure,
  * amellyel a járművek interakcióba léphetnek belépéskor és kilépéskor.
- * Az alosztályok (pl. {@link BusStop}, {@link Building}) határozzák meg a konkrét viselkedést.
+ * Az alosztályok (pl. {@link BusStop}, {@link Building}) határozzák meg a
+ * konkrét viselkedést.
  */
 public abstract class Structure {
     /** Az épület neve (kiíratáshoz és azonosításhoz). */
-    protected String name;
+    protected String sName;
 
     /**
      * A Structure osztály konstruktora.
-     * @param name Az épület neve.
+     * 
+     * @param sName Az épület neve.
      */
-    public Structure(String name) {
-        this.name = name;
+    protected Structure(String sName) {
+        this.sName = sName;
     }
 
     /**
      * Visszaadja az épület nevét.
+     * 
      * @return Az épület neve.
      */
-    public String getName() {
-        return name;
+    protected String getsName() {
+        return sName;
     }
 
     /**
      * Visszaadja az épület skeleton-azonosító nevét.
+     * 
      * @return Az épület skeleton neve.
      */
-    public String getSName() {
-        return name;
+    protected void setSName(String sName) {
+        this.sName = sName;
     }
 
-    /** @param c A fogadandó autó. */
+    /*
+     * accept... metódusok (Beléptetés / Fogadás):
+     * 
+     * acceptCar(Car c), acceptBus(Bus b), acceptSnowplow(Snowplow s)
+     * 
+     * Szerepük: Ezek felelnek azért, hogy egy adott típusú járművet beengedjenek és
+     * regisztráljanak az épületben (pl. hozzáadják az épület belső listájához).
+     * 
+     * Működés: Mivel külön függvény van minden járműre, a leszármazott épületek
+     * (pl. BusStop) pontosan meg tudják válogatni, kit engednek be. A BusStop
+     * felülírja az acceptBus-t (beengedi a buszt), de üresen hagyja az acceptCar-t
+     * (így az autókat figyelmen kívül hagyja).
+     */
+
     public abstract void acceptCar(Car c);
-    /** @param b A fogadandó busz. */
+
     public abstract void acceptBus(Bus b);
-    /** @param s A fogadandó hókotró. */
+
     public abstract void acceptSnowplow(Snowplow s);
-    /** @param c Az eltávolítandó autó. */
+
+    /*
+     * remove... metódusok (Kiléptetés / Eltávolítás):
+     * 
+     * removeCar(Car c), removeBus(Bus b), removeSnowplow(Snowplow s)
+     * 
+     * Szerepük: Ezek felelnek azért, hogy egy adott típusú járművet töröljenek az
+     * épület nyilvántartásából, amikor a jármű úgy dönt, hogy elhagyja azt (pl. a
+     * busz befejezte a várakozást és elindul a megállóból).
+     * 
+     * Működés: Ugyanazon a logikán alapul; kiveszi a paraméterként kapott
+     * járműpéldányt a megfelelő (pl. várakozó buszok) listából.
+     */
+    
     public abstract void removeCar(Car c);
-    /** @param b Az eltávolítandó busz. */
+
     public abstract void removeBus(Bus b);
-    /** @param s Az eltávolítandó hókotró. */
+
     public abstract void removeSnowplow(Snowplow s);
 }

@@ -38,17 +38,17 @@ public interface Purchasable {
     public void setPrice(int price);
 
     /**
-     * Visszaadja az elem skeleton-azonosító nevét.
+     * Visszaadja az elem azonosító nevét.
      *
-     * @return Az elem skeleton neve.
+     * @return Az elem azonosító neve.
      */
     public String getSName();
 
     /**
-     * Beállítja az elem skeleton-azonosító nevét.
+     * Beállítja az elem azonosító nevét.
      *
-     * @param sName Az új skeleton név.
-     * @return A beállított skeleton név.
+     * @param sName Az új azonosító név.
+     * @return A beállított azonosító név.
      */
     public String setSName(String sName);
 

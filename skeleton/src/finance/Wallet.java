@@ -1,44 +1,62 @@
 package finance;
 
-import skeleton.SkeletonManager;
 
+/**
+ * A pénztárca osztály, amely a játékosok pénzügyi tranzakcióit kezeli.
+ */
 public class Wallet {
-    String sName;
-    
-    int balance;
+    private int balance;
     
     /**
-     * The constructor of the Wallet class
-     * @param sName The name of the wallet in the skeleton.
-     * @param balance The initial balance of the wallet.
+     * A Wallet osztály konstruktora.
      */
-    public Wallet(String sName, int balance) {
-        this.sName = sName;
+    public Wallet() {
+        this.balance = 0;
+    }
+    
+    /**
+     * A Wallet osztály konstruktora, amely lehetővé teszi a kezdeti egyenleg beállítását.
+     * @param balance A kezdeti egyenleg, amelyet a pénztárca tartalmaz. Nem lehet negatív érték.
+     */
+    public Wallet(int balance) {
         this.balance = balance;
     }
     
     /**
-     * Method to get the name of the wallet in the skeleton.
-     * @param amount The amount of money to deduct from the wallet.
+     * Egy bizonyos összeg levonása a pénztárcából.
+     * @param amount A levonandó összeg.
      */
     public void deductMoney(int amount) {
-        SkeletonManager.call("Wallet.deductMoney(" + amount + ")");
-
         balance -= amount;
-        
-        SkeletonManager.ret("");
     }
     
     /**
-     * Method to add money to the wallet.
-     * @param amount The amount of money to add to the wallet.
+     * Egy bizonyos összeg hozzáadása a pénztárcához.
+     * @param amount A hozzáadandó összeg.
      */
     public void addMoney(int amount) {
-        SkeletonManager.call("Wallet.addMoney(" + amount + ")");
-        
         balance += amount;
-
-        SkeletonManager.ret("");
     }
 
+
+    /**
+     * Visszaadja a pénztárca aktuális egyenlegét.
+     * @return A pénztárca egyenlege.
+     */
+    public int getBalance() {
+        return balance;
+    }
+    
+    /**
+     * Beállítja a pénztárca egyenlegét. Ha a megadott egyenleg negatív, kivételt dob.
+     * @param balance Az új egyenleg.
+     * @return A beállított egyenleg.
+     */
+    public int setBalance(int balance) {
+        if(balance < 0) {
+            throw new IllegalArgumentException("Balance cannot be negative");
+        }
+        this.balance = balance;
+        return this.balance;
+    }
 }

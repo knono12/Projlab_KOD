@@ -2,6 +2,8 @@ package accessories.attachments;
 
 import environment.lane.Lane;
 import finance.Purchasable;
+import players.BusDriver;
+import players.Cleaner;
 
 /**
  * A hókotróra szerelhető takarítófejeket reprezentáló absztrakt ősosztály.
@@ -50,4 +52,22 @@ public abstract class Attachment implements Purchasable {
      * @return Igaz, ha a takarítás sikeres volt, különben hamis.
      */
     public abstract boolean clean(Lane l);
+
+    /**
+     * A takarító megvásárolja a takarítófejet.
+     * 
+     * @param c A vásárlást végző takarító.
+     */
+    public void boughtByCleaner(Cleaner c) {
+        c.addToInventory(this);
+    }
+    
+    /**
+     * A buszsofőr általi vásárlás metódusa.
+     * 
+     * @param b A vásárlást megkísérlő buszsofőr.
+     */
+    public void boughtByBusDriver(BusDriver b) {
+        // Buszsofőr nem vásárol takarítófejet, így ez a metódus üres marad.
+    }
 }
