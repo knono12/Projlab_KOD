@@ -59,18 +59,46 @@ public class IcyState extends LaneState {
         return success;
     }
     
-    /**
-     * A jeges utat nem lehet söprőfejjel feltakarítani.
-     * 
-     * @return Mindig false, a söprés hatástalan.
-     */
     @Override
-    public boolean sweep(int laneCount) {
-        SkeletonManager.call(sName + ".sweep(" + laneCount + ")");
-        SkeletonManager.ret("false");
-        return false;
+    public boolean brakeIce() {
+        SkeletonManager.call(sName + ".brakeIce()");
+
+        lane.changeState(new BrokenIceState(lane, "brokenIceState"));
+
+        SkeletonManager.ret("true");
+        return true;
     }
 
+    @Override
+    public boolean salt() {
+        SkeletonManager.call(sName + ".salt()");
+
+        // Kérdés feltevés
+        lane.changeState(new SaltedState(lane, "saltedState"));
+
+        SkeletonManager.ret("true");
+        return true;
+    }
+
+    @Override
+    public boolean melt() {
+        SkeletonManager.call(sName + ".melt()");
+
+        lane.changeState(new ClearState(lane, "clearState"));
+
+        SkeletonManager.ret("true");
+        return true;
+    }
+
+    @Override
+    public boolean gravel(){
+        SkeletonManager.call(sName + ".gravel()");
+
+        lane.changeState(new GravelState(lane, "gravelState"));
+
+        SkeletonManager.ret("true");
+        return true;
+    }
 }
 
 

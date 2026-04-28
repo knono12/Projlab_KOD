@@ -50,40 +50,15 @@ public class ClearState extends LaneState {
         return true;
     }
 
-    /**
-     * Egy tiszta sávot nem lehet tovább söpörni.
-     * @return Mindig false, a takarítás sikertelen.
-     */
     @Override
-    public boolean sweep(int laneCount){
-        SkeletonManager.call(sName + ".sweep(" + laneCount + ")");        
-        SkeletonManager.ret("false");
-        return false;
-    }
+    public boolean salt() {
+        SkeletonManager.call(sName + ".salt()");
 
-    /**
-     * Egy tiszta sávon nincs jég, amit fel lehetne törni.
-     * @return Mindig false, a jégtörés sikertelen.
-     */
-    @Override
-    public boolean brakeIce(){
-        SkeletonManager.call(sName + ".brakeIce()");
-        SkeletonManager.ret("false");
-        return false;
-    }
+        // Kérdés feltevés
+        lane.changeState(new SaltedState(lane, "saltedState"));
 
-    // A sószóró végigmegy az úton besózza, és kap is érte pénzt. 
-    // Azért lehet, hogy utána egy ideig nem eshet rá hó. 
-
-    /**
-     * Egy tiszta sávon nincs mit felolvasztani.
-     * @return Mindig false, az olvasztás sikertelen.
-     */
-    @Override
-    public boolean melt(){
-        SkeletonManager.call(sName + ".melt()");
-        SkeletonManager.ret("false");
-        return false;
+        SkeletonManager.ret("true");
+        return true;
     }
 
 }

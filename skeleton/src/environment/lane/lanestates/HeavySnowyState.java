@@ -54,15 +54,35 @@ public class HeavySnowyState extends LaneState {
         return false;
     }
 
-    /**
-     * A havas úton a jégtörés hatástalan.
-     * * @return Mindig false.
-     */
     @Override
-    public boolean brakeIce() {
-        SkeletonManager.call(sName + ".brakeIce()");
-        SkeletonManager.ret("false");
-        return false;
+    public boolean sweep(int laneCount) {
+        SkeletonManager.call(sName + ".sweep(" + laneCount + ")");
+
+        lane.pushSnowRight(laneCount);
+        lane.changeState(new ClearState(lane, "clearState"));
+
+        SkeletonManager.ret("true");
+        return true;
     }
 
+    @Override
+    public boolean salt() {
+        SkeletonManager.call(sName + ".salt()");
+
+        // Kérdés feltevés
+        lane.changeState(new SaltedState(lane, "saltedState"));
+
+        SkeletonManager.ret("true");
+        return true;
+    }
+
+    @Override
+    public boolean melt() {
+        SkeletonManager.call(sName + ".melt()");
+
+        lane.changeState(new ClearState(lane, "clearState"));
+
+        SkeletonManager.ret("true");
+        return true;
+    }
 }

@@ -146,6 +146,13 @@ public class Lane {
         return success;
     }
 
+    public boolean gravel(){
+        SkeletonManager.call(sName + ".gravel()");
+        boolean success = laneState.gravel();
+        SkeletonManager.ret(String.valueOf(success));
+        return success;
+    }
+
     /**
      * A havat a megadott számú sávval jobbra tolja.
      * Megkeresi a jobbra lévő sávot az út sávlistájában, és meghívja rajta a havazás logikát.
@@ -158,6 +165,18 @@ public class Lane {
         if (currLaneIdx + laneCount < road.getLanes().size()){
             Lane nextLane = road.getLanes().get(currLaneIdx + laneCount);
             nextLane.snowLogic();
+        }
+
+        SkeletonManager.ret("void");
+    }
+
+    public void pushGravelRight(int laneCount){
+        SkeletonManager.call(sName + ".pusGravelRight(" + laneCount + ")");
+
+        int currLaneIdx = road.getLanes().indexOf(this);
+        if (currLaneIdx + laneCount < road.getLanes().size()){
+            Lane nextLane = road.getLanes().get(currLaneIdx + laneCount);
+            nextLane.gravel();
         }
 
         SkeletonManager.ret("void");

@@ -15,8 +15,10 @@ public abstract class Vehicle {
     protected boolean damaged = false;
     protected Lane currentLane;
     protected Node currentNode;
-    protected boolean isSlipping = false;
     protected String sName;
+    protected Road nextRoad;
+    protected Lane nextLane;
+    protected boolean isActionSuccess = false;
 
     /**
      * Konstruktor a jármű nevének beállításához.
@@ -49,59 +51,17 @@ public abstract class Vehicle {
      */
     public abstract void departFromStructure(Structure s);
 
-    /**
-     * Kiválasztja a következő utat a csomópontból.
-     * @return A kiválasztott út, vagy null, ha nincs járható út.
-     */
-    public Road chooseNextRoad() {
-        SkeletonManager.call(sName + ".chooseNextRoad()");
-        boolean foundNextLane = SkeletonManager.ask("Talált járható utat?");
 
-        if (foundNextLane) {
-            SkeletonManager.ret(currentNode.getRoads().get(0).getSName());
-            // a teszteseteinkben csak egy út van, így mindig azt választja
-            return currentNode.getRoads().get(0);
-        }
-        else{
-            SkeletonManager.ret("null");
-            return null;
-        }
-    }
+    public abstract void setNextRoad(Road r);
 
-    /**
-     * Kiválasztja a következő sávot a lehetséges jó irányú sávok közül.
-     * @param lanes A választható jó irányú sávok listája.
-     * @return A kiválasztott sáv, vagy null, ha nincs.
-     */
-    public Lane chooseNextLane(List<Lane> lanes) {
-        SkeletonManager.call(sName + ".chooseNextLane(freeLanes)");
-        boolean foundNextLane = SkeletonManager.ask("Talált jó irányú sávot?");
-
-        if (foundNextLane) {
-            SkeletonManager.ret(lanes.get(0).getSName());
-            return lanes.get(0);
-        }
-        else{
-            SkeletonManager.ret("null");
-            return null;
-        }
-    }
+    public abstract void setNextLane(Lane l);
     
     /**
      * A jármű fizikai haladását megvalósító metódus.
      */
-    public abstract void move();
+    public abstract void moveOntoLane();
 
-    /**
-     * Beállítja a járművet megcsúszó állapotba.
-     */
-    public abstract void slip();
-
-    /**
-     * Kiértékeli, hogy a megcsúszás következtében történt-e ütközés.
-     * @return true, ha baleset történt, egyébként false.
-     */
-    public abstract boolean evaluateCollisions();
+    public abstract void moveOntoNode();
 
     /**
      * Jármű lehúzódásánál hívódik meg.
@@ -126,7 +86,6 @@ public abstract class Vehicle {
 
         currentLane.getToNode().enterNode(this);
         currentLane = null;
-        isSlipping = false;
 
         SkeletonManager.ret("void");
     }

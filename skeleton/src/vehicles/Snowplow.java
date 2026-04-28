@@ -3,9 +3,7 @@ package vehicles;
 import java.util.List;
 
 import accessories.attachments.Attachment;
-import accessories.attachments.GritterAttachment;
 import accessories.attachments.IceBrakerAttachment;
-import accessories.attachments.SnowBladeAttachment;
 import accessories.attachments.SweeperAttachment;
 import environment.lane.Lane;
 import environment.nodes.structures.Structure;
@@ -26,7 +24,8 @@ public class Snowplow extends Vehicle implements Purchasable {
 
     protected int price;
     protected Attachment currentAttachment;
-    protected Cleaner claner;
+    protected Cleaner cleaner;
+
 
     /**
      * A Snowplow osztály konstruktora.
@@ -106,39 +105,19 @@ public class Snowplow extends Vehicle implements Purchasable {
     }
 
     @Override
-    public void move() {
-        SkeletonManager.call(getSName() + ".move()");
-
-        Road road = chooseNextRoad();
-        if (road == null) {
-            SkeletonManager.ret("void");
-            return;
-        }
-
-        List<Lane> freeLanes = road.getFreeLanes(this.currentNode);
-        Lane nextLane = chooseNextLane(freeLanes);
-
-        boolean isSuccessClean = false;
+    public void moveOntoLane() {
         if (nextLane != null) {
             currentLane = nextLane;
-            isSuccessClean = nextLane.handleVehicle(this);
+            isActionSuccess = nextLane.handleVehicle(this);
         }
-
-        if (isSuccessClean) {
-            this.claner.receiveMoney(1);
-            currentLane.getToNode().enterNode(this);
-        }
-
-        SkeletonManager.ret("void");
     }
 
     @Override
-    public void slip() {
-    }
-
-    @Override
-    public boolean evaluateCollisions() {
-        return false;
+    public void moveOntoNode(){
+        if (isActionSuccess) {
+            this.cleaner.receiveMoney(10);
+            enterNextNode();
+        }
     }
 
     @Override
@@ -151,6 +130,16 @@ public class Snowplow extends Vehicle implements Purchasable {
 
     @Override
     public void accidentOverAction() {
+    }
+
+    @Override
+    public void setNextRoad(Road r){
+        nextRoad = r;
+    }
+
+    @Override
+    public void setNextLane(Lane l){
+        nextLane = l;
     }
 
     // -------------------------------------------------------------------------------------
@@ -185,7 +174,7 @@ public class Snowplow extends Vehicle implements Purchasable {
         SkeletonManager.call(getSName() + ".onStation()");
         boolean shop = SkeletonManager.ask("Szeretne-e vásárolni hókotrófejet? ");
         if (shop)
-            claner.purchaseItem(new IceBrakerAttachment("iceBrakerAttachment", 10));
+            cleaner.purchaseItem(new IceBrakerAttachment("iceBrakerAttachment", 10));
         boolean change = SkeletonManager.ask("Szeretne-e cserélni hókotrófejet? ");
         if (change){
             boolean inInventory = SkeletonManager.ask("Benne van inventory-ban? ");
@@ -211,7 +200,7 @@ public class Snowplow extends Vehicle implements Purchasable {
     public void boughtByCleaner(Cleaner c) {
         SkeletonManager.call(sName + ".boughtByCleaner(" + c.getSName() + ")");
 
-        this.claner = c;
+        this.cleaner = c;
         c.addSnowplow(this);
 
         SkeletonManager.ret("void");

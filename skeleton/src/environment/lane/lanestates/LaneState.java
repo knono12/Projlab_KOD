@@ -86,59 +86,56 @@ public abstract class LaneState {
      * Söprés kezdeményezése az állapoton.
      * 
      * @param laneCount Sávok száma a hó jobbra tolásához.
-     * @return Alapértelmezetten igaz (de a specifikus állapotok felülírják).
+     * @return Alapértelmezetten hamis (de a specifikus állapotok felülírják).
      */
     public boolean sweep(int laneCount) {
         SkeletonManager.call(sName + ".sweep(" + laneCount + ")");
-
-        lane.pushSnowRight(laneCount);
-        lane.changeState(new ClearState(lane, "clearState"));
-
-        SkeletonManager.ret("true");
-        return true;
+        SkeletonManager.ret("false");
+        return false;
     }
 
     /**
      * Jégtörés kezdeményezése az állapoton.
      * 
-     * @return Alapértelmezetten igaz.
+     * @return Alapértelmezetten hamis.
      */
     public boolean brakeIce() {
         SkeletonManager.call(sName + ".brakeIce()");
-
-        lane.changeState(new BrokenIceState(lane, "brokenIceState"));
-
-        SkeletonManager.ret("true");
-        return true;
+        SkeletonManager.ret("false");
+        return false;
     }
 
     /**
      * Sózás kezdeményezése az állapoton.
      * 
-     * @return Alapértelmezetten igaz.
+     * @return Alapértelmezetten hamis.
      */
     public boolean salt() {
         SkeletonManager.call(sName + ".salt()");
-
-        // Kérdés feltevés
-        lane.changeState(new SaltedState(lane, "saltedState"));
-
-        SkeletonManager.ret("true");
-        return true;
+        SkeletonManager.ret("false");
+        return false;
     }
 
     /**
-     * Olvasztás kezdeményezése az állapoton.
+     * hó/jég olvasztásának kezdeményezése az állapoton.
      * 
-     * @return Alapértelmezetten igaz.
+     * @return Alapértelmezetten hamis.
      */
     public boolean melt() {
         SkeletonManager.call(sName + ".melt()");
+        SkeletonManager.ret("false");
+        return false;
+    }
 
-        lane.changeState(new ClearState(lane, "clearState"));
-
-        SkeletonManager.ret("true");
-        return true;
+    /**
+     * Zúzalékszórás kezdeményezése az állapoton.
+     * 
+     * @return Alapértelmezetten hamis.
+     */
+    public boolean gravel(){
+        SkeletonManager.call(sName + ".gravel()");
+        SkeletonManager.ret("false");
+        return false;
     }
 
     /**
