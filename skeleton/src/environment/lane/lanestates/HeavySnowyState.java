@@ -62,21 +62,18 @@ public class HeavySnowyState extends LaneState {
     public boolean sweep(int laneCount) {
         lane.pushSnowRight(laneCount);
         lane.changeState(new ClearState(lane, "clearState"));
-
         return true;
     }
 
     @Override
     public boolean salt() {
         lane.changeState(new SaltedState(lane, "saltedState"));
-
         return true;
     }
 
     @Override
     public boolean melt() {
         lane.changeState(new ClearState(lane, "clearState"));
-
         return true;
     }
 

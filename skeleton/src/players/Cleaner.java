@@ -2,79 +2,76 @@ package players;
 import java.util.ArrayList;
 import java.util.List;
 
+import accessories.attachments.SnowBladeAttachment;
 import skeleton.SkeletonManager;
 import finance.Purchasable;
 import finance.Wallet;
 import vehicles.Snowplow;
 
+
+/**
+ * A Cleaner osztály, amely a Player osztályból származik, és a takarító játékosokat reprezentálja.
+ * A takarító felelős az utak tisztításáért hókotrókkal, és különböző eszközöket vásárolhat a boltban.
+ */
 public class Cleaner extends Player {
     
-    List<Purchasable> inventory;
-    List<Snowplow> snowplows;
+    private List<Snowplow> snowplows;
     
     /**
-     * The constructor of the Cleaner class
-     * @param sName The name of the cleaner in the skeleton, used for logging and testing purposes.
-     * @param name The name of the  cleaner.
-     * @param wallet The wallet of the cleaner.
+     * A cleaner osztály konstruktora, amely a skeletonbeli nevet, a játékos nevét is beállítja.
+     * 
+     * @param sName  Az egyedi név, amelyet naplózás és tesztelés céljából
+     *               használnak.
+     * @param name   A játékos neve.
      */
-    public Cleaner(String sName, String name, Wallet wallet) {
-        super(sName, name, wallet);
-        this.inventory = new ArrayList<>();
+    public Cleaner(String sName, String name) {
+        super(sName, name);
         this.snowplows = new ArrayList<>();
+
+        snowplows.add(new Snowplow(0)); // TODO
+        inventory.add(new SnowBladeAttachment()); // TODO
     }
     
     /**
-     * Method to receive money, the cleaner receives money when a snowplow successfully cleans a road.
-     * @param amount The amount of money to receive.
+     * A cleaner osztály konstruktora, amely a skeletonbeli nevet, a játékos nevét és a készletét is beállítja.
+     * 
+     * @param sName  Az egyedi név, amelyet naplózás és tesztelés céljából
+     *               használnak.
+     * @param name   A játékos neve.
+     * @param inventory A játékos készlete, amely a megvásárolt elemeket tartalmazza.
+     */
+    public Cleaner(String sName, String name, List<Purchasable> inventory) {
+        super(sName, name, inventory);
+        this.snowplows = new ArrayList<>();
+
+        snowplows.add(new Snowplow(0)); // TODO
+    }
+    
+    /**
+     * Pénzt fogadó metódus, amely a takarító pénztárcáját növeli a megadott összeggel.
+     * @param amount A jóváírt pénz összege.
      */
     @Override
     public void receiveMoney(int amount) {
-        SkeletonManager.call("Cleaner.receiveMoney(" + amount + ")");
-
-
         wallet.addMoney(amount);
-
-
-        SkeletonManager.ret("");
     }
     
     /**
-     * Method to purchase an item, the cleaner can purchase items from the market.
-     * @param item The item to purchase.
+     * Elem vásárlására szolgáló metódus, amely a takarító pénztárcájából levonja az elem árát, majd meghívja az elem boughtByCleaner metódusát, és hozzáadja az elemet a készlethez.
+     * @param item Az elem, amelyet vásárolni szeretne.
      */
     @Override
     public void purchaseItem(Purchasable item) {
-        SkeletonManager.call("Cleaner.purchaseItem(" + item.getSName() + ")");
-
         wallet.deductMoney(item.getPrice());
         item.boughtByCleaner(this);
         addToInventory(item);
-
-        SkeletonManager.ret("");
     }
     
     /**
-     * Method to add an item to the cleaner's inventory.
-     * @param item The item to add to the inventory.
-     */
-    public void addToInventory(Purchasable item) {
-        SkeletonManager.call("Cleaner.addToInventory(" + item.getSName() + ")");
-
-        inventory.add(item);
-
-        SkeletonManager.ret("");
-    }
-    
-    /**
-     * Method to add a snowplow to the cleaner's list of snowplows.
-     * @param snowplow The snowplow to add to the list of snowplows.
+     * Hozzáad egy hókotró járművet a takarító járműveihez.
+     * @param snowplow A hozzáadni kívánt hókotró jármű.
      */
     public void addSnowplow(Snowplow snowplow) {
-        SkeletonManager.call("Cleaner.addSnowplow(" + snowplow.getSName() + ")");
-        
         snowplows.add(snowplow);
-        
-        SkeletonManager.ret("");
     }
 }

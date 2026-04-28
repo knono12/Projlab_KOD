@@ -56,7 +56,6 @@ public abstract class LaneState {
         lane.getFromNode().leaveNode(sp);
         lane.enterLane(sp);
         boolean success = sp.getCurrentAttachment().clean(lane);
-
         return success;
     }
 
@@ -94,8 +93,6 @@ public abstract class LaneState {
      * @return Alapértelmezetten hamis.
      */
     public boolean salt() {
-        SkeletonManager.call(sName + ".salt()");
-        SkeletonManager.ret("false");
         return false;
     }
 

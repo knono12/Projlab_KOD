@@ -72,33 +72,20 @@ public class LightSnowyState extends LaneState {
 
     @Override
     public boolean sweep(int laneCount) {
-        SkeletonManager.call(sName + ".sweep(" + laneCount + ")");
-
         lane.pushSnowRight(laneCount);
         lane.changeState(new ClearState(lane, "clearState"));
-
-        SkeletonManager.ret("true");
         return true;
     }
 
     @Override
     public boolean salt() {
-        SkeletonManager.call(sName + ".salt()");
-
-        // Kérdés feltevés
         lane.changeState(new SaltedState(lane, "saltedState"));
-
-        SkeletonManager.ret("true");
         return true;
     }
 
     @Override
     public boolean melt() {
-        SkeletonManager.call(sName + ".melt()");
-
         lane.changeState(new ClearState(lane, "clearState"));
-
-        SkeletonManager.ret("true");
         return true;
     }
 

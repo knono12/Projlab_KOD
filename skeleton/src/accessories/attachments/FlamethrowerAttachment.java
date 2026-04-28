@@ -4,7 +4,6 @@ import accessories.fuels.BioKerosene;
 import environment.lane.Lane;
 import players.BusDriver;
 import players.Cleaner;
-import skeleton.SkeletonManager;
 
 /**
  * A sárkányfejet reprezentáló osztály.
@@ -44,13 +43,10 @@ public class FlamethrowerAttachment extends Attachment {
      */
     @Override
     public boolean clean(Lane l) {
-        SkeletonManager.call(getSName() + ".clean(" + l.getSName() + ")");
-
         boolean success = false;
         if (bioKerosene != null && bioKerosene.consume()) {
             success = l.melt();
         }
-        SkeletonManager.ret(String.valueOf(success));
         return success;
     }
 
@@ -61,9 +57,7 @@ public class FlamethrowerAttachment extends Attachment {
      */
     @Override
     public void boughtByCleaner(Cleaner c) {
-        SkeletonManager.call(getSName() + ".boughtByCleaner(" + c.getSName() + ")");
         c.addToInventory(this);
-        SkeletonManager.ret("void");
     }
     
     @Override

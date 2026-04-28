@@ -67,28 +67,24 @@ public class IcyState extends LaneState {
     @Override
     public boolean brakeIce() {
         lane.changeState(new BrokenIceState(lane, "brokenIceState"));
-
         return true;
     }
 
     @Override
     public boolean salt() {
         lane.changeState(new SaltedState(lane, "saltedState"));
-
         return true;
     }
 
     @Override
     public boolean melt() {
         lane.changeState(new ClearState(lane, "clearState"));
-
         return true;
     }
 
     @Override
     public boolean gravel(){
         lane.changeState(new GravelState(lane, "gravelState"));
-
         return true;
     }
 

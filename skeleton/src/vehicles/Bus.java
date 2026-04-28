@@ -36,7 +36,8 @@ public class Bus extends Vehicle implements Purchasable {
 
     /**
      * A Bus osztály konstruktora.
-     * @param name A busz azonosító neve a szkeletonhoz.
+     * 
+     * @param name   A busz azonosító neve a szkeletonhoz.
      * @param driver A busz sofőrje.
      */
     public Bus(String name, BusDriver driver) {
@@ -48,8 +49,9 @@ public class Bus extends Vehicle implements Purchasable {
 
     /**
      * Skeleton-teszteléshez használt konstruktor: kezdőcsomóponttal.
-     * @param name A busz neve.
-     * @param driver A busz sofőrje.
+     * 
+     * @param name      A busz neve.
+     * @param driver    A busz sofőrje.
      * @param startNode A kezdőcsomópont.
      */
     public Bus(String name, BusDriver driver, Node startNode) {
@@ -62,6 +64,7 @@ public class Bus extends Vehicle implements Purchasable {
 
     /**
      * Visszaadja a busz aktuális sofőrjét.
+     * 
      * @return A busz sofőrje.
      */
     public BusDriver getDriver() {
@@ -70,6 +73,7 @@ public class Bus extends Vehicle implements Purchasable {
 
     /**
      * Beállítja a busz sofőrjét.
+     * 
      * @param driver Az új sofőr.
      */
     public void setDriver(BusDriver driver) {
@@ -78,6 +82,7 @@ public class Bus extends Vehicle implements Purchasable {
 
     /**
      * Beállítja a busz aktuális végállomását.
+     * 
      * @param terminal Az aktuális végállomás.
      */
     public void setCurrentTerminal(BusStop terminal) {
@@ -86,6 +91,7 @@ public class Bus extends Vehicle implements Purchasable {
 
     /**
      * Beállítja a busz célvégállomását.
+     * 
      * @param terminal A cél végállomás.
      */
     public void setDestinationTerminal(BusStop terminal) {
@@ -94,11 +100,13 @@ public class Bus extends Vehicle implements Purchasable {
 
     /**
      * Megérkezés egy végállomásra.
-     * Ha a megérkező állomás egyezik a célállomással, kör lezárul és új célállomás kerül kisorsolásra.
+     * Ha a megérkező állomás egyezik a célállomással, kör lezárul és új célállomás
+     * kerül kisorsolásra.
+     * 
      * @param terminal A végállomás, ahová a busz megérkezett.
      */
     public void arriveAtTerminal(BusStop terminal) {
-        SkeletonManager.call(sName + ".arriveAtTerminal(" + terminal.getName() + ")");
+        SkeletonManager.call(sName + ".arriveAtTerminal(" + terminal.getsName() + ")");
 
         if (terminal == destinationTerminal) {
             completeRound();
@@ -109,7 +117,8 @@ public class Bus extends Vehicle implements Purchasable {
     }
 
     /**
-     * Lezár egy kört: növeli a körszámlálót, értesíti a sofőrt és 50 egység jutalmat fizet neki.
+     * Lezár egy kört: növeli a körszámlálót, értesíti a sofőrt és 50 egység
+     * jutalmat fizet neki.
      */
     public void completeRound() {
         SkeletonManager.call(sName + ".completeRound()");
@@ -131,7 +140,7 @@ public class Bus extends Vehicle implements Purchasable {
             BusStop newDestination = currentTerminal.getRandomBusStop();
             if (newDestination != null) {
                 destinationTerminal = newDestination;
-                SkeletonManager.ret("void (new destination: " + newDestination.getName() + ")");
+                SkeletonManager.ret("void (new destination: " + newDestination.getsName() + ")");
                 return;
             }
         }
@@ -157,6 +166,7 @@ public class Bus extends Vehicle implements Purchasable {
     /**
      * Megadja, hogy a busz képes-e ütközni.
      * Sérült busz nem tud részt venni ütközésben.
+     * 
      * @return Igaz, ha a busz nem sérült.
      */
     @Override
@@ -170,22 +180,24 @@ public class Bus extends Vehicle implements Purchasable {
     /**
      * Interakcióba lép az adott épülettel vagy megállóval.
      * Az épület {@code acceptBus()} metódusán keresztül fogadja a buszt.
+     * 
      * @param s Az épület vagy megálló, amellyel a busz interakcióba lép.
      */
     @Override
     public void interactWithStructure(Structure s) {
-        SkeletonManager.call(sName + ".interactWithStructure(" + s.getName() + ")");
+        SkeletonManager.call(sName + ".interactWithStructure(" + s.getsName() + ")");
         s.acceptBus(this);
         SkeletonManager.ret("void");
     }
 
     /**
      * Elhagyja az aktuális épületet vagy megállót.
+     * 
      * @param s Az elhagyandó épület vagy megálló.
      */
     @Override
     public void departFromStructure(Structure s) {
-        SkeletonManager.call(sName + ".departFromStructure(" + s.getName() + ")");
+        SkeletonManager.call(sName + ".departFromStructure(" + s.getsName() + ")");
         s.removeBus(this);
         SkeletonManager.ret("void");
     }
@@ -256,10 +268,12 @@ public class Bus extends Vehicle implements Purchasable {
 
     /** Csúszás kezelése – skeletonban nem implementált. */
     @Override
-    public void slip() {}
+    public void slip() {
+    }
 
     /**
      * Ütközések kiértékelése csúszás után.
+     * 
      * @return Mindig false (skeleton).
      */
     @Override
@@ -269,7 +283,8 @@ public class Bus extends Vehicle implements Purchasable {
 
     /** Baleset végének utóhatásai – skeletonban nem implementált. */
     @Override
-    public void accidentOverAction() {}
+    public void accidentOverAction() {
+    }
 
     /**
      * A busz elszenved egy ütközést: sérült állapotba kerül és megáll.
@@ -284,27 +299,27 @@ public class Bus extends Vehicle implements Purchasable {
 
     /**
      * A buszsofőr megvásárolja a buszt, regisztrálja nála.
+     * 
      * @param b A vásárlást végző buszsofőr.
      */
     @Override
     public void boughtByBusDriver(BusDriver b) {
-        SkeletonManager.call(sName + ".boughtByBusDriver(" + b.getName() + ")");
         b.buyBus(this);
-        SkeletonManager.ret("void");
     }
 
     /**
      * Takarító általi vásárlás – busz esetén nem értelmezett.
+     * 
      * @param c A vásárlást megkísérlő takarító.
      */
     @Override
     public void boughtByCleaner(Cleaner c) {
-        SkeletonManager.call(sName + ".boughtByCleaner(" + c.getSName() + ")");
-        SkeletonManager.ret("void");
+        // Buszsofőr nem vásárol buszt, így ez a metódus üres marad.
     }
 
     /**
      * Visszaadja a busz árát.
+     * 
      * @return A busz ára.
      */
     @Override
@@ -314,6 +329,7 @@ public class Bus extends Vehicle implements Purchasable {
 
     /**
      * Beállítja a busz árát.
+     * 
      * @param price Az új ár.
      */
     @Override
@@ -329,6 +345,7 @@ public class Bus extends Vehicle implements Purchasable {
 
     /**
      * Beállítja a busz skeleton-nevét.
+     * 
      * @param sName Az új név.
      * @return A beállított név.
      */
@@ -339,6 +356,7 @@ public class Bus extends Vehicle implements Purchasable {
 
     /**
      * Visszaadja a sikeresen teljesített körök számát.
+     * 
      * @return A teljesített körök száma.
      */
     public int getSuccessfulRounds() {

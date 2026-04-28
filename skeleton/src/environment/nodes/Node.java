@@ -5,7 +5,6 @@ import java.util.List;
 
 import environment.nodes.structures.Structure;
 import environment.road.Road;
-import skeleton.SkeletonManager;
 import vehicles.Vehicle;
 
 /**
@@ -38,13 +37,11 @@ public class Node {
      * * @param v A csomópontba belépő jármű.
      */
     public void enterNode(Vehicle v){
-        SkeletonManager.call(this.sName + ".enterNode(" + v.getSName() + ")");
         v.getCurrentLane().removeVehicle(v);
         vehicles.add(v);
         if (structure != null) {
             v.interactWithStructure(structure);
         }
-        SkeletonManager.ret("void");
     }
 
     /**
@@ -53,12 +50,10 @@ public class Node {
      * * @param v A csomópontot elhagyó jármű.
      */
     public void leaveNode(Vehicle v) {
-        SkeletonManager.call(this.sName + ".leaveNode(" + v.getSName() + ")");
         vehicles.remove(v);
         if (structure != null) {
             v.departFromStructure(structure);
         }
-        SkeletonManager.ret("void");
     }
     
     /**
@@ -67,9 +62,7 @@ public class Node {
      * * @param r A csomóponthoz csatlakoztatni kívánt út.
      */
     public void addRoad(Road r){
-        SkeletonManager.call(this.sName + ".addRoad(" + r.getSName() + ")");
         connectedRoads.add(r);
-        SkeletonManager.ret("void");
     }
 
     /**
@@ -77,9 +70,7 @@ public class Node {
      * * @param s A csomópontra helyezendő épület (BusStop / SnowplowStation).
      */
     public void addStructure(Structure s) {
-        SkeletonManager.call(this.sName + ".addStructure(" + s.getSName() + ")");
         structure = s;
-        SkeletonManager.ret("void");
     }
 
     /**

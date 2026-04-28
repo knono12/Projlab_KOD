@@ -4,7 +4,6 @@ import accessories.fuels.Salt;
 import environment.lane.Lane;
 import players.BusDriver;
 import players.Cleaner;
-import skeleton.SkeletonManager;
 
 /**
  * A sószóró fejet reprezentáló osztály.
@@ -43,12 +42,10 @@ public class GritterAttachment extends Attachment {
      */
     @Override
     public boolean clean(Lane l) {
-        SkeletonManager.call(getSName() + ".clean(" + l.getSName() + ")");
         boolean success = false;
         if (salt != null && salt.consume()) {
             success = l.salt();
         }
-        SkeletonManager.ret(String.valueOf(success));
         return success;
     }
 
@@ -59,9 +56,7 @@ public class GritterAttachment extends Attachment {
      */
     @Override
     public void boughtByCleaner(Cleaner c) {
-        SkeletonManager.call(getSName() + ".boughtByCleaner(" + c.getSName() + ")");
         c.addToInventory(this);
-        SkeletonManager.ret("void");
     }
     
     @Override

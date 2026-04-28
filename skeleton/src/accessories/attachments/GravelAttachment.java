@@ -4,7 +4,6 @@ import accessories.fuels.Gravel;
 import environment.lane.Lane;
 import players.BusDriver;
 import players.Cleaner;
-import skeleton.SkeletonManager;
 
 public class GravelAttachment extends Attachment{
     Gravel gravel;
@@ -37,12 +36,10 @@ public class GravelAttachment extends Attachment{
      */
     @Override
     public boolean clean(Lane l) {
-        SkeletonManager.call(getSName() + ".clean(" + l.getSName() + ")");
         boolean success = false;
         if (gravel != null && gravel.consume()) {
             success = l.gravel();
         }
-        SkeletonManager.ret(String.valueOf(success));
         return success;
     }
 
@@ -53,9 +50,7 @@ public class GravelAttachment extends Attachment{
      */
     @Override
     public void boughtByCleaner(Cleaner c) {
-        SkeletonManager.call(getSName() + ".boughtByCleaner(" + c.getSName() + ")");
         c.addToInventory(this);
-        SkeletonManager.ret("void");
     }
     
     @Override

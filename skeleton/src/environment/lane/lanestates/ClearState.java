@@ -67,7 +67,6 @@ public class ClearState extends LaneState {
     @Override
     public boolean salt() {
         lane.changeState(new SaltedState(lane, "saltedState"));
-
         return true;
     }
 
