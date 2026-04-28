@@ -54,23 +54,23 @@ public class BrokenIceState extends LaneState {
         return false;
     }
 
-    /**
-     * A már feltört jeget nem lehet újra feltörni.
-     * 
-     * @return Mindig false, a jégtörés hatástalan.
-     */
     @Override
-    public boolean brakeIce() {
-        SkeletonManager.call(sName + ".brakeIce()");
-        SkeletonManager.ret("false");
-        return false;
+    public boolean sweep(int laneCount) {
+        lane.pushSnowRight(laneCount);
+        lane.changeState(new ClearState(lane, "clearState"));
+        return true;
     }
 
     @Override
-    public boolean sweep(int laneCount) {
-        SkeletonManager.call(sName + ".sweep()");
-        SkeletonManager.ret("false");
-        return false;
+    public boolean salt() {
+        lane.changeState(new SaltedState(lane, "saltedState"));
+        return true;
+    }
+
+    @Override
+    public boolean melt() {
+        lane.changeState(new ClearState(lane, "clearState"));
+        return true;
     }
 
 }

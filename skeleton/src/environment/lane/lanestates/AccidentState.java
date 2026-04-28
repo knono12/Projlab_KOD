@@ -78,56 +78,6 @@ public class AccidentState extends LaneState {
      */
     @Override
     public boolean handleVehicle(Snowplow sp) {
-        SkeletonManager.call(sName + ".handleVehicle(" + sp.getSName() + ")");
-        SkeletonManager.ret("false");
-        return false;
-    }
-
-    /**
-     * Egy balesetes sávot nem lehet normál módon söpörni.
-     * 
-     * @return Mindig false.
-     */
-    @Override
-    public boolean sweep(int laneCount) {
-        SkeletonManager.call(sName + ".sweep(" + laneCount + ")");
-        SkeletonManager.ret("false");
-        return false;
-    }
-
-    /**
-     * Egy balesetes sávon a jégtörés nem végrehajtható.
-     * 
-     * @return Mindig false.
-     */
-    @Override
-    public boolean brakeIce() {
-        SkeletonManager.call(sName + ".brakeIce()");
-        SkeletonManager.ret("false");
-        return false;
-    }
-
-    /**
-     * Egy balesetes sávon nem lehet sót szorni.
-     * 
-     * @return Mindig false.
-     */
-    @Override
-    public boolean salt() {
-        SkeletonManager.call(sName + ".salt()");
-        SkeletonManager.ret("false");
-        return false;
-    }
-
-    /**
-     * Egy balesetes sávon nem lehet sárkányfejjel sem takarítani.
-     * 
-     * @return Mindig false.
-     */
-    @Override
-    public boolean melt() {
-        SkeletonManager.call(sName + ".melt()");
-        SkeletonManager.ret("false");
         return false;
     }
 
