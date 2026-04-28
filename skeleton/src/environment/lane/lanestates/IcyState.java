@@ -1,7 +1,7 @@
 package environment.lane.lanestates;
 
 import environment.lane.Lane;
-import skeleton.SkeletonManager;
+import vehicles.Bus;
 import vehicles.Car;
 
 /**
@@ -20,6 +20,7 @@ public class IcyState extends LaneState {
      */
     public IcyState(Lane l, String n) {
         super(l, n);
+        l.setSnowThickness(0);
     }
 
     /**
@@ -28,11 +29,7 @@ public class IcyState extends LaneState {
      */
     @Override
     public void snowLogic() {
-        SkeletonManager.call("IcyState.snowLogic()");
-
         // Nem csinál semmit, mert a jeges sávon nem történik hófelhalmozódás.
-
-        SkeletonManager.ret("void");
     }
 
     /**
@@ -46,59 +43,73 @@ public class IcyState extends LaneState {
      */
     @Override
     public boolean handleVehicle(Car c) {
-        SkeletonManager.call(sName + ".handleVehicle(" + c.getSName() + ")");
-
         lane.getFromNode().leaveNode(c);
         lane.enterLane(c);
 
-        c.slip();
-        
-        boolean success = !c.evaluateCollisions();        
+        return !c.slip();
+    }
 
-        SkeletonManager.ret(String.valueOf(success));
-        return success;
+    /**
+     * A busz akadály nélkül fel tud hajtani a sávra.
+     * 
+     * * @param b A belépni próbáló busz.
+     * 
+     * @return Mindig true.
+     */
+    @Override
+    public boolean handleVehicle(Bus b) {
+        lane.getFromNode().leaveNode(b);
+        lane.enterLane(b);
+
+        return true;
     }
     
     @Override
     public boolean brakeIce() {
-        SkeletonManager.call(sName + ".brakeIce()");
-
         lane.changeState(new BrokenIceState(lane, "brokenIceState"));
 
-        SkeletonManager.ret("true");
         return true;
     }
 
     @Override
     public boolean salt() {
-        SkeletonManager.call(sName + ".salt()");
-
-        // Kérdés feltevés
         lane.changeState(new SaltedState(lane, "saltedState"));
 
-        SkeletonManager.ret("true");
         return true;
     }
 
     @Override
     public boolean melt() {
-        SkeletonManager.call(sName + ".melt()");
-
         lane.changeState(new ClearState(lane, "clearState"));
 
-        SkeletonManager.ret("true");
         return true;
     }
 
     @Override
     public boolean gravel(){
-        SkeletonManager.call(sName + ".gravel()");
-
         lane.changeState(new GravelState(lane, "gravelState"));
 
-        SkeletonManager.ret("true");
         return true;
     }
+
+    /**
+     * Visszaadja hogy a sáv járható-e autók és buszok által
+     * * @return mindig igaz
+     */
+    @Override
+    public boolean isPassable(){
+        return true;
+    }
+
+    /**
+     * Visszaadja hogy a sáv járható-e hókotrók által
+     * * @return mindig igaz
+     */
+    @Override
+    public boolean isPassableSnowplow(){
+        return true;
+    }
+
 }
 
 

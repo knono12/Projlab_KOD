@@ -1,7 +1,12 @@
 package vehicles;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Queue;
+import java.util.Random;
 
 import environment.lane.Lane;
 import environment.lane.lanestates.AccidentState;
@@ -9,18 +14,17 @@ import environment.nodes.Node;
 import environment.nodes.structures.Building;
 import environment.nodes.structures.Structure;
 import environment.road.Road;
-import skeleton.SkeletonManager;
 
 /**
  * Az autót reprezentáló osztály.
  * Képes útvonalat tervezni a munkahelyére és otthonába, és ha elakad, újratervezi azt.
  */
 public class Car extends Vehicle {
-    boolean isWating;
-    Building job;
-    Building home; 
-    List<Node> route;
-    Node destination;
+    private boolean isWaiting;
+    private Building job;
+    private Building home; 
+    private List<Node> route;
+    private Node destination;
 
     /**
      * Konstruktor a személyautó inicializálásához.
@@ -29,7 +33,7 @@ public class Car extends Vehicle {
      */
     public Car(String n){
         super(n);
-        isWating = false;
+        isWaiting = false;
         currentLane = null;
         currentNode = (home != null) ? home.getNode() : null;
         destination = (job != null) ? job.getNode() : null;
@@ -43,7 +47,7 @@ public class Car extends Vehicle {
      */
     public Car(String n, Node startNode) {
         super(n);
-        isWating = false;
+        isWaiting = false;
         currentLane = null;
         currentNode = startNode;
         destination = null;
@@ -58,7 +62,7 @@ public class Car extends Vehicle {
      */
     public Car(String n, Node startNode, Node destNode) {
         super(n);
-        isWating = false;
+        isWaiting = false;
         currentLane = null;
         currentNode = startNode;
         destination = destNode;
@@ -66,45 +70,116 @@ public class Car extends Vehicle {
     }
 
     /**
-     * Végrehajtja az autó haladását.
-     * Utat és sávot választ, majd megkísérel rálépni. Siker esetén befejezi a mozgást,
-     * belép az út másik végpontjába.
+     * Végrehajtja az autó ráhajtását és haladását egy sávon.
      */
     @Override
-    public void move(){
-        SkeletonManager.call(sName + ".move()");
-        Road nextRoad = chooseNextRoad();
-        List<Lane> freeLanes = nextRoad.getFreeLanes(currentNode);
-        Lane nextLane = chooseNextLane(freeLanes);
-
-        boolean isSuccess = false;
-        if (nextLane != null) {
-            currentLane = nextLane;
-            isSuccess = nextLane.handleVehicle(this);
+    public void moveOntoLane(){
+        isActionSuccess = false;
+        
+        if(damaged){
+            return;
         }
 
-        if (isSuccess) {
-            currentLane.getToNode().enterNode(this);
+        if(isWaiting){
+            boolean recalculateSuccess = recalculateRoute();
+            if(!recalculateSuccess){
+                return;
+            }
+            start();
         }
         
-        SkeletonManager.ret("void");
+        nextRoad = chooseNextRoad();
+        
+        if (nextRoad == null) {
+            boolean recalculateSuccess = recalculateRoute();
+            if(!recalculateSuccess){
+                stop();
+            }
+            return;
+        }
+        
+        List<Lane> freeLanes = nextRoad.getFreeLanes(currentNode);
+        nextLane = chooseNextLane(freeLanes);
+
+        if(nextLane == null){
+            boolean recalculateSuccess = recalculateRoute();
+            if(!recalculateSuccess){
+                stop();
+            }
+            return;
+        }
+
+        isActionSuccess = nextLane.handleVehicle(this);
+
+    }
+
+    /*
+     * Ha a sávon való áthaladás sikeres, belép az út másik végpontjába.
+     */
+    @Override
+    public void moveOntoNode(){
+        if (isActionSuccess && !damaged) {
+            enterNextNode();
+        }
     }
 
     /**
      * Kiszámítja az útvonalat a megadott forrás és cél csomópontok között.
-     * Most csak egy fiktív útvonallépést rögzít.
+     * Mivel a városban a csomópontok közötti távolságok megegyeznek, egy módosított BFS algoritmussal valósul meg az útvonalkeresés.
+     * Ha nem talált útvonalat üres lista lesz az útvonal változó.
      * @param from A kiindulási csomópont.
      * @param to A célállomás csomópontja.
      */
-    public void findPath(Node from, Node to){
-        SkeletonManager.call(getSName() + ".findPath("+ from.getSName() + ", " + to.getSName() + ")");
-
-        route.clear();
-
-        //A szkeletonban csak egy lépést adunk hozzá, hogy a route lista ne legyen üres, és a move() tudjon mivel dolgozni.
-        route.add(to);
-
-        SkeletonManager.ret("void");
+    public void findPath(Node fromNode, Node toNode) {
+        Queue<Node> queue = new LinkedList<>();
+        queue.add(fromNode);
+        
+        Map<Node, Node> cameFrom = new HashMap<>();
+        cameFrom.put(fromNode, null);
+        
+        // gráf bejárása
+        while (!queue.isEmpty()) {
+            Node currentNode = queue.poll();
+            
+            // cél elérése
+            if (currentNode.equals(toNode)) {
+                break;
+            }
+            
+            // szomszédos utak vizsgálata
+            for (Road road : currentNode.getRoads()) {
+                List<Lane> freeLanes = road.getFreeLanes(currentNode);
+                
+                // járható és jó irányú sáv
+                if (freeLanes != null && !freeLanes.isEmpty()) {
+                    Node nextNode = freeLanes.get(0).getToNode();
+                    
+                    // nem vizsgált csomópont
+                    if (!cameFrom.containsKey(nextNode)) {
+                        queue.add(nextNode);
+                        cameFrom.put(nextNode, currentNode);
+                    }
+                }
+            }
+        }
+        
+        List<Node> newRoute = new ArrayList<>();
+        
+        // nem találtunk útvonalat
+        if (!cameFrom.containsKey(toNode)) {
+            this.route = newRoute;
+            return;
+        }
+        
+        Node backtrackNode = toNode;
+        
+        // útvonal összeállítása
+        while (backtrackNode != null) {
+            newRoute.add(0, backtrackNode); // lista elejére szúrás miatt, jó lesz végül a sorrend
+            backtrackNode = cameFrom.get(backtrackNode);
+        }
+        
+        this.route = newRoute;
     }
 
     /**
@@ -112,16 +187,8 @@ public class Car extends Vehicle {
      * @return true, ha talált új utat, egyébként false.
      */
     public boolean recalculateRoute(){
-        SkeletonManager.call(getSName() + ".recalculateRoute()");
-
-        boolean foundNewPath = SkeletonManager.ask("Talált új útvonalat?");
-
-        if (foundNewPath) {
-            findPath(currentNode, destination);
-        }
-
-        SkeletonManager.ret(String.valueOf(foundNewPath));
-        return foundNewPath;
+        findPath(currentNode, destination);
+        return !route.isEmpty();
     }
 
     /**
@@ -130,8 +197,6 @@ public class Car extends Vehicle {
      */
     @Override
     public boolean canCollide() {
-        SkeletonManager.call(getSName() + ".canCollide()");
-        SkeletonManager.ret("true");
         return true;
     }
 
@@ -140,58 +205,73 @@ public class Car extends Vehicle {
      */
     @Override
     public void sufferCollision() {
-        SkeletonManager.call(getSName() + ".sufferCollision()");
         damaged = true;
-        SkeletonManager.ret("void");
     }
 
     /**
      * Beállítja az autót megcsúszó állapotba.
+     * @return true, ha baleset történt, egyébként false.
      */
-    @Override
-    public void slip() {
-        isSlipping = true;
+    public boolean slip() {
+        return evaluateCollisions();
     }
 
     /**
      * Kiértékeli a baleset bekövetkeztét a sávon megcsúszás után.
+     * Baleset megtöténése a sávon lévő járművek számától és típusától függ.
      * @return true, ha baleset történt, egyébként false.
      */
-    @Override
-    public boolean evaluateCollisions() {
-        SkeletonManager.call(getSName() + ".evaluateCollisions()");
+    private boolean evaluateCollisions() {
+        List<Vehicle> vehiclesOnLane = currentLane.getVehicles();
+        int vehicleCount = vehiclesOnLane.size();
 
-        boolean accident = SkeletonManager.ask("Történt-e ütközés? ");
-        if(accident){
-            for(Vehicle v : currentLane.getVehicles()){
-                v.sufferCollision();
+        for (Vehicle vehicle : vehiclesOnLane) {
+            if (!vehicle.canCollide()) {
+                return false;
             }
-            currentLane.changeState(new AccidentState(currentLane, "accidentState"));
         }
 
-        SkeletonManager.ret(String.valueOf(accident));
-        return accident;
+        if (vehicleCount < 2) {
+            return false;
+        }
+
+        int baseProbability = 30;
+        int accidentChance = baseProbability + (vehicleCount * 15);
+
+        Random random = new Random();
+        int randomValue = random.nextInt(100) + 1;
+
+        if (randomValue <= accidentChance) {
+            
+            for (Vehicle vehicle : vehiclesOnLane) {
+                vehicle.sufferCollision();
+            }
+            currentLane.changeState(new AccidentState(currentLane, "accidentState"));
+            return true;
+        }
+
+        return false;
     }
 
     /**
-     * Autó lehúzódik az út kezdő csomópontjába.
+     * Autó lehúzódik.
      * A csomópontba lehúzódott autók listájához hozzáadódik.
      */
     @Override
     public void stop() {
-        SkeletonManager.call(getSName() + ".stop()");
-        currentNode = currentLane.getFromNode();
-        currentLane = null;
-        isWating = true;
-        currentNode.enterNode(this);
-        SkeletonManager.ret("void");
+        isWaiting = true;
+        currentNode.getWaitingVehicles().add(this);
     }
 
     /**
-     * Autónál nem csinál semmit.
+     * Autó elindul.
+     * A csomópontba lehúzódott autók listájából kilép.
      */
     @Override
-    public void start() {}
+    public void start() {
+        isWaiting = false;
+        currentNode.getWaitingVehicles().remove(this);
+    }
 
     /**
      * Elvontatja az autót a sávról, ha vége a baleseti állapotnak.
@@ -207,11 +287,7 @@ public class Car extends Vehicle {
      */
     @Override
     public void interactWithStructure(Structure s) {
-        SkeletonManager.call(getSName() + ".interactWithStructure(Sructure)");
-
         s.acceptCar(this);
-
-        SkeletonManager.ret("void");
     }
 
     /**
@@ -220,11 +296,42 @@ public class Car extends Vehicle {
      */
     @Override
     public void departFromStructure(Structure s) {
-        SkeletonManager.call(getSName() + ".departFromStructure(" + s.getSName() + ")");
         s.removeCar(this);
-        SkeletonManager.ret("void");
     }
 
+    /**
+     * Autó az útvonalán haladva kiválasztja a következő utat a csomópontból.
+     * @return A kiválasztott út, vagy null, ha nincs járható út.
+     */
+    private Road chooseNextRoad() {
+        if(route.isEmpty()){
+            return null;
+        }
+
+        Node nextNode = route.get(0);
+        for (Road r : currentNode.getRoads()) {
+            if (r.getNodes().contains(nextNode)){
+                route.remove(0);
+                return r;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Autó automatikusan kiválasztja a következő sávot a lehetséges jó irányú és járható sávok közül.
+     * @param lanes A választható jó irányú sávok listája.
+     * @return A kiválasztott sáv, vagy null, ha nincs.
+     */
+    private Lane chooseNextLane(List<Lane> lanes) {
+        if (lanes.isEmpty()) {
+            return null;
+        }
+
+        Random r = new Random();
+        int idx = r.nextInt(lanes.size());
+        return lanes.get(idx);
+    }
     
     
 }

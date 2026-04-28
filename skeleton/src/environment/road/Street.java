@@ -1,7 +1,6 @@
 package environment.road;
 
 import environment.lane.Lane;
-import skeleton.SkeletonManager;
 
 /**
  * Az utcát és hidat megvalósító osztály, amely a {@link Road} leszármazottja.
@@ -30,12 +29,8 @@ public class Street extends Road {
      */
     @Override
     public void snowLogic() {
-        SkeletonManager.call(sName + ".snowLogic()");
-        
         for (Lane l : lanes) {
             l.snowLogic();
         }
-        
-        SkeletonManager.ret("void");
     }
 }

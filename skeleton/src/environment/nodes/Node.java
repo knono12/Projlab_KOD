@@ -16,6 +16,7 @@ import vehicles.Vehicle;
 public class Node {
     protected List<Road> connectedRoads;
     protected Structure structure;
+    protected List<Vehicle> vehicles;
     protected List<Vehicle> waitingVehicles;
     protected String sName;
 
@@ -26,6 +27,7 @@ public class Node {
      */
     public Node(String name){
         connectedRoads = new ArrayList<>();
+        vehicles = new ArrayList<>();
         waitingVehicles = new ArrayList<>();
         this.sName = name;
     }
@@ -38,7 +40,7 @@ public class Node {
     public void enterNode(Vehicle v){
         SkeletonManager.call(this.sName + ".enterNode(" + v.getSName() + ")");
         v.getCurrentLane().removeVehicle(v);
-        waitingVehicles.add(v);
+        vehicles.add(v);
         if (structure != null) {
             v.interactWithStructure(structure);
         }
@@ -52,7 +54,7 @@ public class Node {
      */
     public void leaveNode(Vehicle v) {
         SkeletonManager.call(this.sName + ".leaveNode(" + v.getSName() + ")");
-        waitingVehicles.remove(v);
+        vehicles.remove(v);
         if (structure != null) {
             v.departFromStructure(structure);
         }
@@ -94,6 +96,14 @@ public class Node {
      */
     public String getSName(){
         return sName;
+    }
+
+    /**
+     * Visszaadja a csomóponton lévő autók listáját.
+     * * @return A csomóponthoz tartozó lehúzódott autók listája.
+     */
+    public List<Vehicle> getVehicles(){
+        return vehicles;
     }
 
     /**

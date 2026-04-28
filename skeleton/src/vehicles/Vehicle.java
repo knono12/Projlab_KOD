@@ -5,7 +5,6 @@ import environment.lane.Lane;
 import environment.nodes.Node;
 import environment.nodes.structures.Structure;
 import environment.road.Road;
-import skeleton.SkeletonManager;
 
 /**
  * Absztrakt ősosztály a járművek számára.
@@ -52,9 +51,13 @@ public abstract class Vehicle {
     public abstract void departFromStructure(Structure s);
 
 
-    public abstract void setNextRoad(Road r);
+    public void setNextRoad(Road r){
+        nextRoad = r;
+    }
 
-    public abstract void setNextLane(Lane l);
+    public void setNextLane(Lane l){
+        nextLane = l;
+    }
     
     /**
      * A jármű fizikai haladását megvalósító metódus.
@@ -82,12 +85,10 @@ public abstract class Vehicle {
      * A jármű beléptetése a következő csomópontba az aktuális sávról.
      */
     public void enterNextNode() {
-        SkeletonManager.call(sName + ".chooseNextRoad()");
-
-        currentLane.getToNode().enterNode(this);
+        Node nextNode = currentLane.getToNode();
+        nextNode.enterNode(this);
         currentLane = null;
-
-        SkeletonManager.ret("void");
+        currentNode = nextNode;
     }
 
     /**

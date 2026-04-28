@@ -1,7 +1,5 @@
 package environment.road;
 
-import skeleton.SkeletonManager;
-
 /**
  * Az alagutat megvalósító osztály, amely a {@link Road} leszármazottja.
  * Olyan út, amelyet nem befolyásol az időjárás, tiszta marad.
@@ -18,11 +16,7 @@ public class Tunnel extends Road {
      */
     @Override
     public void snowLogic() {
-        SkeletonManager.call(sName + ".snowLogic()");
-        
         // Nem csinál semmit, mert az alagútba nem esik be a hó.
-        
-        SkeletonManager.ret("void");
     }
     
 }

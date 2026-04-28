@@ -53,34 +53,21 @@ public abstract class LaneState {
      * @return Igaz, ha a művelet és a takarítás sikeres volt.
      */
     public boolean handleVehicle(Snowplow sp) {
-        SkeletonManager.call(lane.getSName() + ".handleVehicle(" + sp.getSName() + ")");
-
         lane.getFromNode().leaveNode(sp);
         lane.enterLane(sp);
         boolean success = sp.getCurrentAttachment().clean(lane);
 
-        SkeletonManager.ret(String.valueOf(success));
         return success;
     }
 
     /**
-     * Kezeli egy busz belépését és áthaladását a sávon.
-     * Alapértelmezett viselkedés: a busz elhagyja a csomópontot, belép a sávba,
+     * Absztrakt metódus egy busz sávra való belépésének és áthaladásának kezelésére.
+     * A busz elhagyja a csomópontot, belép a sávba,
      * majd a sáv állapota dönt arról, hogy az áthaladás sikeres volt-e.
-     * Konkrét állapotok (pl. {@code AccidentState}) felülírhatják ezt a viselkedést,
-     * hogy balesetkor megakadályozzák az áthaladást, vagy jeges úton csúszást okozzanak.
      * @param b A sávra lépő busz.
      * @return Igaz, ha a busz sikeresen áthaladt a sávon.
      */
-    public boolean handleVehicle(Bus b) {
-        SkeletonManager.call(lane.getSName() + ".handleVehicle(" + b.getSName() + ")");
-
-        lane.getFromNode().leaveNode(b);
-        lane.enterLane(b);
-
-        SkeletonManager.ret("true");
-        return true;
-    }
+    public abstract boolean handleVehicle(Bus b);
 
     /**
      * Söprés kezdeményezése az állapoton.
@@ -89,8 +76,6 @@ public abstract class LaneState {
      * @return Alapértelmezetten hamis (de a specifikus állapotok felülírják).
      */
     public boolean sweep(int laneCount) {
-        SkeletonManager.call(sName + ".sweep(" + laneCount + ")");
-        SkeletonManager.ret("false");
         return false;
     }
 
@@ -100,8 +85,6 @@ public abstract class LaneState {
      * @return Alapértelmezetten hamis.
      */
     public boolean brakeIce() {
-        SkeletonManager.call(sName + ".brakeIce()");
-        SkeletonManager.ret("false");
         return false;
     }
 
@@ -122,8 +105,6 @@ public abstract class LaneState {
      * @return Alapértelmezetten hamis.
      */
     public boolean melt() {
-        SkeletonManager.call(sName + ".melt()");
-        SkeletonManager.ret("false");
         return false;
     }
 
@@ -133,8 +114,6 @@ public abstract class LaneState {
      * @return Alapértelmezetten hamis.
      */
     public boolean gravel(){
-        SkeletonManager.call(sName + ".gravel()");
-        SkeletonManager.ret("false");
         return false;
     }
 
@@ -145,5 +124,17 @@ public abstract class LaneState {
     public String getSName(){
         return sName;
     }
+
+    /**
+     * Visszaadja hogy a sáv járható-e autók és buszok által
+     * * @return igaz, ha járható, egyébként hamis
+     */
+    public abstract boolean isPassable();
+
+    /**
+     * Visszaadja hogy a sáv járható-e hókotrók által
+     * * @return igaz, ha járható, egyébként hamis
+     */
+    public abstract boolean isPassableSnowplow();
 
 }

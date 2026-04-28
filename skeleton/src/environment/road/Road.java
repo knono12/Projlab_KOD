@@ -5,7 +5,6 @@ import java.util.List;
 
 import environment.lane.Lane;
 import environment.nodes.Node;
-import skeleton.SkeletonManager;
 
 
 /**
@@ -22,7 +21,7 @@ public abstract class Road {
     String sName;
 
     /** Az osztály konstruktora, mely inicializálja az úthoz tartozó végpontok és sávok listáját */
-    public Road(String name){
+    protected Road(String name){
         nodes = new ArrayList<>();
         lanes = new ArrayList<>();
         sName = name;
@@ -41,10 +40,8 @@ public abstract class Road {
      * @param l A hozzáadandó sáv.
      */
     public void addLane(Lane l) {
-        SkeletonManager.call(sName + ".addLane(" + l.getSName() + ")");
         lanes.add(l);
         l.setRoad(this);
-        SkeletonManager.ret("void");
     }
 
     /**
@@ -53,32 +50,48 @@ public abstract class Road {
      * @param n A hozzáadandó csomópont.
      */
     public void addNode(Node n) {
-        SkeletonManager.call(sName + ".addNode(" + n.getSName() + ")");
         nodes.add(n);
-        SkeletonManager.ret("void");
     }
 
     /**
-     * Visszaadja azokat a sávokat, amelyek a megadott csomópontból indulnak.
+     * Visszaadja azokat a sávokat, amelyek a megadott csomópontból indulnak és járhatóak autók és buszok által.
      * 
      * A metódus végigiterál az út összes sávján, és ellenőrzi, hogy a sáv 
      * belépő csomópontja ({@code fromNode}) megegyezik-e a paraméterként 
-     * kapott csomóponttal.
+     * kapott csomóponttal és hogy járható-e a sáv autók és buszok által.
      *
      * @param from A csomópont, ahonnan a szabad sávokat keressük.
      * @return A megadott csomópontból induló sávok listája.
      */
     public List<Lane> getFreeLanes(Node from){
-        SkeletonManager.call(sName + ".getFreeLanes(" + from.getSName() + ")");
-
         List<Lane> freeLanes = new ArrayList<>();
         
         for (Lane lane : lanes) {
-            if (lane.getFromNode() == from) {
+            if (lane.getFromNode() == from && lane.isPassable()) {
                 freeLanes.add(lane);
             }
         }
-        SkeletonManager.ret("List<Lane>: freeLanes");
+        return freeLanes;
+    }
+
+    /**
+     * Visszaadja azokat a sávokat, amelyek a megadott csomópontból indulnak és járhatóak hókotrók által.
+     * 
+     * A metódus végigiterál az út összes sávján, és ellenőrzi, hogy a sáv 
+     * belépő csomópontja ({@code fromNode}) megegyezik-e a paraméterként 
+     * kapott csomóponttal és hogy járható-e a sáv hókotrók által.
+     *
+     * @param from A csomópont, ahonnan a szabad sávokat keressük.
+     * @return A megadott csomópontból induló sávok listája.
+     */
+    public List<Lane> getFreeLanesSnowplow(Node from){
+        List<Lane> freeLanes = new ArrayList<>();
+        
+        for (Lane lane : lanes) {
+            if (lane.getFromNode() == from && lane.isPassableSnowplow()) {
+                freeLanes.add(lane);
+            }
+        }
         return freeLanes;
     }
 

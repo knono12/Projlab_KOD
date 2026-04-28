@@ -132,16 +132,6 @@ public class Snowplow extends Vehicle implements Purchasable {
     public void accidentOverAction() {
     }
 
-    @Override
-    public void setNextRoad(Road r){
-        nextRoad = r;
-    }
-
-    @Override
-    public void setNextLane(Lane l){
-        nextLane = l;
-    }
-
     // -------------------------------------------------------------------------------------
 
     /**

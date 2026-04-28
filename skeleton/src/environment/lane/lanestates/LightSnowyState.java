@@ -2,6 +2,7 @@ package environment.lane.lanestates;
 
 import environment.lane.Lane;
 import skeleton.SkeletonManager;
+import vehicles.Bus;
 import vehicles.Car;
 
 /**
@@ -27,14 +28,11 @@ public class LightSnowyState extends LaneState {
      */
     @Override
     public void snowLogic() {
-        SkeletonManager.call("LightSnowyState.snowLogic()");
+        lane.snowBuildUp();
 
-        boolean enoughSnow = SkeletonManager.ask("Elég hó esett hogy nagyon havas sáv legyen? ");
-        if(enoughSnow){
-            lane.changeState(new HeavySnowyState(lane, "heavySnowState"));
+        if(lane.getSnowThickness() >= 6){
+            lane.changeState(new HeavySnowyState(lane, "heavySnowyState"));
         }
-
-        SkeletonManager.ret("void");
     }
 
     /**
@@ -47,17 +45,28 @@ public class LightSnowyState extends LaneState {
      */
     @Override
     public boolean handleVehicle(Car c) {
-        SkeletonManager.call(sName + ".handleVehicle(" + c.getSName() + ")");
-
         lane.getFromNode().leaveNode(c);
         lane.enterLane(c);
+        carsPassed++;
 
-        boolean enoughCars = SkeletonManager.ask("Elég autó hajtott rá a sávra, hogy jeges legyen? ");
-        if(enoughCars){
+        if(carsPassed >= 3){
             lane.changeState(new IcyState(lane, "icyState"));
         }
+        return true;
+    }
 
-        SkeletonManager.ret("true");
+    /**
+     * A busz akadály nélkül fel tud hajtani a sávra.
+     * 
+     * * @param b A belépni próbáló busz.
+     * 
+     * @return Mindig true.
+     */
+    @Override
+    public boolean handleVehicle(Bus b) {
+        lane.getFromNode().leaveNode(b);
+        lane.enterLane(b);
+
         return true;
     }
 
@@ -92,5 +101,24 @@ public class LightSnowyState extends LaneState {
         SkeletonManager.ret("true");
         return true;
     }
+
+    /**
+     * Visszaadja hogy a sáv járható-e autók és buszok által
+     * * @return mindig igaz
+     */
+    @Override
+    public boolean isPassable(){
+        return true;
+    }
+
+    /**
+     * Visszaadja hogy a sáv járható-e hókotrók által
+     * * @return mindig igaz
+     */
+    @Override
+    public boolean isPassableSnowplow(){
+        return true;
+    }
+
 
 }
