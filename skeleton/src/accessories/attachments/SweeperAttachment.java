@@ -3,7 +3,6 @@ package accessories.attachments;
 import environment.lane.Lane;
 import players.BusDriver;
 import players.Cleaner;
-import skeleton.SkeletonManager;
 
 /**
  * A söprőfejet reprezentáló osztály.
@@ -32,9 +31,7 @@ public class SweeperAttachment extends Attachment {
      */
     @Override
     public boolean clean(Lane l) {
-        SkeletonManager.call(getSName() + ".clean(" + l.getSName() + ")");
         boolean success = l.sweep(1);
-        SkeletonManager.ret(String.valueOf(success));
         return success;
     }
 
@@ -45,9 +42,7 @@ public class SweeperAttachment extends Attachment {
      */
     @Override
     public void boughtByCleaner(Cleaner c) {
-        SkeletonManager.call(getSName() + ".boughtByCleaner(" + c.getSName() + ")");
         c.addToInventory(this);
-        SkeletonManager.ret("void");
     }
 
     @Override

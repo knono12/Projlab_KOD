@@ -1,8 +1,6 @@
 package environment.lane.lanestates;
 
 import environment.lane.Lane;
-import skeleton.SkeletonManager;
-import vehicles.Bus;
 import vehicles.Car;
 
 public class GravelState extends LaneState{
@@ -30,12 +28,8 @@ public class GravelState extends LaneState{
 
     @Override
     public boolean sweep(int laneCount) {
-        SkeletonManager.call(sName + ".sweep(" + laneCount + ")");
-
         lane.pushSnowRight(laneCount);
         lane.changeState(new IcyState(lane, "icyState"));
-
-        SkeletonManager.ret("true");
         return true;
     }
 }

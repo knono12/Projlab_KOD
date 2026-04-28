@@ -52,12 +52,7 @@ public class ClearState extends LaneState {
 
     @Override
     public boolean salt() {
-        SkeletonManager.call(sName + ".salt()");
-
-        // Kérdés feltevés
         lane.changeState(new SaltedState(lane, "saltedState"));
-
-        SkeletonManager.ret("true");
         return true;
     }
 

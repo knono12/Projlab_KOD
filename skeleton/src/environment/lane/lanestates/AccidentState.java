@@ -78,8 +78,6 @@ public class AccidentState extends LaneState {
      */
     @Override
     public boolean handleVehicle(Snowplow sp) {
-        SkeletonManager.call(sName + ".handleVehicle(" + sp.getSName() + ")");
-        SkeletonManager.ret("false");
         return false;
     }
 

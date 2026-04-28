@@ -53,13 +53,9 @@ public abstract class LaneState {
      * @return Igaz, ha a művelet és a takarítás sikeres volt.
      */
     public boolean handleVehicle(Snowplow sp) {
-        SkeletonManager.call(lane.getSName() + ".handleVehicle(" + sp.getSName() + ")");
-
         lane.getFromNode().leaveNode(sp);
         lane.enterLane(sp);
         boolean success = sp.getCurrentAttachment().clean(lane);
-
-        SkeletonManager.ret(String.valueOf(success));
         return success;
     }
 
@@ -89,8 +85,6 @@ public abstract class LaneState {
      * @return Alapértelmezetten hamis (de a specifikus állapotok felülírják).
      */
     public boolean sweep(int laneCount) {
-        SkeletonManager.call(sName + ".sweep(" + laneCount + ")");
-        SkeletonManager.ret("false");
         return false;
     }
 
@@ -100,8 +94,6 @@ public abstract class LaneState {
      * @return Alapértelmezetten hamis.
      */
     public boolean brakeIce() {
-        SkeletonManager.call(sName + ".brakeIce()");
-        SkeletonManager.ret("false");
         return false;
     }
 
@@ -111,8 +103,6 @@ public abstract class LaneState {
      * @return Alapértelmezetten hamis.
      */
     public boolean salt() {
-        SkeletonManager.call(sName + ".salt()");
-        SkeletonManager.ret("false");
         return false;
     }
 
@@ -122,8 +112,6 @@ public abstract class LaneState {
      * @return Alapértelmezetten hamis.
      */
     public boolean melt() {
-        SkeletonManager.call(sName + ".melt()");
-        SkeletonManager.ret("false");
         return false;
     }
 
@@ -133,8 +121,6 @@ public abstract class LaneState {
      * @return Alapértelmezetten hamis.
      */
     public boolean gravel(){
-        SkeletonManager.call(sName + ".gravel()");
-        SkeletonManager.ret("false");
         return false;
     }
 

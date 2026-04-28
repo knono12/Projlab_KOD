@@ -68,8 +68,6 @@ public class Snowplow extends Vehicle implements Purchasable {
      */
     @Override
     public boolean canCollide() {
-        SkeletonManager.call(getSName() + ".canCollide()");
-        SkeletonManager.ret("false");
         return false;
     }
 
@@ -85,11 +83,7 @@ public class Snowplow extends Vehicle implements Purchasable {
      */
     @Override
     public void interactWithStructure(Structure s) {
-        SkeletonManager.call(getSName() + ".interactWithStructure(" + s.getName() + ")");
-
         s.acceptSnowplow(this);
-
-        SkeletonManager.ret("void");
     }
 
     /**
@@ -99,9 +93,7 @@ public class Snowplow extends Vehicle implements Purchasable {
      */
     @Override
     public void departFromStructure(Structure s) {
-        SkeletonManager.call(getSName() + ".departFromStructure(" + s.getSName() + ")");
         s.removeSnowplow(this);
-        SkeletonManager.ret("void");
     }
 
     @Override
@@ -118,6 +110,7 @@ public class Snowplow extends Vehicle implements Purchasable {
             this.cleaner.receiveMoney(10);
             enterNextNode();
         }
+        //lehet kell this.nextLana = null;
     }
 
     @Override
@@ -150,9 +143,7 @@ public class Snowplow extends Vehicle implements Purchasable {
      * @param newAttachment Az új felszerelendő fej.
      */
     public void changeAttachment(Attachment newAttachment) {
-        SkeletonManager.call(getSName() + ".changeAttachment(" + newAttachment.getSName() + ")");
         this.currentAttachment = newAttachment;
-        SkeletonManager.ret("void");
     }
 
     /**
@@ -171,19 +162,7 @@ public class Snowplow extends Vehicle implements Purchasable {
      * majd felhasználó választhat, most csak a folyamatot mutatja be.
      */
     public void onStation() {
-        SkeletonManager.call(getSName() + ".onStation()");
-        boolean shop = SkeletonManager.ask("Szeretne-e vásárolni hókotrófejet? ");
-        if (shop)
-            cleaner.purchaseItem(new IceBrakerAttachment("iceBrakerAttachment", 10));
-        boolean change = SkeletonManager.ask("Szeretne-e cserélni hókotrófejet? ");
-        if (change){
-            boolean inInventory = SkeletonManager.ask("Benne van inventory-ban? ");
-            if (inInventory)
-                changeAttachment(new IceBrakerAttachment("iceBrakerAttachment", 10));
-        }
-            
 
-        SkeletonManager.ret("void");
     }
 
     // ----------------------------------------------------------------------------------------------------
@@ -198,12 +177,8 @@ public class Snowplow extends Vehicle implements Purchasable {
      */
     @Override
     public void boughtByCleaner(Cleaner c) {
-        SkeletonManager.call(sName + ".boughtByCleaner(" + c.getSName() + ")");
-
         this.cleaner = c;
         c.addSnowplow(this);
-
-        SkeletonManager.ret("void");
     }
 
     /**
