@@ -10,7 +10,6 @@ import environment.road.Road;
 import finance.Purchasable;
 import players.BusDriver;
 import players.Cleaner;
-import skeleton.SkeletonManager;
 
 /**
  * A buszt reprezentáló osztály, amely a {@link Vehicle} ősosztályból származik
@@ -106,60 +105,42 @@ public class Bus extends Vehicle implements Purchasable {
      * @param terminal A végállomás, ahová a busz megérkezett.
      */
     public void arriveAtTerminal(BusStop terminal) {
-        SkeletonManager.call(sName + ".arriveAtTerminal(" + terminal.getsName() + ")");
-
         if (terminal == destinationTerminal) {
             completeRound();
             drawNewDestination();
         }
-
-        SkeletonManager.ret("void");
     }
 
     /**
-     * Lezár egy kört: növeli a körszámlálót, értesíti a sofőrt és 50 egység
-     * jutalmat fizet neki.
+     * Lezár egy kört: növeli a körszámlálót, értesíti a sofőrt.
      */
     public void completeRound() {
-        SkeletonManager.call(sName + ".completeRound()");
-        successfulRounds++;
         if (driver != null) {
-            driver.completeRound();
-            driver.receiveMoney(50);
+            successfulRounds++;
+            driver.roundCompletedByBus();
         }
-        SkeletonManager.ret("void");
     }
 
     /**
      * Új célvégállomást sorsol ki az aktuális végállomástól eltérő megállók közül.
      */
     public void drawNewDestination() {
-        SkeletonManager.call(sName + ".drawNewDestination()");
-
         if (currentTerminal != null) {
             BusStop newDestination = currentTerminal.getRandomBusStop();
             if (newDestination != null) {
                 destinationTerminal = newDestination;
-                SkeletonManager.ret("void (new destination: " + newDestination.getsName() + ")");
                 return;
             }
         }
-
-        SkeletonManager.ret("void");
     }
 
     /**
      * Megjavítja a buszt, ha sérült állapotban van, majd újraindítja.
      */
     public void repair() {
-        SkeletonManager.call(sName + ".repair()");
-
         if (damaged) {
             damaged = false;
             start();
-            SkeletonManager.ret("void (repaired)");
-        } else {
-            SkeletonManager.ret("void (not damaged)");
         }
     }
 
@@ -171,10 +152,7 @@ public class Bus extends Vehicle implements Purchasable {
      */
     @Override
     public boolean canCollide() {
-        SkeletonManager.call(sName + ".canCollide()");
-        boolean result = !damaged;
-        SkeletonManager.ret(String.valueOf(result));
-        return result;
+        return !damaged;
     }
 
     /**
@@ -185,9 +163,7 @@ public class Bus extends Vehicle implements Purchasable {
      */
     @Override
     public void interactWithStructure(Structure s) {
-        SkeletonManager.call(sName + ".interactWithStructure(" + s.getsName() + ")");
         s.acceptBus(this);
-        SkeletonManager.ret("void");
     }
 
     /**
@@ -197,48 +173,7 @@ public class Bus extends Vehicle implements Purchasable {
      */
     @Override
     public void departFromStructure(Structure s) {
-        SkeletonManager.call(sName + ".departFromStructure(" + s.getsName() + ")");
         s.removeBus(this);
-        SkeletonManager.ret("void");
-    }
-
-    /**
-     * Mozgatja a buszt. Sérült busz nem tud mozogni.
-     * Ha még nem indult el, meghívja a {@link #start()} metódust.
-     */
-    @Override
-    public void move() {
-        SkeletonManager.call(sName + ".move()");
-
-        if (damaged) {
-            SkeletonManager.ret("void (damaged, cannot move)");
-            return;
-        }
-
-        if (!isMoving) {
-            start();
-        }
-
-        Road nextRoad = chooseNextRoad();
-        if (nextRoad == null) {
-            SkeletonManager.ret("void");
-            return;
-        }
-
-        List<Lane> freeLanes = nextRoad.getFreeLanes(currentNode);
-        Lane nextLane = chooseNextLane(freeLanes);
-
-        boolean isSuccess = false;
-        if (nextLane != null) {
-            currentLane = nextLane;
-            isSuccess = nextLane.handleVehicle(this);
-        }
-
-        if (isSuccess) {
-            currentLane.getToNode().enterNode(this);
-        }
-
-        SkeletonManager.ret("void");
     }
 
     /**
@@ -246,9 +181,7 @@ public class Bus extends Vehicle implements Purchasable {
      */
     @Override
     public void stop() {
-        SkeletonManager.call(sName + ".stop()");
         isMoving = false;
-        SkeletonManager.ret("void");
     }
 
     /**
@@ -256,34 +189,15 @@ public class Bus extends Vehicle implements Purchasable {
      */
     @Override
     public void start() {
-        SkeletonManager.call(sName + ".start()");
-
         if (!damaged) {
             isMoving = true;
-            SkeletonManager.ret("void (started)");
-        } else {
-            SkeletonManager.ret("void (cannot start, damaged)");
         }
-    }
-
-    /** Csúszás kezelése – skeletonban nem implementált. */
-    @Override
-    public void slip() {
-    }
-
-    /**
-     * Ütközések kiértékelése csúszás után.
-     * 
-     * @return Mindig false (skeleton).
-     */
-    @Override
-    public boolean evaluateCollisions() {
-        return false;
     }
 
     /** Baleset végének utóhatásai – skeletonban nem implementált. */
     @Override
     public void accidentOverAction() {
+        start();
     }
 
     /**
@@ -291,10 +205,8 @@ public class Bus extends Vehicle implements Purchasable {
      */
     @Override
     public void sufferCollision() {
-        SkeletonManager.call(sName + ".sufferCollision()");
         damaged = true;
         stop();
-        SkeletonManager.ret("void");
     }
 
     /**
@@ -361,5 +273,19 @@ public class Bus extends Vehicle implements Purchasable {
      */
     public int getSuccessfulRounds() {
         return successfulRounds;
+    }
+
+    @Override
+    public void moveOntoLane() {
+        if (nextLane != null) {
+            currentLane = nextLane;
+            isActionSuccess = nextLane.handleVehicle(this);
+        }
+    }
+
+    @Override
+    public void moveOntoNode() {
+        if (isActionSuccess)
+            enterNextNode();
     }
 }

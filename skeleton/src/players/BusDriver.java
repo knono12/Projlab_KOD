@@ -17,8 +17,6 @@ import vehicles.Snowplow;
 public class BusDriver {
     /** A buszsofőr neve (kiíratáshoz). */
     private String name;
-    /** A sikeresen teljesített körök száma. */
-    private int successfulRounds;
     /** A sofőr pénzegyenlege. Kezdőérték: 500. */
     private int money;
     /** A sofőr által vásárolt tárgyak listája. */
@@ -34,7 +32,6 @@ public class BusDriver {
      */
     public BusDriver(String name) {
         this.name = name;
-        this.successfulRounds = 0;
         this.money = 500;
         this.inventory = new ArrayList<>();
         this.ownedBuses = new ArrayList<>();
@@ -49,12 +46,11 @@ public class BusDriver {
     }
 
     /**
-     * Rögzíti egy kör teljesítését, növeli a {@code successfulRounds} számlálót.
+     * 50 egység jutalmat fizet a sofőrnek.
+     * 
      */
-    public void completeRound() {
-        SkeletonManager.call(name + ".completeRound()");
-        successfulRounds++;
-        SkeletonManager.ret("void");
+    public void roundCompletedByBus() {
+        receiveMoney(50);
     }
 
     /**
@@ -62,9 +58,7 @@ public class BusDriver {
      * @param amount A kapott pénzmennyiség.
      */
     public void receiveMoney(int amount) {
-        SkeletonManager.call(name + ".receiveMoney(" + amount + ")");
         money += amount;
-        SkeletonManager.ret("void (new balance: " + money + ")");
     }
 
     /**
@@ -88,12 +82,11 @@ public class BusDriver {
     }
 
     /**
-     * Hókotrót rendel a sofőrhöz (skeleton – részletes implementáció később).
-     * @param s A hozzárendelendő hókotró.
+     * Buszt rendel a sofőrhöz.
+     * @param s A hozzárendelendő busz.
      */
-    public void addSnowplow(Snowplow s) {
-        SkeletonManager.call(name + ".addSnowplow(snowplow)");
-        SkeletonManager.ret("void");
+    public void addBus(Bus b) {
+        ownedBuses.add(b);
     }
 
     /**
@@ -137,10 +130,10 @@ public class BusDriver {
     }
 
     /**
-     * Visszaadja a sikeresen teljesített körök számát.
-     * @return A körök száma.
+     * Visszaadja a sofőr tulajdonában lévő buszokat.
+     * @return A buszok listája.
      */
-    public int getSuccessfulRounds() {
-        return successfulRounds;
+    public List<Bus> getBuses() {
+        return ownedBuses;
     }
 }
