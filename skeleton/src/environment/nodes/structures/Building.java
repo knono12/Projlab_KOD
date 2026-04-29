@@ -13,6 +13,7 @@ import vehicles.*;
 public class Building extends Structure {
     /** Igaz, ha az épület munkahely; hamis, ha lakóház. */
     private boolean isWorkplace;
+    private Node node;
 
     /**
      * A Building osztály konstruktora.
@@ -20,9 +21,10 @@ public class Building extends Structure {
      * @param name        Az épület neve.
      * @param isWorkplace Igaz, ha az épület munkahely.
      */
-    public Building(String name, boolean isWorkplace) {
+    public Building(String name, boolean isWorkplace, Node node) {
         super(name);
         this.isWorkplace = isWorkplace;
+        this.node = node;
     }
 
     /**
@@ -40,22 +42,8 @@ public class Building extends Structure {
      * @return Az épület csomópontja.
      */
     public Node getNode() {
-        return null;
+        return node;
     }
-
-    /*
-     * @Override
-     * public void enterStructure(Vehicle v) {
-     * SkeletonManager.call(name + ".enterStructure(" + v.getName() + ")");
-     * SkeletonManager.ret("void");
-     * }
-     * 
-     * @Override
-     * public void leaveStructure(Vehicle v) {
-     * SkeletonManager.call(name + ".leaveStructure(" + v.getName() + ")");
-     * SkeletonManager.ret("void");
-     * }
-     */
 
     /**
      * Autót fogad az épületben (pl. megérkezés célépülethez).
@@ -64,8 +52,6 @@ public class Building extends Structure {
      */
     @Override
     public void acceptCar(Car c) {
-        SkeletonManager.call(sName + ".acceptCar(" + c.getSName() + ")");
-        SkeletonManager.ret("void");
     }
 
     /**
@@ -75,8 +61,6 @@ public class Building extends Structure {
      */
     @Override
     public void acceptBus(Bus b) {
-        SkeletonManager.call(sName + ".acceptBus(" + b.getSName() + ")");
-        SkeletonManager.ret("void");
     }
 
     /**
@@ -86,8 +70,6 @@ public class Building extends Structure {
      */
     @Override
     public void acceptSnowplow(Snowplow s) {
-        SkeletonManager.call(sName + ".acceptSnowplow(" + s.getSName() + ")");
-        SkeletonManager.ret("void");
     }
 
     /**
@@ -97,8 +79,6 @@ public class Building extends Structure {
      */
     @Override
     public void removeCar(Car c) {
-        SkeletonManager.call(sName + ".removeCar(" + c.getSName() + ")");
-        SkeletonManager.ret("void");
     }
 
     /**
@@ -108,8 +88,6 @@ public class Building extends Structure {
      */
     @Override
     public void removeBus(Bus b) {
-        SkeletonManager.call(sName + ".removeBus(" + b.getSName() + ")");
-        SkeletonManager.ret("void");
     }
 
     /**
@@ -119,7 +97,5 @@ public class Building extends Structure {
      */
     @Override
     public void removeSnowplow(Snowplow s) {
-        SkeletonManager.call(sName + ".removeSnowplow(" + s.getSName() + ")");
-        SkeletonManager.ret("void");
     }
 }

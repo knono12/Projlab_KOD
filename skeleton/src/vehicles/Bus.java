@@ -1,7 +1,9 @@
 package vehicles;
 
 import java.util.List;
+import java.util.Random;
 
+import environment.Graph;
 import environment.lane.Lane;
 import environment.nodes.Node;
 import environment.nodes.structures.BusStop;
@@ -19,7 +21,8 @@ import players.Cleaner;
  * Sérült állapotban a busz nem tud mozogni, javításig megáll.
  */
 public class Bus extends Vehicle implements Purchasable {
-
+    /** A gráf, ami tartalmazza a buszmegállókat. */
+    private Graph graph;
     /** A busz sofőrje, aki a körök teljesítéséért jutalmat kap. */
     private BusDriver driver;
     /** A busz jelenlegi végállomása (ahol éppen tartózkodik). */
@@ -31,7 +34,7 @@ public class Bus extends Vehicle implements Purchasable {
     /** Igaz, ha a busz éppen mozgásban van. */
     private boolean isMoving;
     /** A busz ára (Purchasable interfész miatt). */
-    int price;
+    private int price;
 
     /**
      * A Bus osztály konstruktora.
@@ -44,6 +47,7 @@ public class Bus extends Vehicle implements Purchasable {
         this.driver = driver;
         this.successfulRounds = 0;
         this.isMoving = false;
+        price = 200;
     }
 
     /**
@@ -105,6 +109,7 @@ public class Bus extends Vehicle implements Purchasable {
      * @param terminal A végállomás, ahová a busz megérkezett.
      */
     public void arriveAtTerminal(BusStop terminal) {
+        this.currentTerminal = terminal;
         if (terminal == destinationTerminal) {
             completeRound();
             drawNewDestination();
@@ -126,12 +131,34 @@ public class Bus extends Vehicle implements Purchasable {
      */
     public void drawNewDestination() {
         if (currentTerminal != null) {
-            BusStop newDestination = currentTerminal.getRandomBusStop();
+            BusStop newDestination = getRandomBusStop();
             if (newDestination != null) {
                 destinationTerminal = newDestination;
                 return;
             }
         }
+    }
+
+    /**
+     * Véletlenszerűen kiválaszt egy, az aktuálistól eltérő buszmegállót.
+     * Ha csak egy megálló létezik, önmagát adja vissza.
+     * 
+     * @return A kisorsolott buszmegálló.
+     */ 
+    public BusStop getRandomBusStop() {
+        BusStop result = null;
+        List<BusStop> allBusStops = graph.getBusStops();
+        if (allBusStops != null && allBusStops.size() > 1) {
+            Random rand = new Random();
+            BusStop newStop;
+            do {
+                newStop = allBusStops.get(rand.nextInt(allBusStops.size()));
+            } while (newStop == currentTerminal); // Ne ugyanazt a megállót sorsolja
+            result = newStop;
+        } else {
+            result = currentTerminal;
+        }
+        return result;
     }
 
     /**
@@ -217,6 +244,7 @@ public class Bus extends Vehicle implements Purchasable {
     @Override
     public void boughtByBusDriver(BusDriver b) {
         b.buyBus(this);
+        setDriver(b);
     }
 
     /**

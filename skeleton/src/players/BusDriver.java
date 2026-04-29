@@ -14,7 +14,7 @@ import vehicles.Snowplow;
  * Emellett tárgyakat ({@link Purchasable}) vásárolhat és tárolhat az inventoryjában,
  * valamint hókotrót ({@link Snowplow}) is kezelhet.
  */
-public class BusDriver {
+public class BusDriver extends Player{
     /** A buszsofőr neve (kiíratáshoz). */
     private String name;
     /** A sofőr pénzegyenlege. Kezdőérték: 500. */
@@ -30,11 +30,20 @@ public class BusDriver {
      * A BusDriver osztály konstruktora.
      * @param name A buszsofőr neve.
      */
-    public BusDriver(String name) {
-        this.name = name;
-        this.money = 500;
-        this.inventory = new ArrayList<>();
-        this.ownedBuses = new ArrayList<>();
+    public BusDriver(String sName, String name) {
+        super(sName, name);
+    }
+
+    /**
+     * A BusDriver osztály konstruktora, amely a skeletonbeli nevet, a játékos nevét és a készletét is beállítja.
+     * 
+     * @param sName  Az egyedi név, amelyet naplózás és tesztelés céljából
+     *               használnak.
+     * @param name   A játékos neve.
+     * @param inventory A játékos készlete, amely a megvásárolt elemeket tartalmazza.
+     */
+    public BusDriver(String sName, String name, List<Purchasable> inventory) {
+        super(sName, name, inventory);
     }
 
     /**
@@ -62,23 +71,11 @@ public class BusDriver {
     }
 
     /**
-     * Megvásárol egy {@link Purchasable} tárgyat és az inventoryba helyezi.
-     * @param item A megvásárolni kívánt tárgy.
-     */
-    public void purchase(Purchasable item) {
-        SkeletonManager.call(name + ".purchase(item)");
-        addToInventory(item);
-        SkeletonManager.ret("void");
-    }
-
-    /**
      * Hozzáad egy tárgyat a sofőr inventoryjához.
      * @param p A hozzáadandó tárgy.
      */
     public void addToInventory(Purchasable p) {
-        SkeletonManager.call(name + ".addToInventory(item)");
         inventory.add(p);
-        SkeletonManager.ret("void");
     }
 
     /**
@@ -95,15 +92,10 @@ public class BusDriver {
      * @param bus A megvásárolni kívánt busz.
      */
     public void buyBus(Bus bus) {
-        SkeletonManager.call(name + ".buyBus(bus)");
-
-        if (money >= 200) {
-            money -= 200;
+        int price = bus.getPrice();
+        if (money >= price) {
+            money -= price;
             ownedBuses.add(bus);
-            bus.setDriver(this);
-            SkeletonManager.ret("void (successful, remaining: " + money + ")");
-        } else {
-            SkeletonManager.ret("void (insufficient funds, need: 200, have: " + money + ")");
         }
     }
 
@@ -112,12 +104,8 @@ public class BusDriver {
      * @param bus A beállítandó busz.
      */
     public void setCurrentBus(Bus bus) {
-        SkeletonManager.call(name + ".setCurrentBus(bus)");
         if (ownedBuses.contains(bus) || (bus.getDriver() != null && bus.getDriver() == this)) {
             currentBus = bus;
-            SkeletonManager.ret("void (bus set)");
-        } else {
-            SkeletonManager.ret("void (bus not owned)");
         }
     }
 
@@ -135,5 +123,15 @@ public class BusDriver {
      */
     public List<Bus> getBuses() {
         return ownedBuses;
+    }
+    /**
+     * Elem vásárlására szolgáló metódus, amely a buszvezető pénztárcájából levonja az elem árát, majd meghívja az elem boughtByCleaner metódusát, és hozzáadja az elemet a készlethez.
+     * @param item Az elem, amelyet vásárolni szeretne.
+     */
+    @Override
+    public void purchaseItem(Purchasable item) {
+        wallet.deductMoney(item.getPrice());
+        item.boughtByBusDriver(this);
+        addToInventory(item);
     }
 }

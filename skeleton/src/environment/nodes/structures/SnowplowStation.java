@@ -1,7 +1,9 @@
 package environment.nodes.structures;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import environment.nodes.Node;
-import skeleton.SkeletonManager;
 import vehicles.*;
 
 /**
@@ -10,8 +12,9 @@ import vehicles.*;
  */
 public class SnowplowStation extends Structure {
     String sName;
-
     Node node;
+    
+    private List<Snowplow> snowplows;
 
     /**
      * Konstruktor a hókotró-állomás létrehozásához.
@@ -23,6 +26,7 @@ public class SnowplowStation extends Structure {
         super(sName);
         this.sName = sName;
         this.node = node;
+        snowplows = new ArrayList<>();
     }
 
     /** @param c A fogadandó autó (állomáson nem releváns). */
@@ -48,14 +52,10 @@ public class SnowplowStation extends Structure {
      */
     @Override
     public void acceptSnowplow(Snowplow snowplow) {
-        SkeletonManager.call("SnowplowStation.acceptSnowplow(" + snowplow.getSName() + ")");
-
-        boolean arrived = SkeletonManager.ask("Does the snnowplow want to enter the station?");
-        if (arrived) {
-            snowplow.onStation();
+        if (!snowplows.contains(snowplow)) {
+            snowplows.add(snowplow);
         }
-
-        SkeletonManager.ret("");
+        snowplow.onStation();
     }
 
     /**
@@ -65,11 +65,10 @@ public class SnowplowStation extends Structure {
      */
     @Override
     public void removeSnowplow(Snowplow snowplow) {
-        SkeletonManager.call("SnowplowStation.removeSnowplow(" + snowplow.getSName() + ")");
-
         snowplow.departFromStructure(this);
-
-        SkeletonManager.ret("");
     }
 
+    public List<Snowplow> getSnowplows() {
+        return snowplows;
+    }
 }

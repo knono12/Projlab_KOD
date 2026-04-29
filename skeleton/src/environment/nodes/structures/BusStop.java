@@ -1,8 +1,6 @@
 package environment.nodes.structures;
 
 import java.util.*;
-
-import skeleton.SkeletonManager;
 import vehicles.*;
 
 /**
@@ -13,15 +11,7 @@ import vehicles.*;
  * lévő összes megállót, hogy véletlenszerű célállomást tudjon kisorsolni.
  */
 public class BusStop extends Structure {
-    /** A megállóban várakozó buszok listája. */
     private List<Bus> waitingBuses;
-    /** A megállóban parkolt (végállomáson álló) buszok listája. */
-    private List<Bus> parkedBuses;
-    /**
-     * A városban lévő összes buszmegálló listája (véletlenszerű célsorsoláshoz).
-     */
-    private List<BusStop> allBusStops;
-
     /**
      * A BusStop osztály konstruktora.
      * 
@@ -30,51 +20,8 @@ public class BusStop extends Structure {
     public BusStop(String name) {
         super(name);
         this.waitingBuses = new ArrayList<>();
-        this.parkedBuses = new ArrayList<>();
-        this.allBusStops = new ArrayList<>();
     }
 
-    /**
-     * Beállítja az összes buszmegálló listáját (véletlenszerű célsorsoláshoz
-     * szükséges).
-     * 
-     * @param stops Az összes megálló listája.
-     */
-    public void setAllBusStops(List<BusStop> stops) {
-        this.allBusStops = stops;
-    }
-
-    /*
-     * /**
-     * Egy jármű belép a megállóba. Ha busz, meghívja az {@link #acceptBus(Bus)}
-     * metódust.
-     * 
-     * @param v A belépő jármű.
-     * 
-     * @Override
-     * public void enterStructure(Vehicle v) {
-     * SkeletonManager.call(name + ".enterStructure(" + v.getName() + ")");
-     * if (v instanceof Bus) {
-     * acceptBus((Bus) v);
-     * }
-     * SkeletonManager.ret("void");
-     * }
-     * 
-     * /**
-     * Egy jármű elhagyja a megállót. Ha busz, meghívja a {@link #removeBus(Bus)}
-     * metódust.
-     * 
-     * @param v A kilépő jármű.
-     * 
-     * @Override
-     * public void leaveStructure(Vehicle v) {
-     * SkeletonManager.call(name + ".leaveStructure(" + v.getName() + ")");
-     * if (v instanceof Bus) {
-     * removeBus((Bus) v);
-     * }
-     * SkeletonManager.ret("void");
-     * }
-     */
     /**
      * Autót fogad – buszmegállóban nincs teendő autóval.
      * 
@@ -82,8 +29,7 @@ public class BusStop extends Structure {
      */
     @Override
     public void acceptCar(Car c) {
-        SkeletonManager.call(sName + ".acceptCar(" + c.getSName() + ")");
-        SkeletonManager.ret("void");
+        //* Buszmegállóban nincs teendő autóval. */
     }
 
     /**
@@ -94,12 +40,10 @@ public class BusStop extends Structure {
      */
     @Override
     public void acceptBus(Bus b) {
-        SkeletonManager.call(sName + ".acceptBus(" + b.getSName() + ")");
         if (!waitingBuses.contains(b)) {
             waitingBuses.add(b);
             b.arriveAtTerminal(this);
         }
-        SkeletonManager.ret("void");
     }
 
     /**
@@ -109,8 +53,7 @@ public class BusStop extends Structure {
      */
     @Override
     public void acceptSnowplow(Snowplow s) {
-        SkeletonManager.call(sName + ".acceptSnowplow(" + s.getSName() + ")");
-        SkeletonManager.ret("void");
+        //* Buszmegállóban nincs teendő hókotrókkal. */
     }
 
     /**
@@ -120,8 +63,7 @@ public class BusStop extends Structure {
      */
     @Override
     public void removeCar(Car c) {
-        SkeletonManager.call(sName + ".removeCar(" + c.getSName() + ")");
-        SkeletonManager.ret("void");
+        //* Buszmegállóban nincs teendő autóval. */
     }
 
     /**
@@ -131,10 +73,7 @@ public class BusStop extends Structure {
      */
     @Override
     public void removeBus(Bus b) {
-        SkeletonManager.call(sName + ".removeBus(" + b.getSName() + ")");
         waitingBuses.remove(b);
-        parkedBuses.remove(b);
-        SkeletonManager.ret("void");
     }
 
     /**
@@ -144,42 +83,6 @@ public class BusStop extends Structure {
      */
     @Override
     public void removeSnowplow(Snowplow s) {
-        SkeletonManager.call(sName + ".removeSnowplow(" + s.getSName() + ")");
-        SkeletonManager.ret("void");
-    }
-
-    /**
-     * Átparkol egy buszt a várakozó listából a parkoló listába.
-     * 
-     * @param b A parkolásra kerülő busz.
-     */
-    public void parkBus(Bus b) {
-        SkeletonManager.call(sName + ".parkBus(" + b.getSName() + ")");
-        waitingBuses.remove(b);
-        parkedBuses.add(b);
-        SkeletonManager.ret("void");
-    }
-
-    /**
-     * Véletlenszerűen kiválaszt egy, az aktuálistól eltérő buszmegállót.
-     * Ha csak egy megálló létezik, önmagát adja vissza.
-     * 
-     * @return A kisorsolott buszmegálló.
-     */
-    public BusStop getRandomBusStop() {
-        SkeletonManager.call(sName + ".getRandomBusStop()");
-        BusStop result = null;
-        if (allBusStops != null && allBusStops.size() > 1) {
-            Random rand = new Random();
-            BusStop newStop;
-            do {
-                newStop = allBusStops.get(rand.nextInt(allBusStops.size()));
-            } while (newStop == this); // Ne ugyanazt a megállót sorsolja
-            result = newStop;
-        } else {
-            result = this;
-        }
-        SkeletonManager.ret("BusStop (" + (result != null ? result.getsName() : "null") + ")");
-        return result;
+        //* Buszmegállóban nincs teendő hókotrókkal. */
     }
 }

@@ -81,8 +81,7 @@ public class Lane {
      * @return Igaz, ha a busz sikeresen áthaladt a sávon.
      */
     public boolean handleVehicle(Bus b) {
-        boolean success = laneState.handleVehicle(b);
-        return success;
+        return laneState.handleVehicle(b);
     }
 
     /**

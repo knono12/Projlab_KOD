@@ -37,7 +37,8 @@ public class Node {
      * * @param v A csomópontba belépő jármű.
      */
     public void enterNode(Vehicle v){
-        v.getCurrentLane().removeVehicle(v);
+        if(v.getCurrentLane() != null)
+            v.getCurrentLane().removeVehicle(v);
         vehicles.add(v);
         if (structure != null) {
             v.interactWithStructure(structure);
@@ -51,11 +52,22 @@ public class Node {
      */
     public void leaveNode(Vehicle v) {
         vehicles.remove(v);
+
+        waitingVehicles.remove(v);
+
         if (structure != null) {
             v.departFromStructure(structure);
         }
     }
+
+    public void addWaitingVehicle(Vehicle v) {
+        if(!waitingVehicles.contains(v))
+            waitingVehicles.add(v);
+    }
     
+    public void removeWaitingVehicle(Vehicle v) {
+        waitingVehicles.remove(v);
+    }
     /**
      * Hozzáad egy utat a csomóponthoz.
      * Ezzel a metódussal építhető fel az úthálózat (gráf) az inicializálásakor.
@@ -71,6 +83,10 @@ public class Node {
      */
     public void addStructure(Structure s) {
         structure = s;
+    }
+
+    public Structure getStructure() {
+        return structure;
     }
 
     /**
@@ -104,5 +120,4 @@ public class Node {
     public List<Vehicle> getWaitingVehicles(){
         return waitingVehicles;
     }
-
 }
