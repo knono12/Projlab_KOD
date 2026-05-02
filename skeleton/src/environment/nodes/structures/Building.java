@@ -52,6 +52,10 @@ public class Building extends Structure {
      */
     @Override
     public void acceptCar(Car c) {
+        if (c.getCurrentLane() != null) {
+            Node newDestination = c.getCurrentLane().getFromNode();
+            c.setDestination(newDestination);
+        }
     }
 
     /**

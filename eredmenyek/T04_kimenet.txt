@@ -11,7 +11,7 @@ lane l2 r2 n1 n3
 lane l3 r3 n3 n2
 building b1 n1
 building b2 n2
-car c1 n1 n2
+car c1 n3 n2
 set-lane-state l1 accident
 set-snow l2 2
 set-snow l3 2

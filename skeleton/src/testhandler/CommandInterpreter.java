@@ -552,6 +552,7 @@ public class CommandInterpreter {
      */
     private void doSeed(String[] p) {
         seed = Long.parseLong(p[1]);
+        Vehicle.sharedRandom.setSeed(seed);
     }
 
     // ----------------------------------------------------------------------------------

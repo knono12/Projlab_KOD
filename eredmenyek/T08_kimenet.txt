@@ -1,1 +1,13 @@
-A játék véget ért: túl sok jármû ragadt be.
+random off
+seed 3
+node n1
+node n2
+road r1 street n1 n2
+lane l1 r1 n1 n2
+building b1 n1
+building b2 n2
+car c1 n1 n2
+car c2 n1 n2
+set-lane-state l1 accident
+set-damaged c1 true
+set-damaged c2 true

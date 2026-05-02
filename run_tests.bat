@@ -3,6 +3,7 @@ setlocal enabledelayedexpansion
 set PASS=0
 set FAIL=0
 set SKIP=0
+set FAILED_LIST=
 set BIN=skeleton\bin21
 
 rem --- Fordítsa le a teljes skeletont + testhandlert, ha szukseges ---
@@ -51,6 +52,11 @@ echo  Sikeres tesztek: %PASS%
 echo  Hibas tesztek:   %FAIL%
 if not "%SKIP%"=="0" echo  Athagyott tesztek: %SKIP%
 echo ==========================================
+if not "%FAIL%"=="0" (
+    echo.
+    echo  Megbukott tesztek:
+    for %%t in (%FAILED_LIST%) do echo    - %%t
+)
 goto :eof
 
 :TESZT
@@ -90,5 +96,6 @@ if %errorlevel%==0 (
     type "%ELVART%"
     echo.
     set /a FAIL+=1
+    set "FAILED_LIST=!FAILED_LIST! !TNAME!"
 )
 goto :eof

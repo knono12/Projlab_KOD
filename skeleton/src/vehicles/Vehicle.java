@@ -1,5 +1,6 @@
 package vehicles;
 import java.util.List;
+import java.util.Random;
 
 import environment.lane.Lane;
 import environment.nodes.Node;
@@ -11,6 +12,8 @@ import environment.road.Road;
  * Definiálja a közös állapotokat és az alapvető mozgási metódusokat.
  */
 public abstract class Vehicle {
+    /** Közös, seed-elhető véletlenszám-generátor minden jármű számára. */
+    public static Random sharedRandom = new Random();
     protected boolean damaged = false;
     protected Lane currentLane;
     protected Node currentNode;

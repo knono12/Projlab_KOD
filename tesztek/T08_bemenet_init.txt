@@ -1,5 +1,5 @@
 random off
-seed 5
+seed 3
 node n1
 node n2
 road r1 street n1 n2

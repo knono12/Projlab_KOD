@@ -6,7 +6,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
-import java.util.Random;
 
 import environment.lane.Lane;
 import environment.lane.lanestates.AccidentState;
@@ -120,6 +119,8 @@ public class Car extends Vehicle {
     public void moveOntoNode(){
         if (isActionSuccess && !damaged) {
             enterNextNode();
+        } else {
+            currentLane = null;
         }
     }
 
@@ -183,6 +184,15 @@ public class Car extends Vehicle {
     }
 
     /**
+     * Beállítja a célcsomópontot és újraszámolja az útvonalat.
+     * @param newDestination Az új célcsomópont.
+     */
+    public void setDestination(Node newDestination) {
+        destination = newDestination;
+        findPath(currentNode, newDestination);
+    }
+
+    /**
      * Újrakalkulálja az útvonalat egy esetleges elakadás után.
      * @return true, ha talált új utat, egyébként false.
      */
@@ -238,8 +248,7 @@ public class Car extends Vehicle {
         int baseProbability = 30;
         int accidentChance = baseProbability + (vehicleCount * 15);
 
-        Random random = new Random();
-        int randomValue = random.nextInt(100) + 1;
+        int randomValue = sharedRandom.nextInt(100) + 1;
 
         if (randomValue <= accidentChance) {
             
@@ -304,13 +313,15 @@ public class Car extends Vehicle {
      * @return A kiválasztott út, vagy null, ha nincs járható út.
      */
     private Road chooseNextRoad() {
-        if(route.isEmpty()){
+        while (!route.isEmpty() && route.get(0).equals(currentNode)) {
+            route.remove(0);
+        }
+        if (route.isEmpty()) {
             return null;
         }
-
         Node nextNode = route.get(0);
         for (Road r : currentNode.getRoads()) {
-            if (r.getNodes().contains(nextNode)){
+            if (r.getNodes().contains(nextNode)) {
                 route.remove(0);
                 return r;
             }
@@ -327,10 +338,10 @@ public class Car extends Vehicle {
         if (lanes.isEmpty()) {
             return null;
         }
-
-        Random r = new Random();
-        int idx = r.nextInt(lanes.size());
-        return lanes.get(idx);
+        if (lanes.size() == 1) {
+            return lanes.get(0);
+        }
+        return lanes.get(sharedRandom.nextInt(lanes.size()));
     }
     
     
