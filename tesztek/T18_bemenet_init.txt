@@ -1,0 +1,9 @@
+random off
+seed 5
+node n1
+node n2
+road r1 street n1 n2
+lane l1 r1 n1 n2
+busstop bs1 n1
+busstop bs2 n2
+busdriver bd1 100

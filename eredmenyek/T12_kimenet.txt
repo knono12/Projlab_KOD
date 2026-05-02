@@ -1,0 +1,11 @@
+random off
+seed 5
+node n1
+node n2
+road r1 street n1 n2
+lane l1 r1 n1 n2
+station st1 n1
+cleaner cl1 350
+snowplow sp1 cl1 n2
+set-attachment sp1 gritter
+set-lane-state l1 salted

@@ -107,7 +107,7 @@ public class Snowplow extends Vehicle implements Purchasable {
     @Override
     public void moveOntoNode(){
         if (isActionSuccess) {
-            this.cleaner.receiveMoney(10);
+            this.cleaner.receiveMoney(50);
             enterNextNode();
         }
         //lehet kell this.nextLana = null;

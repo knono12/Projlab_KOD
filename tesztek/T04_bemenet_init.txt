@@ -1,0 +1,15 @@
+random off
+seed 5
+node n1
+node n2
+node n3
+road r1 street n1 n2
+road r2 street n1 n3
+road r3 street n3 n2
+lane l1 r1 n1 n2
+lane l2 r2 n1 n3
+lane l3 r3 n3 n2
+building b1 n1
+building b2 n2
+car c1 n1 n2
+set-lane-state l1 accident

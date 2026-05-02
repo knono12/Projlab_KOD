@@ -1,0 +1,10 @@
+random off
+seed 5
+node n1
+node n2
+road r1 street n1 n2
+lane l1 r1 n1 n2
+building b1 n1
+building b2 n2
+car c1 n1 n2
+set-lane-state l1 heavy-snowy

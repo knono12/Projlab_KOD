@@ -1,0 +1,11 @@
+random off
+seed 5
+node n1
+node n2
+road r1 street n1 n2
+lane l1 r1 n1 n2
+lane l2 r1 n1 n2
+station st1 n1
+cleaner cl1 300
+snowplow sp1 cl1 n1
+set-lane-state l1 heavy-snowy

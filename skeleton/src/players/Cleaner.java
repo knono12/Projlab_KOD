@@ -28,8 +28,8 @@ public class Cleaner extends Player {
         super(sName, name);
         this.snowplows = new ArrayList<>();
 
-        snowplows.add(new Snowplow(0)); // TODO
-        inventory.add(new SnowBladeAttachment()); // TODO
+        //snowplows.add(new Snowplow(0)); // TODO
+        //inventory.add(new SnowBladeAttachment()); // TODO
     }
     
     /**
@@ -44,7 +44,7 @@ public class Cleaner extends Player {
         super(sName, name, inventory);
         this.snowplows = new ArrayList<>();
 
-        snowplows.add(new Snowplow(0)); // TODO
+        //snowplows.add(new Snowplow(0)); // TODO
     }
     
     /**

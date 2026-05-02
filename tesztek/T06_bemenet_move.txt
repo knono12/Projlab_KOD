@@ -1,0 +1,3 @@
+move b1 l1
+step
+save

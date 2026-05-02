@@ -1,0 +1,6 @@
+random off
+seed 5
+node n1
+node n2
+road t1 tunnel n1 n2
+lane l1 t1 n1 n2

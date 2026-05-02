@@ -1,0 +1,689 @@
+Fordítás folyamatban...
+Fordítás kész.
+
+T01 PASSED
+T02 PASSED
+T03 PASSED
+T04 FAILED
+  -- Tenyleges kimenet (eredmenyek\T04_kimenet.txt):
+random off
+seed 5
+node n1
+node n2
+node n3
+road r1 street n1 n2
+road r2 street n1 n3
+road r3 street n3 n2
+lane l1 r1 n1 n2
+lane l2 r2 n1 n3
+lane l3 r3 n3 n2
+building b1 n1
+building b2 n2
+car c1 n1 n2
+set-lane-state l1 accident
+set-snow l2 2
+set-snow l3 2
+  -- Elvart kimenet (elvart\T04_elvart.txt):
+random off
+seed 5
+node n1
+node n2
+node n3
+road r1 street n1 n2
+road r2 street n1 n3
+road r3 street n3 n2
+lane l1 r1 n1 n2
+lane l2 r2 n1 n3
+lane l3 r3 n3 n2
+building b1 n1
+building b2 n2
+car c1 n3 n2
+set-lane-state l1 accident
+set-snow l2 2
+set-snow l3 2
+T05 FAILED
+  -- Tenyleges kimenet (eredmenyek\T05_kimenet.txt):
+random off
+seed 5
+node n1
+node n2
+road r1 street n1 n2
+lane l1 r1 n1 n2
+busstop bs1 n1
+busstop bs2 n2
+busdriver bd1 550
+bus b1 bd1 n2
+set-bus-route b1 bs2 bs1
+set-damaged b1 true
+set-snow l1 1
+  -- Elvart kimenet (elvart\T05_elvart.txt):
+random off
+seed 5
+node n1
+node n2
+road r1 street n1 n2
+lane l1 r1 n1 n2
+busstop bs1 n1
+busstop bs2 n2
+busdriver bd1 500
+bus b1 bd1 n1
+set-bus-route b1 bs1 bs2
+set-damaged b1 true
+set-snow l1 1
+
+T06 PASSED
+T07 FAILED
+  -- Tenyleges kimenet (eredmenyek\T07_kimenet.txt):
+random off
+seed 5
+node n1
+node n2
+road r1 street n1 n2
+lane l1 r1 n1 n2
+building b1 n1
+building b2 n2
+car c1 n2 n2
+set-lane-state l1 icy
+  -- Elvart kimenet (elvart\T07_elvart.txt):
+random off
+seed 5
+node n1
+node n2
+road r1 street n1 n2
+lane l1 r1 n1 n2
+building b1 n1
+building b2 n2
+car c1 n1 n2
+set-lane-state l1 icy
+
+T08 FAILED
+  -- Tenyleges kimenet (eredmenyek\T08_kimenet.txt):
+random off
+seed 5
+node n1
+node n2
+road r1 street n1 n2
+lane l1 r1 n1 n2
+building b1 n1
+building b2 n2
+car c1 n2 n2
+car c2 n2 n2
+set-lane-state l1 icy
+  -- Elvart kimenet (elvart\T08_elvart.txt):
+random off
+seed 5
+node n1
+node n2
+road r1 street n1 n2
+lane l1 r1 n1 n2
+building b1 n1
+building b2 n2
+car c1 n1 n2
+car c2 n1 n2
+set-lane-state l1 accident
+set-damaged c1 true
+set-damaged c2 true
+
+T09 FAILED
+  -- Tenyleges kimenet (eredmenyek\T09_kimenet.txt):
+random off
+seed 5
+node n1
+node n2
+road r1 street n1 n2
+lane l1 r1 n1 n2
+building b1 n1
+building b2 n2
+car c1 n1 n2
+car c2 n1 n2
+set-damaged c1 true
+set-damaged c2 true
+set-snow l1 1
+  -- Elvart kimenet (elvart\T09_elvart.txt):
+random off
+seed 5
+node n1
+node n2
+road r1 street n1 n2
+lane l1 r1 n1 n2
+building b1 n1
+building b2 n2
+set-snow l1 1
+
+T10 FAILED
+  -- Tenyleges kimenet (eredmenyek\T10_kimenet.txt):
+random off
+seed 5
+node n1
+node n2
+road r1 street n1 n2
+lane l1 r1 n1 n2
+station st1 n1
+cleaner cl1 310
+snowplow sp1 cl1 n2
+set-snow l1 1
+  -- Elvart kimenet (elvart\T10_elvart.txt):
+random off
+seed 5
+node n1
+node n2
+road r1 street n1 n2
+lane l1 r1 n1 n2
+station st1 n1
+cleaner cl1 350
+snowplow sp1 cl1 n2
+set-snow l1 1
+
+T11 FAILED
+  -- Tenyleges kimenet (eredmenyek\T11_kimenet.txt):
+random off
+seed 5
+node n1
+node n2
+road r1 street n1 n2
+lane l1 r1 n1 n2
+station st1 n1
+cleaner cl1 310
+snowplow sp1 cl1 n2
+set-attachment sp1 icebreaker
+set-lane-state l1 broken-ice
+  -- Elvart kimenet (elvart\T11_elvart.txt):
+random off
+seed 5
+node n1
+node n2
+road r1 street n1 n2
+lane l1 r1 n1 n2
+station st1 n1
+cleaner cl1 350
+snowplow sp1 cl1 n2
+set-attachment sp1 icebreaker
+set-lane-state l1 broken-ice
+
+T12 FAILED
+  -- Tenyleges kimenet (eredmenyek\T12_kimenet.txt):
+random off
+seed 5
+node n1
+node n2
+road r1 street n1 n2
+lane l1 r1 n1 n2
+station st1 n1
+cleaner cl1 300
+snowplow sp1 cl1 n1
+set-attachment sp1 gritter
+set-lane-state l1 icy
+  -- Elvart kimenet (elvart\T12_elvart.txt):
+random off
+seed 5
+node n1
+node n2
+road r1 street n1 n2
+lane l1 r1 n1 n2
+station st1 n1
+cleaner cl1 350
+snowplow sp1 cl1 n2
+set-attachment sp1 gritter
+set-lane-state l1 salted
+
+T13 FAILED
+  -- Tenyleges kimenet (eredmenyek\T13_kimenet.txt):
+random off
+seed 5
+node n1
+node n2
+road r1 street n1 n2
+lane l1 r1 n1 n2
+station st1 n1
+cleaner cl1 300
+snowplow sp1 cl1 n1
+set-attachment sp1 flamethrower
+set-lane-state l1 icy
+  -- Elvart kimenet (elvart\T13_elvart.txt):
+random off
+seed 5
+node n1
+node n2
+road r1 street n1 n2
+lane l1 r1 n1 n2
+station st1 n1
+cleaner cl1 350
+snowplow sp1 cl1 n2
+set-attachment sp1 flamethrower
+
+T14 PASSED
+T15 PASSED
+T16 FAILED
+  -- Tenyleges kimenet (eredmenyek\T16_kimenet.txt):
+random off
+seed 5
+node n1
+node n2
+road r1 street n1 n2
+lane l1 r1 n1 n2
+building b1 n1
+building b2 n2
+station st1 n1
+cleaner cl1 300
+snowplow sp1 cl1 n1
+car c1 n2 n2
+set-lane-state l1 icy
+  -- Elvart kimenet (elvart\T16_elvart.txt):
+random off
+seed 5
+node n1
+node n2
+road r1 street n1 n2
+lane l1 r1 n1 n2
+building b1 n1
+building b2 n2
+station st1 n1
+cleaner cl1 350
+snowplow sp1 cl1 n2
+car c1 n1 n2
+set-lane-state l1 icy
+
+T17 PASSED
+T18 PASSED
+T19 FAILED
+  -- Tenyleges kimenet (eredmenyek\T19_kimenet.txt):
+random off
+seed 5
+node n1
+node n2
+road r1 street n1 n2
+lane l1 r1 n1 n2
+station st1 n1
+cleaner cl1 300
+snowplow sp1 cl1 n1
+  -- Elvart kimenet (elvart\T19_elvart.txt):
+random off
+seed 5
+node n1
+node n2
+road r1 street n1 n2
+lane l1 r1 n1 n2
+station st1 n1
+cleaner cl1 150
+snowplow sp1 cl1 n1
+
+T20 FAILED
+  -- Tenyleges kimenet (eredmenyek\T20_kimenet.txt):
+random off
+seed 5
+node n1
+node n2
+road r1 street n1 n2
+lane l1 r1 n1 n2
+lane l2 r1 n1 n2
+station st1 n1
+cleaner cl1 310
+snowplow sp1 cl1 n2
+set-snow l1 1
+set-snow l2 2
+  -- Elvart kimenet (elvart\T20_elvart.txt):
+random off
+seed 5
+node n1
+node n2
+road r1 street n1 n2
+lane l1 r1 n1 n2
+lane l2 r1 n1 n2
+station st1 n1
+cleaner cl1 350
+snowplow sp1 cl1 n2
+set-snow l1 1
+set-snow l2 2
+
+T21 FAILED
+  -- Tenyleges kimenet (eredmenyek\T21_kimenet.txt):
+random off
+seed 5
+node n1
+node n2
+road r1 street n1 n2
+lane l1 r1 n1 n2
+building b1 n1
+building b2 n2
+busdriver bd1 500
+bus b1 bd1 n1
+busstop bs1 n1
+busstop bs2 n2
+set-bus-route b1 bs1 bs2
+  -- Elvart kimenet (elvart\T21_elvart.txt):
+random off
+seed 5
+node n1
+node n2
+road r1 street n1 n2
+lane l1 r1 n1 n2
+building b1 n1
+building b2 n2
+busdriver bd1 300
+bus b1 bd1 n1
+busstop bs1 n1
+busstop bs2 n2
+set-bus-route b1 bs1 bs2
+
+T22 FAILED
+  -- Tenyleges kimenet (eredmenyek\T22_kimenet.txt):
+random off
+seed 5
+node n1
+node n2
+node n3
+road r1 street n1 n2
+road r2 street n1 n3
+lane l1 r1 n1 n2
+lane l2 r2 n1 n3
+building b1 n1
+building b2 n2
+busstop bs1 n1
+busstop bs2 n2
+busdriver bd1 550
+bus b1 bd1 n2
+car c1 n2 n2
+station st1 n1
+cleaner cl1 300
+snowplow sp1 cl1 n1
+set-bus-route b1 bs2 bs1
+set-snow l1 1
+set-snow l2 1
+  -- Elvart kimenet (elvart\T22_elvart.txt):
+random off
+seed 5
+node n1
+node n2
+node n3
+road r1 street n1 n2
+road r2 street n1 n3
+lane l1 r1 n1 n2
+lane l2 r2 n1 n3
+building b1 n1
+building b2 n2
+busstop bs1 n1
+busstop bs2 n2
+busdriver bd1 350
+bus b1 bd1 n2
+set-bus-route b1 bs2 bs1
+car c1 n2 n1
+station st1 n1
+cleaner cl1 350
+snowplow sp1 cl1 n3
+set-snow l1 1
+set-snow l2 1
+
+T23 FAILED
+  -- Tenyleges kimenet (eredmenyek\T23_kimenet.txt):
+random off
+seed 42
+node n1
+node n2
+node n3
+road r1 street n1 n2
+road r2 street n2 n3
+lane l1 r1 n1 n2
+lane l2 r2 n2 n3
+busstop bs1 n1
+busstop bs2 n2
+busstop bs3 n3
+busdriver bd1 550
+bus b1 bd1 n3
+set-bus-route b1 bs3 bs2
+set-snow l1 2
+set-snow l2 2
+  -- Elvart kimenet (elvart\T23_elvart.txt):
+random off
+seed 42
+node n1
+node n2
+node n3
+road r1 street n1 n2
+road r2 street n2 n3
+lane l1 r1 n1 n2
+lane l2 r2 n2 n3
+busstop bs1 n1
+busstop bs2 n2
+busstop bs3 n3
+busdriver bd1 400
+bus b1 bd1 n3
+set-bus-route b1 bs3 bs1
+set-snow l1 2
+set-snow l2 2
+
+T24 FAILED
+  -- Tenyleges kimenet (eredmenyek\T24_kimenet.txt):
+random off
+seed 5
+node n1
+node n2
+node n3
+road r1 street n1 n2
+road r2 street n2 n3
+road r3 street n3 n1
+lane l1 r1 n1 n2
+lane l2 r2 n2 n3
+lane l3 r3 n3 n1
+busstop bs1 n1
+busstop bs2 n3
+busdriver bd1 750
+bus b1 bd1 n3
+set-bus-route b1 bs2 bs1
+set-lane-state l1 light-snowy
+set-lane-state l2 light-snowy
+set-lane-state l3 light-snowy
+set-snow l1 3
+set-snow l2 3
+set-snow l3 3
+  -- Elvart kimenet (elvart\T24_elvart.txt):
+random off
+seed 5
+node n1
+node n2
+node n3
+road r1 street n1 n2
+road r2 street n2 n3
+road r3 street n3 n1
+lane l1 r1 n1 n2
+lane l2 r2 n2 n3
+lane l3 r3 n3 n1
+busstop bs1 n1
+busstop bs2 n3
+busdriver bd1 450
+bus b1 bd1 n3
+set-bus-route b1 bs1 bs2
+set-lane-state l1 light-snowy
+set-lane-state l2 light-snowy
+set-lane-state l3 light-snowy
+set-snow l1 3
+set-snow l2 3
+set-snow l3 3
+
+T25 PASSED
+T26 FAILED
+  -- Tenyleges kimenet (eredmenyek\T26_kimenet.txt):
+random off
+seed 5
+node n1
+node n2
+road r1 street n1 n2
+lane l1 r1 n1 n2
+building b1 n1
+building b2 n2
+station st1 n1
+cleaner cl1 300
+snowplow sp1 cl1 n1
+car c1 n2 n2
+set-attachment sp1 gravel
+set-lane-state l1 icy
+  -- Elvart kimenet (elvart\T26_elvart.txt):
+random off
+seed 5
+node n1
+node n2
+road r1 street n1 n2
+lane l1 r1 n1 n2
+building b1 n1
+building b2 n2
+station st1 n1
+cleaner cl1 350
+snowplow sp1 cl1 n2
+car c1 n2 n1
+set-attachment sp1 gravel
+set-lane-state l1 gravel
+set-snow l1 1
+
+T27 FAILED
+  -- Tenyleges kimenet (eredmenyek\T27_kimenet.txt):
+random off
+seed 5
+node n1
+node n2
+road r1 street n1 n2
+lane l1 r1 n1 n2
+station st1 n1
+cleaner cl1 310
+snowplow sp1 cl1 n2
+set-lane-state l1 icy
+  -- Elvart kimenet (elvart\T27_elvart.txt):
+random off
+seed 5
+node n1
+node n2
+road r1 street n1 n2
+lane l1 r1 n1 n2
+station st1 n1
+cleaner cl1 350
+snowplow sp1 cl1 n2
+set-lane-state l1 icy
+
+T28 PASSED
+T29 FAILED
+  -- Tenyleges kimenet (eredmenyek\T29_kimenet.txt):
+random off
+seed 5
+node n1
+node n2
+road r1 street n1 n2
+lane l1 r1 n1 n2
+building b1 n1
+building b2 n2
+car c1 n2 n2
+car c2 n2 n2
+car c3 n2 n2
+set-lane-state l1 icy
+  -- Elvart kimenet (elvart\T29_elvart.txt):
+random off
+seed 5
+node n1
+node n2
+road r1 street n1 n2
+lane l1 r1 n1 n2
+building b1 n1
+building b2 n2
+car c1 n2 n1
+car c2 n2 n1
+car c3 n2 n1
+set-lane-state l1 icy
+
+T30 FAILED
+  -- Tenyleges kimenet (eredmenyek\T30_kimenet.txt):
+random off
+seed 5
+node n1
+node n2
+node n3
+road r1 street n1 n2
+road r2 street n2 n3
+lane l1 r1 n1 n2
+lane l2 r2 n2 n3
+station st1 n1
+cleaner cl1 300
+snowplow sp1 cl1 n1
+set-attachment sp1 gritter
+set-lane-state l1 icy
+set-lane-state l2 icy
+  -- Elvart kimenet (elvart\T30_elvart.txt):
+random off
+seed 5
+node n1
+node n2
+node n3
+road r1 street n1 n2
+road r2 street n2 n3
+lane l1 r1 n1 n2
+lane l2 r2 n2 n3
+station st1 n1
+cleaner cl1 350
+snowplow sp1 cl1 n3
+set-attachment sp1 gritter
+set-lane-state l1 salted
+set-lane-state l2 icy
+
+T31 FAILED
+  -- Tenyleges kimenet (eredmenyek\T31_kimenet.txt):
+random off
+seed 5
+node n1
+node n2
+node n3
+road r1 street n1 n2
+road r2 street n2 n3
+lane l1 r1 n1 n2
+lane l2 r2 n2 n3
+station st1 n1
+cleaner cl1 300
+snowplow sp1 cl1 n1
+set-attachment sp1 flamethrower
+set-lane-state l1 icy
+set-lane-state l2 icy
+  -- Elvart kimenet (elvart\T31_elvart.txt):
+random off
+seed 5
+node n1
+node n2
+node n3
+road r1 street n1 n2
+road r2 street n2 n3
+lane l1 r1 n1 n2
+lane l2 r2 n2 n3
+station st1 n1
+cleaner cl1 350
+snowplow sp1 cl1 n3
+set-attachment sp1 flamethrower
+set-lane-state l2 icy
+
+T32 FAILED
+  -- Tenyleges kimenet (eredmenyek\T32_kimenet.txt):
+random off
+seed 5
+node n1
+node n2
+road r1 street n1 n2
+lane l1 r1 n1 n2
+station st1 n1
+cleaner cl1 200
+snowplow sp1 cl1 n1
+set-attachment sp1 gritter
+  -- Elvart kimenet (elvart\T32_elvart.txt):
+random off
+seed 5
+node n1
+node n2
+road r1 street n1 n2
+lane l1 r1 n1 n2
+station st1 n1
+cleaner cl1 140
+snowplow sp1 cl1 n1
+set-attachment sp1 gritter
+
+T33 PASSED
+T34 PASSED
+T35 PASSED
+
+==========================================
+ OSSZESITES
+==========================================
+ Sikeres tesztek: 13
+ Hibas tesztek:   22
+==========================================

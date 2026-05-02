@@ -1,0 +1,12 @@
+move b1 l1
+move b1 l2
+step
+move b1 l3
+move b1 l1
+move b1 l2
+step
+move b1 l3
+move b1 l1
+move b1 l2
+step
+save

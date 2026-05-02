@@ -1,0 +1,3 @@
+bus b1 bd1 n1
+step
+save

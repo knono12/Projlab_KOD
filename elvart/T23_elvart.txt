@@ -1,0 +1,17 @@
+random off
+seed 42
+node n1
+node n2
+node n3
+road r1 street n1 n2
+road r2 street n2 n3
+lane l1 r1 n1 n2
+lane l2 r2 n2 n3
+busstop bs1 n1
+busstop bs2 n2
+busstop bs3 n3
+busdriver bd1 400
+bus b1 bd1 n3
+set-bus-route b1 bs3 bs1
+set-snow l1 2
+set-snow l2 2

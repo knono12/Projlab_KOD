@@ -1,0 +1,3 @@
+set-attachment sp1 snowblade
+step
+save

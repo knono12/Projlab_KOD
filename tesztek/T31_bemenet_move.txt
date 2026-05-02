@@ -1,0 +1,5 @@
+move sp1 l1
+step
+move sp1 l2
+step
+save

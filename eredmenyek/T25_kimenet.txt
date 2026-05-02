@@ -1,0 +1,3 @@
+ERROR: ismeretlen azonosito: nemletezoid
+ERROR: ervenytelen allapot: frosty
+ERROR: ismeretlen parancs: moov

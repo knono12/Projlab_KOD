@@ -1,0 +1,5 @@
+move b1 l1
+step
+move b1 l2
+step
+save

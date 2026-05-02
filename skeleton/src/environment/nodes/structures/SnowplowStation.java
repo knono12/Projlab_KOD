@@ -65,7 +65,7 @@ public class SnowplowStation extends Structure {
      */
     @Override
     public void removeSnowplow(Snowplow snowplow) {
-        snowplow.departFromStructure(this);
+        snowplows.remove(snowplow);
     }
 
     public List<Snowplow> getSnowplows() {
