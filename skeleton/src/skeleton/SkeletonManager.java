@@ -5,16 +5,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import accessories.attachments.*;
-import accessories.fuels.*;
-import environment.Graph;
-import environment.lane.Lane;
-import environment.lane.lanestates.*;
-import environment.nodes.Node;
-import environment.nodes.structures.*;
-import environment.road.*;
-import players.*;
-import vehicles.*;
+import model.accessories.attachments.*;
+import model.accessories.fuels.*;
+import model.environment.Graph;
+import model.environment.lane.Lane;
+import model.environment.lane.lanestates.*;
+import model.environment.nodes.Node;
+import model.environment.nodes.structures.*;
+import model.environment.road.*;
+import model.players.*;
+import model.vehicles.*;
 
 /**
  * A skeleton program belépési pontja és nyomkövető segédosztálya.

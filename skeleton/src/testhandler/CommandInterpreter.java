@@ -3,17 +3,17 @@ package testhandler;
 import java.io.*;
 import java.util.*;
 
-import accessories.attachments.*;
-import accessories.fuels.*;
-import environment.Graph;
-import environment.lane.Lane;
-import environment.lane.lanestates.*;
-import environment.nodes.Node;
-import environment.nodes.structures.*;
-import environment.road.*;
-import finance.Purchasable;
-import players.*;
-import vehicles.*;
+import model.accessories.attachments.*;
+import model.accessories.fuels.*;
+import model.environment.Graph;
+import model.environment.lane.Lane;
+import model.environment.lane.lanestates.*;
+import model.environment.nodes.Node;
+import model.environment.nodes.structures.*;
+import model.environment.road.*;
+import model.finance.Purchasable;
+import model.players.*;
+import model.vehicles.*;
 
 /**
  * Szöveges parancsokat értelmező és végrehajtó osztály.

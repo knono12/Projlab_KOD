@@ -4,15 +4,15 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-import environment.Graph;
-import environment.nodes.Node;
-import environment.nodes.structures.BusStop;
-import players.BusDriver;
-import players.Cleaner;
-import players.Player;
-import vehicles.Bus;
-import vehicles.Snowplow;
-import vehicles.Vehicle;
+import model.environment.Graph;
+import model.environment.nodes.Node;
+import model.environment.nodes.structures.BusStop;
+import model.players.BusDriver;
+import model.players.Cleaner;
+import model.players.Player;
+import model.vehicles.Bus;
+import model.vehicles.Snowplow;
+import model.vehicles.Vehicle;
 
 /**
  * Privát és csomag-szintű mezők elérését segítő segédosztály.
@@ -53,9 +53,9 @@ public class ReflectionHelper {
      * @param c a lekérdezendő autó
      * @return az autó célcsomópontja, vagy {@code null}, ha nincs beállítva
      */
-    public static Node getCarDestination(vehicles.Car c) {
+    public static Node getCarDestination(model.vehicles.Car c) {
         try {
-            Field f = vehicles.Car.class.getDeclaredField("destination");
+            Field f = model.vehicles.Car.class.getDeclaredField("destination");
             f.setAccessible(true);
             return (Node) f.get(c);
         } catch (Exception e) {
@@ -77,7 +77,7 @@ public class ReflectionHelper {
         try {
             Field wf = Player.class.getDeclaredField("wallet");
             wf.setAccessible(true);
-            finance.Wallet wallet = (finance.Wallet) wf.get(p);
+            model.finance.Wallet wallet = (model.finance.Wallet) wf.get(p);
             return wallet.getBalance();
         } catch (Exception e) {
             return 0;
@@ -97,7 +97,7 @@ public class ReflectionHelper {
         try {
             Field wf = Player.class.getDeclaredField("wallet");
             wf.setAccessible(true);
-            finance.Wallet wallet = (finance.Wallet) wf.get(p);
+            model.finance.Wallet wallet = (model.finance.Wallet) wf.get(p);
             wallet.setBalance(amount);
         } catch (Exception e) {
             // ignore
@@ -177,7 +177,7 @@ public class ReflectionHelper {
             Field f = BusDriver.class.getDeclaredField("ownedBuses");
             f.setAccessible(true);
             if (f.get(b) == null) {
-                f.set(b, new ArrayList<vehicles.Bus>());
+                f.set(b, new ArrayList<model.vehicles.Bus>());
             }
         } catch (Exception e) {
             // ignore
