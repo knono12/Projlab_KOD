@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.accessories.attachments.Attachment;
-import model.accessories.attachments.IceBrakerAttachment;
+import model.accessories.attachments.IceBreakerAttachment;
 import model.accessories.attachments.SweeperAttachment;
 import model.environment.lane.Lane;
 import model.environment.nodes.structures.Structure;
@@ -14,8 +14,6 @@ import model.players.BusDriver;
 import model.players.Cleaner;
 import observers.AttachmentObserver;
 import skeleton.SkeletonManager;
-
-
 
 /**
  * A hókotrót reprezentáló osztály, amely a {@link Vehicle} ősosztályból
@@ -110,12 +108,12 @@ public class Snowplow extends Vehicle implements Purchasable {
     }
 
     @Override
-    public void moveOntoNode(){
+    public void moveOntoNode() {
         if (isActionSuccess) {
             this.cleaner.receiveMoney(50);
             enterNextNode();
         }
-        //lehet kell this.nextLana = null;
+        // lehet kell this.nextLana = null;
     }
 
     @Override
@@ -133,12 +131,19 @@ public class Snowplow extends Vehicle implements Purchasable {
     // -------------------------------------------------------------------------------------
 
     /**
-     * Lecseréli a hókotróra felszerelt takarítófejet egy újra.
+     * Lecseréli a hókotróra felszerelt takarítófejet a létezőre, ha a játékos
+     * rendelkezik vele a készletében, vagy egyszerűen felszereli az új fejet, ha
+     * nincs még ilyen típusú fej a készletben.
      * 
      * @param newAttachment Az új felszerelendő fej.
      */
     public void changeAttachment(Attachment newAttachment) {
-        this.currentAttachment = newAttachment;
+        Purchasable item = cleaner.hasItem(newAttachment);
+        if (item != null) {
+            this.currentAttachment = (Attachment) item;
+        } else {
+            this.currentAttachment = newAttachment;
+        }
         notifyAttachmentChanged();
     }
 
@@ -161,12 +166,12 @@ public class Snowplow extends Vehicle implements Purchasable {
         SkeletonManager.call(getSName() + ".onStation()");
         boolean shop = SkeletonManager.ask("Szeretne-e vásárolni hókotrófejet? ");
         if (shop)
-            cleaner.purchaseItem(new IceBrakerAttachment("iceBrakerAttachment", 10));
+            cleaner.purchaseItem(new IceBreakerAttachment("iceBrakerAttachment", 10));
         boolean change = SkeletonManager.ask("Szeretne-e cserélni hókotrófejet? ");
         if (change) {
             boolean inInventory = SkeletonManager.ask("Benne van inventory-ban? ");
             if (inInventory)
-                changeAttachment(new IceBrakerAttachment("iceBrakerAttachment", 10));
+                changeAttachment(new IceBreakerAttachment("iceBrakerAttachment", 10));
         }
 
     }

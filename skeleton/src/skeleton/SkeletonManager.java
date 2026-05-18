@@ -303,7 +303,7 @@ public class SkeletonManager {
     // =========================================================================
     private static void testAttachmentPurchase() {
         Cleaner cleaner = buildCleaner();
-        IceBrakerAttachment att = new IceBrakerAttachment("jegoro", 20);
+        IceBreakerAttachment att = new IceBreakerAttachment("jegoro", 20);
 
         boolean hasFunds = ask("Van-e elég pénze a takarítónak?");
         if (hasFunds) {
@@ -486,7 +486,7 @@ public class SkeletonManager {
 
         Cleaner cleaner = buildCleaner();
         Snowplow sp = buildSnowplow(cleaner);
-        sp.changeAttachment(new IceBrakerAttachment("jegoro", 25));
+        sp.changeAttachment(new IceBreakerAttachment("jegoro", 25));
         sp.setCurrentNode(n1);
 
         performSnowplowMove(sp, n1);

@@ -847,10 +847,10 @@ public class CommandInterpreter {
                 g.setSalt(new Salt("salt", 1000000, 0));
                 return g;
             }
-            case "icebreaker":   return new IceBrakerAttachment("icebreaker", 0);
+            case "icebreaker":   return new IceBreakerAttachment("icebreaker", 0);
             case "flamethrower": {
                 FlamethrowerAttachment f = new FlamethrowerAttachment("flamethrower", 0);
-                f.setBioKerosene(new BioKerosene(1000000, "bioKerosene", 0));
+                f.setBioKerosene(new BioKerosene("bioKerosene", 1000000, 0));
                 return f;
             }
             case "gravel": {

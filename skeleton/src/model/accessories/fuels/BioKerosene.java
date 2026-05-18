@@ -15,7 +15,7 @@ public class BioKerosene extends Fuel {
      * @param sName  Az azonosító név.
      * @param price  A biokerozin ára a boltban.
      */
-    public BioKerosene(int amount, String sName, int price) {
+    public BioKerosene(String sName, int amount, int price) {
         super(sName, amount, price);
     }
 }

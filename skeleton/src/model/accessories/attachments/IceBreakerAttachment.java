@@ -10,7 +10,7 @@ import skeleton.SkeletonManager;
  * Képes a jeges utak (IcyState) feltörésére (BrokenIceState állapotba
  * hozására), de havon vagy már tiszta úton hatástalan.
  */
-public class IceBrakerAttachment extends Attachment {
+public class IceBreakerAttachment extends Attachment {
 
     /**
      * Konstruktor a jégtörő fej létrehozásához.
@@ -18,7 +18,7 @@ public class IceBrakerAttachment extends Attachment {
      * @param sName A fej neve.
      * @param price A fej ára.
      */
-    public IceBrakerAttachment(String sName, int price) {
+    public IceBreakerAttachment(String sName, int price) {
         super(sName);
         setPrice(price);
     }
